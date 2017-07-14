@@ -1,0 +1,8 @@
+node_modules/
+logs/
+public/dist/
+public/css/dist/
+npm-debug*
+npm-debug.log
+.idea
+.project
