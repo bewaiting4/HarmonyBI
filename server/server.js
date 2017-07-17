@@ -11,8 +11,8 @@ app.use(express.static('./public/dist'));
 require('./middleware/appMiddlware')(app);
 
 // Default page.
-app.get('/', function (req, res) {
-	res.render('index', { title: 'Express' });
+app.get('/', function(req, res) {
+    res.render('index', { title: 'Express' });
 });
 
 // Setup the api.
@@ -21,14 +21,14 @@ app.use('/api', api);
 
 // Set up global error handling.
 app.use(function(err, req, res, next) {
-  // If error thrown from jwt validation check.
-  if (err.name === 'UnauthorizedError') {
-    res.status(401).send('Invalid token');
-    return;
-  }
+    // If error thrown from jwt validation check.
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).send('Invalid token');
+        return;
+    }
 
-  logger.error(err.stack);
-  res.status(500).send('Error!');
+    logger.error(err.stack);
+    res.status(500).send('Error!');
 });
 
 // Export the app.
