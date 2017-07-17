@@ -1,8 +1,8 @@
 {
   "name": "HarmonyBI",
-  "version": "0.0.0",
-  "description": "A small toy app showing HR progress with React and ES6",
-  "author": "Jon Deng <jondeng.com>",
+  "version": "0.0.1",
+  "description": "Harmony Society Project",
+  "author": "Fan Zhang",
   "license": "Commerce",
   "private": false,
   "scripts": {
