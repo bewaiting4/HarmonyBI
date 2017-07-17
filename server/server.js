@@ -4,15 +4,15 @@ var config = require('./config/config');
 var logger = require('./util/logger');
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
-app.use(express.static('../public'));
+app.set('views', './public/dist');
+app.use(express.static('./public/dist'));
 
 // Setup the app middlware.
 require('./middleware/appMiddlware')(app);
 
 // Default page.
 app.get('/', function (req, res) {
-	res.send('Harmony BI');
+	res.render('index', { title: 'Express' });
 });
 
 // Setup the api.

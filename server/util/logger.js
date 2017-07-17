@@ -14,7 +14,7 @@ var consoleLog = config.logging ? console.log.bind(console) : noop;
 
 var logger = {
   log: function() {
-    var tag = '[ ✨ LOG ✨ ]'.green;
+    var tag = '[  LOG  ]'.green;
     // arguments is an array like object with all the passed
     // in arguments to this function
     var args = _.toArray(arguments)
@@ -39,7 +39,7 @@ var logger = {
     var args = _.toArray(arguments)
       .map(function(arg) {
         arg = arg.stack || arg;
-        var name = arg.name || '[ ❌ ERROR ❌ ]';
+        var name = arg.name || '[ ERROR ]';
         var log = name.yellow + '  ' + arg.red;
         return log;
       });
