@@ -6,8 +6,8 @@
   "license": "Commerce",
   "private": false,
   "scripts": {
-    "start": "npm build && node app.js",
-    "dev-start": "node app.js",
+    "start": "npm run build && node app.js",
+    "dev-start": "nodemon app.js",
     "build": "node node_modules/webpack/bin/webpack --config ./webpack.deployment.config.js --progress --colors"
   },
   "dependencies": {
