@@ -3,10 +3,10 @@ var logger = require('../../../util/logger');
 
 vizModel = {
     getVizData: function(filter) {
-    	logger.log(vizData);
+    	logger.log('Get ' + vizData.length + ' viz data entries.');
 
         return new Promise((resolve, reject) => {
-            return resolve(vizData);
+            return resolve({viz: vizData});
         });
     }
 };
