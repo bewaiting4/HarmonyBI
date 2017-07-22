@@ -6,4 +6,6 @@ router.get('/', function(req, res) {
     res.send('API');
 });
 
+router.use('/viz', require('./viz/vizRouter'));
+
 module.exports = router;

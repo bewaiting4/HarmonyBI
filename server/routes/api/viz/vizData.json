@@ -1,0 +1,27 @@
+[
+	{
+		"cfrom_number": "15197289734",
+		"cfrom_id": "650****",
+		"cfrom_lang": "维语",
+		"cfrom_long": "78.236862",
+		"cfrom_to": "37.717583",
+		"cfrom_ptype": "iphone 7",
+		"cfrom_localtion": "新疆和田",
+		"cfrom_ci": "23351",
+		
+		"call_start": "2016-11-15 08:11:27",
+		"call_end": "2016-11-15 08:11:29",
+		"call_duration": "2",
+
+		"cfrom_number": "15197289755",
+		"cfrom_id": "650****",
+		"cfrom_lang": "维语",
+		"cfrom_long": "78.236862",
+		"cfrom_to": "37.717583",
+		"cfrom_ptype": "iphone 6",
+		"cfrom_localtion": "新疆和田",
+		"cfrom_ci": "23351"
+	}
+]
+
+

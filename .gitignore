@@ -1,7 +1,9 @@
 node_modules/
 logs/
 public/dist/js/
+test/
 npm-debug*
 npm-debug.log
 .idea
 .project
+*.sublime-project
