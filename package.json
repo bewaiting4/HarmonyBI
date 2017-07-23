@@ -19,8 +19,10 @@
     "lodash": "^4.17.4",
     "mongoose": "^4.11.2",
     "morgan": "^1.8.2",
+    "promise-polyfill": "^6.0.2",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

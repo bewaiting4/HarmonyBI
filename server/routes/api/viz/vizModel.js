@@ -6,7 +6,7 @@ vizModel = {
     	logger.log('Get ' + vizData.length + ' viz data entries.');
 
         return new Promise((resolve, reject) => {
-            return resolve({viz: vizData});
+            return resolve({vizData: vizData});
         });
     }
 };
