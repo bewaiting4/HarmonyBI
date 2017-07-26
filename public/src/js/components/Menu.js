@@ -15,6 +15,7 @@ class Menu extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.handleOpenFilter = this.handleOpenFilter.bind(this);
+    this.handleDownload = this.handleDownload.bind(this);
     this.dftState = {
         onTimeFilter: false,
         onLocationFilter: false,
@@ -29,7 +30,8 @@ class Menu extends React.Component {
   }
 
   handleDownload() {
-    alert("Download");
+  
+    this.props.onExport();
   }
 
   componentDidMount() {
