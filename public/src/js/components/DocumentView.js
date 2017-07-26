@@ -11,16 +11,16 @@ class DocumentView extends React.Component {
 				<div className='clearfix'></div>
 
 				<div className="row">
-					<ChartContainer id="mainnb"></ChartContainer>
-					<ChartContainer></ChartContainer>
-					<ChartContainer></ChartContainer>
+					<ChartContainer id="chart1" type="bar"></ChartContainer>
+					<ChartContainer id="chart2" type="line"></ChartContainer>
+					<ChartContainer id="chart3" type="bar"></ChartContainer>
 
-					<ChartContainer id="echart_line" data={this.props.data}></ChartContainer>
-					<ChartContainer></ChartContainer>
-					<ChartContainer></ChartContainer>
+					<ChartContainer id="echar4" type="line" data={this.props.data}></ChartContainer>
+					<ChartContainer id="chart5" type="bar"></ChartContainer>
+					<ChartContainer id="chart6" type="line"></ChartContainer>
 
-					<ChartContainer></ChartContainer>
-					<ChartContainer></ChartContainer>
+					<ChartContainer id="chart7" type="bar"></ChartContainer>
+					<ChartContainer id="chart8" type="line"></ChartContainer>
 				</div>
 			</div>
 			
