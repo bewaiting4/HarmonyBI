@@ -1,6 +1,6 @@
 node_modules/
 logs/
-public/dist/js/
+public/dist/js/bundle.js
 test/
 npm-debug*
 npm-debug.log
