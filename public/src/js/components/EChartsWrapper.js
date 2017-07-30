@@ -393,7 +393,370 @@ function renderLine(echartLine) {
 				  data: [1320, 1132, 601, 234, 120, 90, 20]
 				}]
 			  });
-}			  
+}
+
+function renderNetwork(echartNetwork) {
+echartNetwork.setOption({
+    title: {
+        text: ''
+    },
+    tooltip: {},
+    animationDurationUpdate: 1500,
+    animationEasingUpdate: 'quinticInOut',
+    label: {
+        normal: {
+            show: true,
+            textStyle: {
+                fontSize: 12
+            },
+        }
+    },
+    legend: {
+        x: "center",
+        show: false,
+        data: ["朋友", "战友", '亲戚']
+    },
+    series: [
+
+        {
+            type: 'graph',
+            layout: 'force',
+            symbolSize: 45,
+            focusNodeAdjacency: true,
+            roam: true,
+            categories: [{
+                name: '朋友',
+                itemStyle: {
+                    normal: {
+                        color: "#009800",
+                    }
+                }
+            }, {
+                name: '战友',
+                itemStyle: {
+                    normal: {
+                        color: "#4592FF",
+                    }
+                }
+            }, {
+                name: '亲戚',
+                itemStyle: {
+                    normal: {
+                        color: "#3592F",
+                    }
+                }
+            }],
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    },
+                }
+            },
+            force: {
+                repulsion: 1000
+            },
+            edgeSymbolSize: [4, 50],
+            edgeLabel: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 10
+                    },
+                    formatter: "{c}"
+                }
+            },
+            data: [{
+                name: '徐贱云',
+                draggable: true,
+            }, {
+                name: '冯可梁',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '邓志荣',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '李荣庆',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '郑志勇',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '赵英杰',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '王承军',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '陈卫东',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '邹劲松',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '赵成',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '陈现忠',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '陶泳',
+                category: 1,
+                draggable: true,
+            }, {
+                name: '王德福',
+                category: 1,
+                draggable: true,
+            }],
+            links: [{
+                source: 0,
+                target: 1,
+                category: 0,
+                value: '朋友'
+            }, {
+                source: 0,
+                target: 2,
+                value: '战友'
+            }, {
+                source: 0,
+                target: 3,
+                value: '房东'
+            }, {
+                source: 0,
+                target: 4,
+                value: '朋友'
+            }, {
+                source: 1,
+                target: 2,
+                value: '表亲'
+            }, {
+                source: 0,
+                target: 5,
+                value: '朋友'
+            }, {
+                source: 4,
+                target: 5,
+                value: '姑姑'
+            }, {
+                source: 2,
+                target: 8,
+                value: '叔叔'
+            }, {
+                source: 0,
+                target: 12,
+                value: '朋友'
+            }, {
+                source: 6,
+                target: 11,
+                value: '爱人'
+            }, {
+                source: 6,
+                target: 3,
+                value: '朋友'
+            }, {
+                source: 7,
+                target: 5,
+                value: '朋友'
+            }, {
+                source: 9,
+                target: 10,
+                value: '朋友'
+            }, {
+                source: 3,
+                target: 10,
+                value: '朋友'
+            }, {
+                source: 2,
+                target: 11,
+                value: '同学'
+            }],
+            lineStyle: {
+                normal: {
+                    opacity: 0.9,
+                    width: 1,
+                    curveness: 0
+                }
+            }
+        }
+    ]
+});
+
+}			 
+
+function renderMap(id) {
+
+	var intervalId;
+
+
+    //创建和初始化地图函数：
+    function initMap(){
+    	if (BMap) {
+    		clearInterval(intervalId)
+	        createMap();//创建地图
+    	    setMapEvent();//设置地图事件
+        	addMapControl();//向地图添加控件
+    	}
+    }
+    
+    //创建地图函数：
+    function createMap(){
+        var map = new BMap.Map(id);//在百度地图容器中创建一个地图
+        var point = new BMap.Point(116.464406,39.989652);//定义一个中心点坐标
+        map.centerAndZoom(point,17);//设定地图的中心点和坐标并将地图显示在地图容器中
+        window.map = map;//将map变量存储在全局
+    }
+    
+    //地图事件设置函数：
+    function setMapEvent(){
+        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+        map.enableKeyboard();//启用键盘上下左右键移动地图
+    }
+    
+    //地图控件添加函数：
+    function addMapControl(){
+        //向地图中添加缩放控件
+	// var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+	// map.addControl(ctrl_nav);
+ //        //向地图中添加缩略图控件
+	// var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
+	// map.addControl(ctrl_ove);
+ //        //向地图中添加比例尺控件
+	// var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+	// map.addControl(ctrl_sca);
+    }
+    
+    
+    intervalId = setInterval(initMap, 1000);//创建和初始化地图
+
+                    
+}
+
+function renderPie(echartPie) {
+				  echartPie.setOption({
+				tooltip: {
+				  trigger: 'item',
+				  formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+				legend: {
+				  x: 'center',
+				  y: 'bottom',
+				  data: ['Direct Access', 'E-mail Marketing', 'Union Ad', 'Video Ads', 'Search Engine']
+				},
+				toolbox: {
+				  show: true,
+				  feature: {
+					magicType: {
+					  show: true,
+					  type: ['pie', 'funnel'],
+					  option: {
+						funnel: {
+						  x: '25%',
+						  width: '50%',
+						  funnelAlign: 'left',
+						  max: 1548
+						}
+					  }
+					},
+					restore: {
+					  show: true,
+					  title: "Restore"
+					},
+					saveAsImage: {
+					  show: true,
+					  title: "Save Image"
+					}
+				  }
+				},
+				calculable: true,
+				series: [{
+				  name: '访问来源',
+				  type: 'pie',
+				  radius: '55%',
+				  center: ['50%', '48%'],
+				  data: [{
+					value: 335,
+					name: 'Direct Access'
+				  }, {
+					value: 310,
+					name: 'E-mail Marketing'
+				  }, {
+					value: 234,
+					name: 'Union Ad'
+				  }, {
+					value: 135,
+					name: 'Video Ads'
+				  }, {
+					value: 1548,
+					name: 'Search Engine'
+				  }]
+				}]
+			  });
+}
+
+function renderMap2(id) {
+
+	var intervalId;
+    //创建和初始化地图函数：
+    function initMap(){
+    	if (BMap) {
+    		clearInterval(intervalId);
+	        createMap();//创建地图
+    	    setMapEvent();//设置地图事件
+        	addMapControl();//向地图添加控件
+    	}
+    }
+    
+    //创建地图函数：
+    function createMap(){
+        var map = new BMap.Map(id);//在百度地图容器中创建一个地图
+        var point = new BMap.Point(79.928877,37.120556);//定义一个中心点坐标
+        map.centerAndZoom(point,13);//设定地图的中心点和坐标并将地图显示在地图容器中
+        window.map = map;//将map变量存储在全局
+    }
+    
+    //地图事件设置函数：
+    function setMapEvent(){
+        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+        map.enableKeyboard();//启用键盘上下左右键移动地图
+    }
+    
+    //地图控件添加函数：
+    function addMapControl(){
+        //向地图中添加缩放控件
+	var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+	map.addControl(ctrl_nav);
+        //向地图中添加缩略图控件
+	var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
+	map.addControl(ctrl_ove);
+        //向地图中添加比例尺控件
+	var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+	map.addControl(ctrl_sca);
+    }
+    
+    
+    intervalId = setInterval(initMap, 1000);//创建和初始化地图
+                    
+}
+
+function renderTable(id) {
+	$('#' + id).dataTable();
+}
+
 
 class EChartsWrapper {
 
@@ -618,14 +981,31 @@ class EChartsWrapper {
 	renderChart(id, type) {
 		this.init_echarts();
 
-		var echartChart = echarts.init(document.getElementById(id), this.theme);
 		var transformFn = {
 			"bar": renderBar,
 			"radar": renderRadar,
-			"line": renderLine
+			"line": renderLine,
+			"network": renderNetwork,
+			"map": renderMap,
+			"pie": renderPie,
+			"table": renderTable
 		};
 
-		transformFn[type](echartChart);
+		var echartChart;
+		if (type === "table") {
+			renderTable(id);
+		} else if (type === "map") {
+			renderMap(id);
+		} else if (type === "map2") {
+			renderMap2(id);
+		} else if (type === "network") {
+ 			echartChart = echarts.init(document.getElementById(id));
+			transformFn[type](echartChart);
+
+		} else {
+ 			echartChart = echarts.init(document.getElementById(id), this.theme);
+			transformFn[type](echartChart);
+		}
 	}
 
 }			

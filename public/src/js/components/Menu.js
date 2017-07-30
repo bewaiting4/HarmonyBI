@@ -79,6 +79,8 @@ class Menu extends React.Component {
               <a className="site_title" onClick={this.handleDownload}>
                 <FontAwesome name="download" size="lg">
                 </FontAwesome>
+                
+                <button className="btn btn-success" style={{"marginLeft": "120px"}}>导出分析报告</button>
               </a>
           </div>
 
@@ -88,11 +90,11 @@ class Menu extends React.Component {
                 <h3>筛选器</h3>
                 <ul className="nav side-menu">
                 
-                  <FilterPortlet name="Time" text="时间" navSize={navSize} onOpenFilter={this.handleOpenFilter} icon='map-marker' onFilter={onTimeFilter}/>
+                  <FilterPortlet name="Time" text="案发时间" navSize={navSize} onOpenFilter={this.handleOpenFilter} icon='map-marker' onFilter={onTimeFilter}/>
 
-                  <FilterPortlet name="Location" text="地点" navSize={navSize} onOpenFilter={this.handleOpenFilter} icon='puzzle-piece' onFilter={onLocationFilter}/>
+                  <FilterPortlet name="Location" text="案发地点" navSize={navSize} onOpenFilter={this.handleOpenFilter} icon='puzzle-piece' onFilter={onLocationFilter}/>
 
-                  <FilterPortlet name="Phone" text="电话" navSize={navSize} onOpenFilter={this.handleOpenFilter} icon='phone-square' onFilter={onPhoneFilter}/>                 
+                  <FilterPortlet name="Phone" text="嫌疑人电话号码" navSize={navSize} onOpenFilter={this.handleOpenFilter} icon='phone-square' onFilter={onPhoneFilter}/>                 
 
                 </ul>
               </div>

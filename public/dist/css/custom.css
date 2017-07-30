@@ -345,7 +345,7 @@ html , body{
 
 .nav-md .container.body .col-md-3.left_col {
     min-height: 100%;
-    width: 230px;
+    width: 360px; /*done 230px*/
     padding: 0;
     position: absolute;
     display: -ms-flexbox;
@@ -361,10 +361,10 @@ body .container.body .right_col {
 }
 .nav-md .container.body .right_col {
     padding: 10px 20px 0;
-    margin-left: 230px
+    margin-left: 360px /*done 230px*/
 }
 .nav_title {
-    width: 230px;
+    width: 360px; /*done 230px*/
     float: left;
     background: #2A3F54;
     border-radius: 0;
@@ -506,7 +506,7 @@ body {
 }
 .main_container .top_nav {
     display: block;
-    margin-left: 60px
+    margin-left: 360px /*done 230px*/
 }
 .no-padding {
     padding: 0 !important
@@ -1708,7 +1708,7 @@ span.right {
 }
 @media (min-width: 992px) {
     footer {
-        margin-left: 230px
+        margin-left: 360px /*done 230px*/
     }
 }
 @media (min-width: 992px) {
