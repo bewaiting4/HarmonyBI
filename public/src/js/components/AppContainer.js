@@ -16,12 +16,13 @@ class AppContainer extends React.Component {
 	constructor() {
 		super();
 
-		this.state = {navSize: false};
 		this.handleToggle = this.handleToggle.bind(this);
 		this.exportPDF = this.exportPDF.bind(this);
 		this.dataModel = Model();
 
-		this.state = {docData: null};
+		this.state = {docData: null,
+			navSize: true
+		};
 	}
 
 	componentDidMount() {
@@ -70,7 +71,8 @@ class AppContainer extends React.Component {
 		});
 
 		// save document
-		doc.save('报告.pdf');
+		//doc.save('报告.pdf');
+		doc.output('dataurlnewwindow');
 	}
 
 	render() {
