@@ -748,6 +748,7 @@ a:focus {
 .nav.child_menu li.active {
     background-color: rgba(255, 255, 255, 0.06)
 }
+/*
 .nav.child_menu li {
     padding-left: 36px
 }
@@ -771,7 +772,7 @@ a:focus {
     left: 27px;
     position: absolute;
     top: 0
-}
+} done */
 .nav-md ul.nav.child_menu li:last-child::after {
   bottom: 50%;
 }
@@ -3585,11 +3586,12 @@ form:after {
     margin-right: 39px;
     float: right
 }
-.separator {
+/*.separator {
     border-top: 1px solid #D8D8D8;
     margin-top: 10px;
     padding-top: 10px
 }
+done */
 .button {
     background: #f7f9fa;
     background: linear-gradient(top, #f7f9fa 0%, #f0f0f0 100%);
