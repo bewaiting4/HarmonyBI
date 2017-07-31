@@ -751,7 +751,7 @@ a:focus {
 .nav.child_menu li {
     padding-left: 36px
 }
-.nav-md ul.nav.child_menu li:before {
+/*.nav-md ul.nav.child_menu li:before {
     background: #425668;
     bottom: auto;
     content: "";
@@ -771,7 +771,7 @@ a:focus {
     left: 27px;
     position: absolute;
     top: 0
-}
+}*/
 .nav-md ul.nav.child_menu li:last-child::after {
   bottom: 50%;
 }
