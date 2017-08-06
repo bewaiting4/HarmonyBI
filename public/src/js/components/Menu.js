@@ -7,19 +7,23 @@ import FilterPortlet from "./FilterPortlet";
 import style from "./Menu.css";
 
 class Menu extends React.Component {
-  constructor() {
-    super();
+    constructor() {
+        super();
 
-    this.handleClick = this.handleClick.bind(this);
-    this.handleOpenFilter = this.handleOpenFilter.bind(this);
-    this.handleDownload = this.handleDownload.bind(this);
-    this.dftState = {
-      onTimeFilter: false,
-      onLocationFilter: false,
-      onPhoneFilter: false
-    };
-    this.state = _.assignIn({}, this.dftState);
-  }
+        this.handleClick = this.handleClick.bind(this);
+        this.handleOpenFilter = this.handleOpenFilter.bind(this);
+        this.handleDownload = this.handleDownload.bind(this);
+        this.dftState = {
+            onTimeFilter: false,
+            onLocationFilter: false,
+            onMobileFilter: false,
+            onIdNumberFilter: false,
+            onLanguageFilter: false,
+            onPhoneTypeFilter: false
+        };
+        this.state = _.assignIn({}, this.dftState);
+    }
+
   handleClick(e) {
     e.preventDefault();
     this.props.onToggleChange();
@@ -43,35 +47,39 @@ class Menu extends React.Component {
     }
 
     this.setState(function(prevState, props) {
-      let res = _.assign({}, this.dftState);
-      let prop = "on" + name + "Filter";
-      res[prop] = !prevState[prop];
+        let res = {}; 
+        const prop = "on" + name + "Filter";
+        res[prop] = !prevState[prop];
 
-      return res;
+        return res;
     });
   }
 
   render() {
     const onTimeFilter = this.state.onTimeFilter;
     const onLocationFilter = this.state.onLocationFilter;
-    const onPhoneFilter = this.state.onPhoneFilter;
+    const onMobileFilter = this.state.onMobileFilter;
+    const onIdNumberFilter = this.state.onIdNumberFilter;
+    const onPhoneTypeFilter = this.state.onPhoneTypeFilter;
+    const onLanguageFilter = this.state.onLanguageFilter;
     const navSize = this.props.navSize;
 
     return (
       <div className="col-md-3 left_col">
         <div className="left_col scroll-view">
-          {" "}{/*nav title, toggler*/}{" "}
+          {/*nav title, toggler*/}
           <div
             className="navbar nav_title"
             style={{
-              border: 0
+              border: 0,
+              width: "100%"
             }}
           >
             <a className="site_title" onClick={this.handleClick}>
               <FontAwesome name="filter" size="lg" />
             </a>{" "}
           </div>
-          {/* pdf export */}{" "}
+          {/* pdf export */}
           <div
             className="navbar nav_title"
             style={{
@@ -86,17 +94,17 @@ class Menu extends React.Component {
                   marginLeft: "120px"
                 }}
               >
-                导出分析报告{" "}
-              </button>{" "}
+              导出分析报告
+              </button>
             </a>{" "}
           </div>
-          {/*sidebar menu*/}{" "}
+          {/*sidebar menu*/}
           <div
             id="sidebar-menu"
             className="main_menu_side hidden-print main_menu"
           >
             <div className="menu_section">
-              <h3> 筛选器 </h3>{" "}
+              <h3> 筛选器 </h3>
               <ul className="nav side-menu">
                 <FilterPortlet
                   name="Time"
@@ -115,20 +123,46 @@ class Menu extends React.Component {
                   onFilter={onLocationFilter}
                 />
                 <FilterPortlet
-                  name="Phone"
+                  name="Mobile"
                   text="嫌疑人电话号码"
                   navSize={navSize}
                   onOpenFilter={this.handleOpenFilter}
                   icon="phone-square"
-                  onFilter={onPhoneFilter}
-                />{" "}
-              </ul>{" "}
-            </div>{" "}
-          </div>{" "}
-          {/*sidebar menu*/}{" "}
-        </div>{" "}
+                  onFilter={onMobileFilter}
+                />
+                  <FilterPortlet
+                      name="IdNumber"
+                      text="身份证号码"
+                      navSize={navSize}
+                      onOpenFilter={this.handleOpenFilter}
+                      icon="id-card-o"
+                      onFilter={onIdNumberFilter}
+                  />
+                  <FilterPortlet
+                      name="Language"
+                      text="语种"
+                      navSize={navSize}
+                      onOpenFilter={this.handleOpenFilter}
+                      icon="calendar-o"
+                      onFilter={onLanguageFilter}
+                  />
+                  <FilterPortlet
+                      name="PhoneType"
+                      text="机型"
+                      navSize={navSize}
+                      onOpenFilter={this.handleOpenFilter}
+                      icon="superpowers"
+                      onFilter={onPhoneTypeFilter}
+                  />
+
+              </ul>
+            </div>
+          </div>
+          {/*sidebar menu*/}
+        </div>
       </div>
     );
   }
 }
+
 module.exports = Menu;
