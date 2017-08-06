@@ -17,12 +17,14 @@ class AppContainer extends React.Component {
 		super();
 
 		this.handleToggle = this.handleToggle.bind(this);
+		this.handleTabSwitch = this.handleTabSwitch.bind(this);
 		this.exportPDF = this.exportPDF.bind(this);
 		this.dataModel = Model();
 
 		this.state = {
 			docData: null,
-			navSize: true
+			navSize: true,
+			activeTab: 0
 		};
 	}
 
@@ -40,6 +42,10 @@ class AppContainer extends React.Component {
 				navSize: !prevState.navSize
 			};
 		});
+	}
+
+	handleTabSwitch(tabIdx) {
+		this.setState({activeTab: tabIdx});
 	}
 
 	exportPDF() {
@@ -99,7 +105,8 @@ class AppContainer extends React.Component {
 								onExport={this.exportPDF}
 							/>
 							<TopNav />
-							<DocumentView data={myData} />
+							<DocumentView data={myData} tab={this.state.activeTab}/>
+							<TabBar activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>
 				</div>
