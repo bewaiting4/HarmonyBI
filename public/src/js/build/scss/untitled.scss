@@ -1,12 +1,15 @@
+$menu-width-md: 360px;
+$menu-width-sm: 70px; 
+
 html , body{
-	
+    
  height:100%;
  
 }
 
  
 .full-width {
-	
+    
  width:100%;
  
  }
@@ -148,7 +151,8 @@ html , body{
 }
 .nav-sm .container.body .col-md-3.left_col {
     min-height: 100%;
-    width: 70px;
+    /*width: 70px;*/
+    width: $menu-width-sm;
     padding: 0;
     z-index: 9999;
     position: absolute
@@ -166,14 +170,16 @@ html , body{
 }
 .nav-sm .container.body .right_col {
     padding: 10px 20px;
-    margin-left: 70px;
+    /*margin-left: 70px;*/
+    margin-left: $menu-width-sm;
     z-index: 2
 }
 .nav-sm .navbar.nav_title {
-    width: 70px
+    /*width: 70px*/
+    width: $menu-width-sm;
 }
 .nav-sm .navbar.nav_title a span {
-    display: none
+    /*display: none;*/ /*done*/
 }
 .nav-sm .navbar.nav_title a i {
     font-size: 27px;
@@ -186,7 +192,8 @@ html , body{
 }
 .nav-sm .main_container .top_nav {
     display: block;
-    margin-left: 70px;
+    /*margin-left: 70px;*/
+    margin-left: $menu-width-sm;
     z-index: 2
 }
 .nav-sm .nav.side-menu li a {
@@ -315,7 +322,7 @@ html , body{
 }
 .nav-sm span.fa,
 .nav-sm .menu_section h3 {
-    display: none
+    /*display: none*/ /*done*/
 }
 .nav-sm li li span.fa {
     display: inline-block
@@ -330,12 +337,13 @@ html , body{
 }
 @media (min-width: 480px) {
     .nav_menu {
-        position: static
-    }
+       /*position: static done*/
+        position: relative 
 }
 .nav-md .container.body .col-md-1.left_col {
     min-height: 100%;
-    width: 60px;
+    /*width: 60px;*/
+    width: $menu-width-sm;
     padding: 0;
     position: absolute;
     display: -ms-flexbox;
@@ -345,7 +353,8 @@ html , body{
 
 .nav-md .container.body .col-md-3.left_col {
     min-height: 100%;
-    width: 230px;
+    /*width: 360px; done 230px*/
+    width: $menu-width-md;
     padding: 0;
     position: absolute;
     display: -ms-flexbox;
@@ -361,10 +370,12 @@ body .container.body .right_col {
 }
 .nav-md .container.body .right_col {
     padding: 10px 20px 0;
-    margin-left: 60px
+    /*margin-left: 360px done 230px*/
+    margin-left: $menu-width-md;
 }
 .nav_title {
-    width: 230px;
+    /*width: 360px; done 230px*/
+    width: $menu-width-md;
     float: left;
     background: #2A3F54;
     border-radius: 0;
@@ -506,7 +517,8 @@ body {
 }
 .main_container .top_nav {
     display: block;
-    margin-left: 60px
+    /*margin-left: 360px done 230px*/
+    margin-left: $menu-width-md;
 }
 .no-padding {
     padding: 0 !important
@@ -748,10 +760,11 @@ a:focus {
 .nav.child_menu li.active {
     background-color: rgba(255, 255, 255, 0.06)
 }
+/*
 .nav.child_menu li {
     padding-left: 36px
 }
-/*.nav-md ul.nav.child_menu li:before {
+.nav-md ul.nav.child_menu li:before {
     background: #425668;
     bottom: auto;
     content: "";
@@ -771,7 +784,7 @@ a:focus {
     left: 27px;
     position: absolute;
     top: 0
-}*/
+} done */
 .nav-md ul.nav.child_menu li:last-child::after {
   bottom: 50%;
 }
@@ -922,8 +935,15 @@ footer {
     display: block
 }
 .nav-sm footer {
-    margin-left: 70px
+    /*margin-left: 70px*/
+    margin-left: $menu-width-sm;
 }
+/*done*/
+.nav-sm .main_container .footer {
+    /*margin-left: 70px;*/
+    margin-left: $menu-width-sm;
+}
+
 .footer_fixed footer {
     position: fixed;
     left: 0px;
@@ -1542,7 +1562,7 @@ ul.msg_list li a .message {
     -webkit-box-shadow: none;
     right: 0;
     left: auto;
-    width: 220px
+    width: 80px /*220px*/
 }
 .navbar-nav .open .dropdown-menu.msg_list {
     width: 300px
@@ -1679,7 +1699,7 @@ span.right {
     position: fixed;
     width: 230px;
     background: #2A3F54;
-	z-index:999;
+    z-index:999;
 }
 .sidebar-footer a {
     padding: 7px 0 3px;
@@ -1708,7 +1728,14 @@ span.right {
 }
 @media (min-width: 992px) {
     footer {
-        margin-left: 230px
+        /*margin-left: 230px*/ /*done*/
+        margin-left: $menu-width-md;
+    }
+
+    /*done*/
+    .main_container .footer {
+        /*margin-left: 360px;*/
+        margin-left: $menu-width-md;
     }
 }
 @media (min-width: 992px) {
@@ -2437,10 +2464,10 @@ textarea:focus {
     background-color: #f5f5f5;
     background-image: linear-gradient(to bottom, #fff, #e6e6e6);
     background-repeat: repeat-x;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+    filter: "progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0)";
     border-color: #e6e6e6 #e6e6e6 #bfbfbf;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+    filter: "progid: DXImageTransform.Microsoft.gradient(enabled=false)";
     border: 1px solid #cccccc;
     border-bottom-color: #b3b3b3;
     border-radius: 4px;
@@ -2794,8 +2821,8 @@ ul.widget_tally .count {
     border-bottom: 1px solid rgba(101, 204, 182, 0.16);
     padding-bottom: 15px;
     border-radius: 4px;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-    filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+    filter: "progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0)";
+    filter: "progid: DXImageTransform.Microsoft.gradient(enabled=false)";
     padding-bottom: 10px;
     box-shadow: 0 4px 6px -6px #222
 }
@@ -3585,15 +3612,16 @@ form:after {
     margin-right: 39px;
     float: right
 }
-.separator {
+/*.separator {
     border-top: 1px solid #D8D8D8;
     margin-top: 10px;
     padding-top: 10px
 }
+done */
 .button {
     background: #f7f9fa;
     background: linear-gradient(top, #f7f9fa 0%, #f0f0f0 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f7f9fa', endColorstr='#f0f0f0', GradientType=0);
+    filter: "progid: DXImageTransform.Microsoft.gradient( startColorstr='#f7f9fa', endColorstr='#f0f0f0', GradientType=0)";
     -ms-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
     -o-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
@@ -4223,22 +4251,22 @@ ul.notifications {
 /*
 
 /*
-.checkbox 																										{ display: block;position:relative;cursor:pointer; }
-.checkbox input 																								{ position:absolute;z-index:-1;opacity:0;left:0;top:0; }
-.checkbox div 																									{ position:absolute;top:2px;left:0;height:20px;width:20px;background:#e6e6e6;border-radius:3px; }
-.checkbox input:checked ~ div 																			{ background: #1ABC9C; }
+.checkbox                                                                                                       { display: block;position:relative;cursor:pointer; }
+.checkbox input                                                                                                 { position:absolute;z-index:-1;opacity:0;left:0;top:0; }
+.checkbox div                                                                                                   { position:absolute;top:2px;left:0;height:20px;width:20px;background:#e6e6e6;border-radius:3px; }
+.checkbox input:checked ~ div                                                                           { background: #1ABC9C; }
 .checkbox:hover input:not([disabled]):checked ~ div,
-.checkbox input:checked:focus ~ div 																	{ background: #1ABC9C; }
-.checkbox input:disabled ~ div 																			{ background: #1ABC9C;opacity: 0.6;pointer-events: none; }
-.checkbox div:after 																							{ content: '';position: absolute;display: none; }
-.checkbox input:checked ~ div:after 																	{ display: block; }
-.checkbox-wp div:after 																					{ left: 7px;top: 3px;width: 7px;height: 11px;border: solid #fff;border-width: 0 2px 2px 0;transform: rotate(40deg); }
-.checkbox-wp input:disabled ~ div:after 																{ border-color: #F2F2F2; }
+.checkbox input:checked:focus ~ div                                                                     { background: #1ABC9C; }
+.checkbox input:disabled ~ div                                                                          { background: #1ABC9C;opacity: 0.6;pointer-events: none; }
+.checkbox div:after                                                                                             { content: '';position: absolute;display: none; }
+.checkbox input:checked ~ div:after                                                                     { display: block; }
+.checkbox-wp div:after                                                                                  { left: 7px;top: 3px;width: 7px;height: 11px;border: solid #fff;border-width: 0 2px 2px 0;transform: rotate(40deg); }
+.checkbox-wp input:disabled ~ div:after                                                                 { border-color: #F2F2F2; }
 
 
-.checkbox-radio div 																							{ border-radius: 50%; }
-.checkbox-radio div:after 																					{ left: 7px;top: 7px;height: 6px;width: 6px;border-radius: 50%;background: #fff; }
-.checkbox-radio input:disabled ~ div:after 															{ background: #F2F2F2; }
+.checkbox-radio div                                                                                             { border-radius: 50%; }
+.checkbox-radio div:after                                                                                   { left: 7px;top: 7px;height: 6px;width: 6px;border-radius: 50%;background: #fff; }
+.checkbox-radio input:disabled ~ div:after                                                          { background: #F2F2F2; }
 
 
 .checkbox, .radio { margin-top:-3px; }
@@ -4246,16 +4274,16 @@ ul.notifications {
 table thead .checkbox { margin-top:-7px;margin-top:-21px; }
 table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 */
-			
+            
 .daterangepicker.xdisplay { width:228px; }
 
 .dataTables_wrapper > .row{
   overflow:auto !important; /*prevent datatables overflowing its container*/
 }
 
-/** bootstrap-datetimepicker **/
+/* bootstrap-datetimepicker */
 .input-group.date .input-group-addon{
     border-radius: 0px !important;
     background-color: #ffff !important;
 }
-/** /bootstrap-datetimepicker **/
+}
