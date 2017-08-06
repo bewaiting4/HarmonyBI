@@ -12,6 +12,8 @@ import Model from "../model/Model";
 
 import style from "./AppContainer.css";
 
+require('../build/scss/untitled.scss');
+
 class AppContainer extends React.Component {
 	constructor() {
 		super();
