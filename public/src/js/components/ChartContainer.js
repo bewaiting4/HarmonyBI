@@ -5,15 +5,34 @@ class ChartContainer extends React.Component {
 	constructor() {
 		super();
 
-		this.wrapper = new EChartsWrapper();
+		this.wrapper = new EChartsWrapper(this);
+		this.resize = this.resize.bind(this);
+
+		this.chartInstance = null;
+		this.state = {
+			size: 4
+		}
 	}
 
 	componentDidMount() {
-		this.componentDidUpdate();
+		if (this.props.size !== undefined) {
+			this.setState({size: this.props.size});
+		}
+		this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		this.wrapper.renderChart(this.props.id, this.props.type || "bar");
+		if (this.state.size !== prevState.size) {
+			this.wrapper.resizeChart(this.chartInstance);	
+		}		
+	}
+
+	resize() {
+		this.setState(function(prevState, props) {
+			return {
+				size: prevState.size === 12 ? props.size : 12
+			};
+		});		
 	}
 
 	render() {
@@ -21,9 +40,9 @@ class ChartContainer extends React.Component {
 		const title = this.props.title || "图表";
 		const sizeCss =
 			"col-md-" +
-			this.props.size +
+			this.state.size +
 			" col-sm-" +
-			this.props.size +
+			this.state.size +
 			" col-xs-12";
 
 		var vizContent;
@@ -72,7 +91,7 @@ class ChartContainer extends React.Component {
 							{title}
 						</h2>
 						<ul className="nav navbar-right panel_toolbox">
-							<li>
+							<li onClick={this.resize}>
 								<a className="collapse-link">
 									<i className="fa fa-chevron-up" />
 								</a>
@@ -112,7 +131,6 @@ class ChartContainer extends React.Component {
 		);
 	}
 }
-
 ChartContainer.defaultProps = {
 	size: 4
 };

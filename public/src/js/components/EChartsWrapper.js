@@ -2,6 +2,7 @@ var themeCfg = require('./EChartsTheme.json');
 
 //echart Bar	
 function renderBar(echartBar) {
+	var me = this;
 	echartBar.setOption({
 		title: {
 			text: 'Graph title',
@@ -14,7 +15,23 @@ function renderBar(echartBar) {
 			data: ['sales', 'purchases']
 		},
 		toolbox: {
-			show: false
+			show: true,
+			orient: 'vertical',
+			x: 'right',
+			y: 'top',
+			feature: {
+				myResize: { // must start with "my"
+					show: true,
+					title: "最大化",
+					icon: "path://M28,2h-6c-1.104,0-2,0.896-2,2s0.896,2,2,2h1.2l-4.6,4.601C18.28,10.921,18,11.344,18,12c0,1.094,0.859,2,2,2  c0.641,0,1.049-0.248,1.4-0.6L26,8.8V10c0,1.104,0.896,2,2,2s2-0.896,2-2V4C30,2.896,29.104,2,28,2z M12,18  c-0.641,0-1.049,0.248-1.4,0.6L6,23.2V22c0-1.104-0.896-2-2-2s-2,0.896-2,2v6c0,1.104,0.896,2,2,2h6c1.104,0,2-0.896,2-2  s-0.896-2-2-2H8.8l4.6-4.601C13.72,21.079,14,20.656,14,20C14,18.906,13.141,18,12,18z",
+					//icon: "image://./images/maximize.png",
+					onclick: function() {
+						if (me.container) {
+							me.container.resize();
+						}
+					}
+				}
+			}
 		},
 		calculable: false,
 		xAxis: [{
@@ -768,6 +785,9 @@ function renderTable(id) {
 
 
 class EChartsWrapper {
+	constructor(container) {
+		this.container = container;
+	}
 
 	init_echarts() {
 
@@ -779,11 +799,11 @@ class EChartsWrapper {
 		this.theme = themeCfg;
 	}
 
-	renderChart(id, type) {
+	renderChart(id, type, chartInstance) {
 		this.init_echarts();
 
 		var transformFn = {
-			"bar": renderBar,
+			"bar": renderBar.bind(this),
 			"radar": renderRadar,
 			"line": renderLine,
 			"network": renderNetwork,
@@ -792,7 +812,6 @@ class EChartsWrapper {
 			"table": renderTable
 		};
 
-		var echartChart;
 		if (type === "table") {
 			renderTable(id);
 		} else if (type === "map") {
@@ -800,23 +819,22 @@ class EChartsWrapper {
 		} else if (type === "map2") {
 			renderMap2(id);
 		} else if (type === "network") {
-			echartChart = echarts.init(document.getElementById(id));
-			transformFn[type](echartChart);
+			chartInstance = chartInstance || echarts.init(document.getElementById(id));
+			transformFn[type](chartInstance);
 
 		} else {
-			echartChart = echarts.init(document.getElementById(id), this.theme);
-			transformFn[type](echartChart);
+			chartInstance = chartInstance || echarts.init(document.getElementById(id), this.theme);
+			transformFn[type](chartInstance);
 		}
+
+		return chartInstance;
 	}
 
-}
-
-var wrapper;
-
-module.exports = function() {
-	if (!wrapper) {
-		wrapper = new EChartsWrapper();
+	resizeChart(chartInstance) {
+		chartInstance.resize();
 	}
-
-	return wrapper;
 }
+
+
+
+module.exports = EChartsWrapper;
