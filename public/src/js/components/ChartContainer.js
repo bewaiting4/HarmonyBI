@@ -1,16 +1,19 @@
 import React from 'react'
+import ReactDataGrid from 'react-data-grid'
 import EChartsWrapper from './EChartsWrapper.js'
 
 class ChartContainer extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.wrapper = new EChartsWrapper(this);
 		this.resize = this.resize.bind(this);
+		this.rowGetter = this.rowGetter.bind(this);
+		this.getColumns = this.getColumns.bind(this);
 
 		this.chartInstance = null;
 		this.state = {
-			size: 4
+			size: this.props.size || 4
 		}
 	}
 
@@ -35,6 +38,19 @@ class ChartContainer extends React.Component {
 		});		
 	}
 
+  	rowGetter(i) {
+    	return this.props.data[i];
+  	}
+
+	getColumns() {
+		return [
+			{key: "f_number", name: "主叫号码"}, 
+			{key: "t_number", name: "被叫号码"},
+			{key: "call_start", name: "开始时间"},
+			{key: "call_duration", name: "通话时长"}
+		];
+	}
+
 	render() {
 		const myId = this.props.id || "mainb";
 		const title = this.props.title || "图表";
@@ -47,38 +63,12 @@ class ChartContainer extends React.Component {
 
 		var vizContent;
 		if (this.props.type === "table") {
-			vizContent = (
-				<table className="table" style={{ height: "180px" }}>
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Username</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
-					</tbody>
-				</table>
-			);
+			vizContent = 
+				<ReactDataGrid
+        			columns={this.getColumns()}
+        			rowGetter={this.rowGetter}
+        			rowsCount={this.props.data.length}
+        			minHeight={200} />;
 		} else {
 			vizContent = <div id={myId} style={{ height: "200px" }} />;
 		}
@@ -131,7 +121,9 @@ class ChartContainer extends React.Component {
 		);
 	}
 }
+
 ChartContainer.defaultProps = {
 	size: 4
 };
+
 module.exports = ChartContainer;

@@ -23,6 +23,7 @@ class DocumentView extends React.Component {
 		}, {
 			id: "chart6",
 			type: "table",
+			data: true
 		}, {
 			id: "chart7",
 			type: "bar",
@@ -30,16 +31,24 @@ class DocumentView extends React.Component {
 		}, {
 			id: "chart8",
 			type: "table",
+			data: true,
 			size: 6
 		}];
 	}
 
 	render() {
+		let me = this;
 		let charts = null
 		if (this.props.tab === 0) {
 
 			
-  			charts = this.charts.map((chart)=> <ChartContainer key={chart.id} id={chart.id} type={chart.type} {...chart.size && {size: chart.size}}/>);
+  			charts = this.charts.map((chart)=> <ChartContainer 
+  				key={chart.id} 
+  				id={chart.id} 
+  				type={chart.type} 
+  				{...chart.size && {size: chart.size}}
+  				{...chart.data && {data: me.props.data.vizData}}
+  			/>);
 			// charts = <div className="row">
 			// 			<ChartContainer id={this.charts[0].id} type={charts[0].type}/>
 			// 			<ChartContainer id="chart2" type="map2" />
@@ -56,7 +65,7 @@ class DocumentView extends React.Component {
 			// 			<ChartContainer id="chart8" type="table" size={6} />
 			// 		</div>
 		} else {
-			charts = <ChartContainer id="chart9" type="table" size={12}/>;
+			charts = <ChartContainer id="chart9" type="table" size={12} data={this.props.data.vizData}/>;
 		}
 
 		return (
