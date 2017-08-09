@@ -1,9 +1,9 @@
 var themeCfg = require('./EChartsTheme.json');
 
-//echart Bar	
-function renderBar(echartBar) {
+//echart Bar
+function getBarOption() {
 	var me = this;
-	echartBar.setOption({
+	return {
 		title: {
 			text: 'Graph title',
 			subtext: 'Graph Sub-text'
@@ -84,251 +84,12 @@ function renderBar(echartBar) {
 				}]
 			}
 		}]
-	});
-}
-
-//echart Radar		  
-function renderRadar(echartRadar) {
-	echartRadar.setOption({
-		title: {
-			text: 'Budget vs spending',
-			subtext: 'Subtitle'
-		},
-		tooltip: {
-			trigger: 'item'
-		},
-		legend: {
-			orient: 'vertical',
-			x: 'right',
-			y: 'bottom',
-			data: ['Allocated Budget', 'Actual Spending']
-		},
-		toolbox: {
-			show: true,
-			feature: {
-				restore: {
-					show: true,
-					title: "Restore"
-				},
-				saveAsImage: {
-					show: true,
-					title: "Save Image"
-				}
-			}
-		},
-		polar: [{
-			indicator: [{
-				text: 'Sales',
-				max: 6000
-			}, {
-				text: 'Administration',
-				max: 16000
-			}, {
-				text: 'Information Techology',
-				max: 30000
-			}, {
-				text: 'Customer Support',
-				max: 38000
-			}, {
-				text: 'Development',
-				max: 52000
-			}, {
-				text: 'Marketing',
-				max: 25000
-			}]
-		}],
-		calculable: true,
-		series: [{
-			name: 'Budget vs spending',
-			type: 'radar',
-			data: [{
-				value: [4300, 10000, 28000, 35000, 50000, 19000],
-				name: 'Allocated Budget'
-			}, {
-				value: [5000, 14000, 28000, 31000, 42000, 21000],
-				name: 'Actual Spending'
-			}]
-		}]
-	});
-
-
-}
-
-//echart Funnel			  
-function renderFunnel(id) {
-	echartFunnel.setOption({
-		title: {
-			text: 'Echart Pyramid Graph',
-			subtext: 'Subtitle'
-		},
-		tooltip: {
-			trigger: 'item',
-			formatter: "{a} <br/>{b} : {c}%"
-		},
-		toolbox: {
-			show: true,
-			feature: {
-				restore: {
-					show: true,
-					title: "Restore"
-				},
-				saveAsImage: {
-					show: true,
-					title: "Save Image"
-				}
-			}
-		},
-		legend: {
-			data: ['Something #1', 'Something #2', 'Something #3', 'Something #4', 'Something #5'],
-			orient: 'vertical',
-			x: 'left',
-			y: 'bottom'
-		},
-		calculable: true,
-		series: [{
-			name: '漏斗图',
-			type: 'funnel',
-			width: '40%',
-			data: [{
-				value: 60,
-				name: 'Something #1'
-			}, {
-				value: 40,
-				name: 'Something #2'
-			}, {
-				value: 20,
-				name: 'Something #3'
-			}, {
-				value: 80,
-				name: 'Something #4'
-			}, {
-				value: 100,
-				name: 'Something #5'
-			}]
-		}]
-	});
-}
-
-//echart Gauge
-function renderGauge(echartGauge) {
-	echartGauge.setOption({
-		tooltip: {
-			formatter: "{a} <br/>{b} : {c}%"
-		},
-		toolbox: {
-			show: true,
-			feature: {
-				restore: {
-					show: true,
-					title: "Restore"
-				},
-				saveAsImage: {
-					show: true,
-					title: "Save Image"
-				}
-			}
-		},
-		series: [{
-			name: 'Performance',
-			type: 'gauge',
-			center: ['50%', '50%'],
-			startAngle: 140,
-			endAngle: -140,
-			min: 0,
-			max: 100,
-			precision: 0,
-			splitNumber: 10,
-			axisLine: {
-				show: true,
-				lineStyle: {
-					color: [
-						[0.2, 'lightgreen'],
-						[0.4, 'orange'],
-						[0.8, 'skyblue'],
-						[1, '#ff4500']
-					],
-					width: 30
-				}
-			},
-			axisTick: {
-				show: true,
-				splitNumber: 5,
-				length: 8,
-				lineStyle: {
-					color: '#eee',
-					width: 1,
-					type: 'solid'
-				}
-			},
-			axisLabel: {
-				show: true,
-				formatter: function(v) {
-					switch (v + '') {
-						case '10':
-							return 'a';
-						case '30':
-							return 'b';
-						case '60':
-							return 'c';
-						case '90':
-							return 'd';
-						default:
-							return '';
-					}
-				},
-				textStyle: {
-					color: '#333'
-				}
-			},
-			splitLine: {
-				show: true,
-				length: 30,
-				lineStyle: {
-					color: '#eee',
-					width: 2,
-					type: 'solid'
-				}
-			},
-			pointer: {
-				length: '80%',
-				width: 8,
-				color: 'auto'
-			},
-			title: {
-				show: true,
-				offsetCenter: ['-65%', -10],
-				textStyle: {
-					color: '#333',
-					fontSize: 15
-				}
-			},
-			detail: {
-				show: true,
-				backgroundColor: 'rgba(0,0,0,0)',
-				borderWidth: 0,
-				borderColor: '#ccc',
-				width: 100,
-				height: 40,
-				offsetCenter: ['-60%', 10],
-				formatter: '{value}%',
-				textStyle: {
-					color: 'auto',
-					fontSize: 30
-				}
-			},
-			data: [{
-				value: 50,
-				name: 'Performance'
-			}]
-		}]
-	});
-
+	};
 }
 
 //echart Line
-function renderLine(echartLine) {
-
-	echartLine.setOption({
+function getLineOption() {
+	return {
 		title: {
 			text: 'Line Graph',
 			subtext: 'Subtitle'
@@ -410,11 +171,11 @@ function renderLine(echartLine) {
 			},
 			data: [1320, 1132, 601, 234, 120, 90, 20]
 		}]
-	});
+	};
 }
 
-function renderNetwork(echartNetwork) {
-	echartNetwork.setOption({
+function getNetworkOption() {
+	return {
 		title: {
 			text: ''
 		},
@@ -608,8 +369,7 @@ function renderNetwork(echartNetwork) {
 				}
 			}
 		]
-	});
-
+	};
 }
 
 function renderMap(id) {
@@ -662,8 +422,8 @@ function renderMap(id) {
 
 }
 
-function renderPie(echartPie) {
-	echartPie.setOption({
+function getPieOption() {
+	return {
 		tooltip: {
 			trigger: 'item',
 			formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -721,7 +481,7 @@ function renderPie(echartPie) {
 				name: 'Search Engine'
 			}]
 		}]
-	});
+	};
 }
 
 function renderMap2(id) {
@@ -802,15 +562,14 @@ class EChartsWrapper {
 	renderChart(id, type, chartInstance) {
 		this.init_echarts();
 
-		var transformFn = {
-			"bar": renderBar.bind(this),
-			"radar": renderRadar,
-			"line": renderLine,
-			"network": renderNetwork,
-			"map": renderMap,
-			"pie": renderPie,
-			"table": renderTable
-		};
+		// var transformFn = {
+		// 	"bar": renderBar.bind(this),
+		// 	"line": renderLine,
+		// 	"network": renderNetwork,
+		// 	"map": renderMap,
+		// 	"pie": renderPie,
+		// 	"table": renderTable
+		// };
 
 		if (type === "table") {
 			renderTable(id);
@@ -818,23 +577,30 @@ class EChartsWrapper {
 			renderMap(id);
 		} else if (type === "map2") {
 			renderMap2(id);
-		} else if (type === "network") {
-			chartInstance = chartInstance || echarts.init(document.getElementById(id));
-			transformFn[type](chartInstance);
-
 		} else {
-			chartInstance = chartInstance || echarts.init(document.getElementById(id), this.theme);
-			transformFn[type](chartInstance);
+			if (!chartInstance) {
+				chartInstance = echarts.init(document.getElementById(id), type !== "network" && this.theme);	
+			} 
+			
+			chartInstance.setOption(this.getChartOption(type));;
 		}
 
 		return chartInstance;
+	}
+
+	getChartOption(type) {
+		var fn = {
+			"bar": getBarOption,
+			"network": getNetworkOption,
+			"line": getLineOption,
+			"pie": getPieOption
+		}
+		return fn[type]();
 	}
 
 	resizeChart(chartInstance) {
 		chartInstance.resize();
 	}
 }
-
-
 
 module.exports = EChartsWrapper;
