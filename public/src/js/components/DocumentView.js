@@ -38,10 +38,9 @@ class DocumentView extends React.Component {
 
 	render() {
 		let me = this;
-		let charts = null
-		if (this.props.tab === 0) {
+		let charts = null;
 
-			
+		if (this.props.tab === 0) {			
   			charts = this.charts.map((chart)=> <ChartContainer 
   				key={chart.id} 
   				id={chart.id} 
@@ -49,30 +48,14 @@ class DocumentView extends React.Component {
   				{...chart.size && {size: chart.size}}
   				{...chart.data && {data: me.props.data.vizData}}
   			/>);
-			// charts = <div className="row">
-			// 			<ChartContainer id={this.charts[0].id} type={charts[0].type}/>
-			// 			<ChartContainer id="chart2" type="map2" />
-			// 			<ChartContainer id="chart3" type="map" />
-
-			// 			<ChartContainer
-			// 				id="chart4"
-			// 				type="line"							
-			// 			/>
-			// 			<ChartContainer id="chart5" type="pie" />
-			// 			<ChartContainer id="chart6" type="table" />
-
-			// 			<ChartContainer id="chart7" type="bar" size={6} />
-			// 			<ChartContainer id="chart8" type="table" size={6} />
-			// 		</div>
 		} else {
 			charts = <ChartContainer id="chart9" type="table" size={12} data={this.props.data.vizData}/>;
 		}
 
 		return (
-			<div className="right_col" role="main">
+			<div className="right_col" role="main" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
 				<div className="">
 					<div className="clearfix" />
-
 					<div className="row">
 						{charts}
 					</div>

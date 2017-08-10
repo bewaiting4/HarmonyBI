@@ -25,9 +25,7 @@ class ChartContainer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.state.size !== prevState.size) {
-			this.wrapper.resizeChart(this.chartInstance);	
-		}		
+		this.wrapper.resizeChart(this.chartInstance);	
 	}
 
 	resize() {

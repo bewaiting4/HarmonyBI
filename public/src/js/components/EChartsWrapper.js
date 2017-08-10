@@ -599,7 +599,10 @@ class EChartsWrapper {
 	}
 
 	resizeChart(chartInstance) {
-		chartInstance.resize();
+		if (chartInstance) {
+			chartInstance.resize();	
+		}
+		
 	}
 }
 
