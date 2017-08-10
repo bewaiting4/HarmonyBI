@@ -12,18 +12,26 @@ import Model from "../model/Model";
 
 import style from "./AppContainer.css";
 
+require('../build/scss/untitled.scss');
+
 class AppContainer extends React.Component {
 	constructor() {
 		super();
 
 		this.handleToggle = this.handleToggle.bind(this);
+		this.handleTabSwitch = this.handleTabSwitch.bind(this);
 		this.exportPDF = this.exportPDF.bind(this);
 		this.dataModel = Model();
 
 		this.state = {
 			docData: null,
-			navSize: true
+			navSize: true,
+			activeTab: 0,
+			width: '0',
+			heigth: '0'
 		};
+
+  		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
 	componentDidMount() {
@@ -32,6 +40,17 @@ class AppContainer extends React.Component {
 				this.setState({ docData: data });
 			}.bind(this)
 		);
+
+		this.updateWindowDimensions();
+	  	window.addEventListener('resize', this.updateWindowDimensions);
+	}
+
+	componentWillUnmount() {
+	  window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+
+	updateWindowDimensions() {
+	  this.setState({ width: window.innerWidth, height: window.innerHeight });
 	}
 
 	handleToggle() {
@@ -40,6 +59,10 @@ class AppContainer extends React.Component {
 				navSize: !prevState.navSize
 			};
 		});
+	}
+
+	handleTabSwitch(tabIdx) {
+		this.setState({activeTab: tabIdx});
 	}
 
 	exportPDF() {
@@ -99,7 +122,8 @@ class AppContainer extends React.Component {
 								onExport={this.exportPDF}
 							/>
 							<TopNav />
-							<DocumentView data={myData} />
+							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - 360, height: this.state.height - 45 - 59}}/>
+							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>
 				</div>

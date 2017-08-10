@@ -925,6 +925,11 @@ footer {
 .nav-sm footer {
     margin-left: 70px
 }
+/*done*/
+.nav-sm .main_container .footer {
+    margin-left: 70px;
+}
+
 .footer_fixed footer {
     position: fixed;
     left: 0px;
@@ -1710,6 +1715,11 @@ span.right {
 @media (min-width: 992px) {
     footer {
         margin-left: 360px /*done 230px*/
+    }
+
+    /*done*/
+    .main_container .footer {
+        margin-left: 360px;
     }
 }
 @media (min-width: 992px) {
