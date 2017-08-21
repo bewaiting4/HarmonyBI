@@ -15,7 +15,9 @@ class ChartContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance);
+		if (this.props.type !== 'table' ) {
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance);
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -87,7 +89,7 @@ class ChartContainer extends React.Component {
 }
 
 ChartContainer.defaultProps = {
-	size: 4
+	size: 6
 };
 
 module.exports = ChartContainer;

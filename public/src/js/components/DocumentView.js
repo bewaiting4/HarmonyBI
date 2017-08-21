@@ -27,12 +27,10 @@ class DocumentView extends React.Component {
 		}, {
 			id: "chart7",
 			type: "bar",
-			size: 6
 		}, {
 			id: "chart8",
 			type: "table",
 			data: true,
-			size: 6
 		}];
 
 		this.hashCharts = {
