@@ -2,7 +2,9 @@ import React from "react";
 import _ from "lodash";
 import FontAwesome from "react-fontawesome";
 
-import FilterPortlet from "./FilterPortlet";
+import FilterPortlet from "./Filter/FilterPortlet";
+import LocationFilter from "./Filter/LocationFilter"
+import TimeFilter from "./Filter/TimeFilter"
 
 import style from "./Menu.css";
 
@@ -53,6 +55,8 @@ class Menu extends React.Component {
 
         return res;
     });
+
+    this.props.reLayout();
   }
 
   render() {
@@ -65,7 +69,7 @@ class Menu extends React.Component {
     const navSize = this.props.navSize;
 
     return (
-      <div className="col-md-3 left_col">
+      <div className="col-md-3 left_col" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
         <div className="left_col scroll-view">
           {/*nav title, toggler*/}
           <div
@@ -113,7 +117,9 @@ class Menu extends React.Component {
                   onOpenFilter={this.handleOpenFilter}
                   icon="map-marker"
                   onFilter={onTimeFilter}
-                />
+                >
+                    <TimeFilter/>
+                </FilterPortlet>
                 <FilterPortlet
                   name="Location"
                   text="案发地点"
@@ -121,7 +127,9 @@ class Menu extends React.Component {
                   onOpenFilter={this.handleOpenFilter}
                   icon="puzzle-piece"
                   onFilter={onLocationFilter}
-                />
+                >
+                    <LocationFilter/>
+                </FilterPortlet>
                 <FilterPortlet
                   name="Mobile"
                   text="嫌疑人电话号码"

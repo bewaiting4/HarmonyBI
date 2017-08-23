@@ -43,6 +43,7 @@ class AppContainer extends React.Component {
 
 		this.updateWindowDimensions();
 	  	window.addEventListener('resize', this.updateWindowDimensions);
+	  	// window.addEventListener('scroll', this.updateWindowDimensions);
 	}
 
 	componentWillUnmount() {
@@ -50,7 +51,8 @@ class AppContainer extends React.Component {
 	}
 
 	updateWindowDimensions() {
-	  this.setState({ width: window.innerWidth, height: window.innerHeight });
+		console.log('update dim');
+	  this.setState({ width: window.innerWidth, height: window.innerHeight + $(window).scrollTop() });
 	}
 
 	handleToggle() {
@@ -120,6 +122,7 @@ class AppContainer extends React.Component {
 								onToggleChange={this.handleToggle}
 								navSize={navSize}
 								onExport={this.exportPDF}
+								dim={{height: this.state.height}}
 							/>
 							<TopNav />
 							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - 360, height: this.state.height - 45 - 59}}/>
