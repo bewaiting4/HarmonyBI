@@ -1,4 +1,6 @@
 import React from "react";
+import _ from 'lodash';
+
 import ChartContainer from "./ChartContainer";
 
 class DocumentView extends React.Component {
@@ -7,7 +9,7 @@ class DocumentView extends React.Component {
 
 		this.charts = [{
 			id: "chart1",
-			type: "network"					
+			type: "network",
 		}, {
 			id: "chart2",
 			type: "map2"
@@ -16,13 +18,16 @@ class DocumentView extends React.Component {
 			type: "map"
 		}, {
 			id: "chart4",
-			type: "line"
+			type: "line",
+			title: "嫌疑人通话时长和次数趋势",
 		}, {
 			id: "chart5",
-			type: "pie"
+			type: "pie",
+			title: "嫌疑人手机型号",
 		}, {
 			id: "chart6",
 			type: "table",
+			title: "紧密联系人名单",
 			data: true
 		}, {
 			id: "chart7",
@@ -30,47 +35,11 @@ class DocumentView extends React.Component {
 		}, {
 			id: "chart8",
 			type: "table",
+			title: "嫌疑人名单",
 			data: true,
 		}];
 
-		this.hashCharts = {
-			"chart1": {
-				id: "chart1",
-				type: "network"					
-			}, 
-			"chart2": {
-				id: "chart2",
-				type: "map2"
-			}, 
-			"chart3": {
-				id: "chart3",
-				type: "map"
-			},
-			"chart4": {
-				id: "chart4",
-				type: "line"
-			},
-			"chart5": {
-				id: "chart5",
-				type: "pie"
-			},
-			"chart6": {
-				id: "chart6",
-				type: "table",
-				data: true
-			},
-			"chart7": {
-				id: "chart7",
-				type: "bar",
-				size: 6
-			}, 
-			"chart8": {
-				id: "chart8",
-				type: "table",
-				data: true,
-				size: 6
-			}
-		};
+		this.hashCharts = _.keyBy(this.charts, 'id');
 
 		this.handleExpandCollapse = this.handleExpandCollapse.bind(this);
 
@@ -97,6 +66,7 @@ class DocumentView extends React.Component {
   				key={chart.id} 
   				id={chart.id} 
   				type={chart.type} 
+  				{...chart.title && {title: chart.title}}
   				{...chart.size && {size: chart.size}}
   				{...chart.data && {data: me.props.data.vizData}}
   				{...{viewHeight: this.props.dim.height}}

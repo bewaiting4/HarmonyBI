@@ -682,26 +682,15 @@ class EChartsWrapper {
 	}
 
 	init_echarts() {
-
 		if (typeof(echarts) === 'undefined') {
-			return;
+			return ;
 		}
-
 
 		this.theme = themeCfg;
 	}
 
 	renderChart(id, type, chartInstance) {
 		this.init_echarts();
-
-		// var transformFn = {
-		// 	"bar": renderBar.bind(this),
-		// 	"line": renderLine,
-		// 	"network": renderNetwork,
-		// 	"map": renderMap,
-		// 	"pie": renderPie,
-		// 	"table": renderTable
-		// };
 
 		if (type === "table") {
 			renderTable(id);
