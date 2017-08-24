@@ -8,5 +8,5 @@ ReactDOM.render(
         <AppContainer/>
     </div>,
 	
-    document.body
+    document.getElementById("app")
 );

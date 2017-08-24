@@ -7,33 +7,25 @@ class ChartContainer extends React.Component {
 		super(props);
 
 		this.wrapper = new EChartsWrapper(this);
-		this.resize = this.resize.bind(this);
+		this.toggleExpandCollapse = this.toggleExpandCollapse.bind(this);
 		this.rowGetter = this.rowGetter.bind(this);
 		this.getColumns = this.getColumns.bind(this);
 
 		this.chartInstance = null;
-		this.state = {
-			size: this.props.size || 4
-		}
 	}
 
 	componentDidMount() {
-		if (this.props.size !== undefined) {
-			this.setState({size: this.props.size});
+		if (this.props.type !== 'table' ) {
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance);
 		}
-		this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		this.wrapper.resizeChart(this.chartInstance);	
+		this.wrapper.resizeChart(this.chartInstance);
 	}
 
-	resize() {
-		this.setState(function(prevState, props) {
-			return {
-				size: prevState.size === 12 ? props.size : 12
-			};
-		});		
+	toggleExpandCollapse() {
+		this.props.onExpandCollapse(this.props.id, this.props.size === 12 ? false : true);
 	}
 
   	rowGetter(i) {
@@ -54,9 +46,9 @@ class ChartContainer extends React.Component {
 		const title = this.props.title || "图表";
 		const sizeCss =
 			"col-md-" +
-			this.state.size +
+			this.props.size +
 			" col-sm-" +
-			this.state.size +
+			this.props.size +
 			" col-xs-12";
 
 		var vizContent;
@@ -68,7 +60,7 @@ class ChartContainer extends React.Component {
         			rowsCount={this.props.data.length}
         			minHeight={200} />;
 		} else {
-			vizContent = <div id={myId} style={{ height: "200px" }} />;
+			vizContent = <div id={myId} style={{ height: this.props.size===12 ? (this.props.viewHeight - 120) + 'px' : '200px' }} />;
 		}
 
 		return (
@@ -79,33 +71,9 @@ class ChartContainer extends React.Component {
 							{title}
 						</h2>
 						<ul className="nav navbar-right panel_toolbox">
-							<li onClick={this.resize}>
+							<li onClick={this.toggleExpandCollapse}>
 								<a className="collapse-link">
-									<i className="fa fa-chevron-up" />
-								</a>
-							</li>
-							<li className="dropdown">
-								<a
-									href="#"
-									className="dropdown-toggle"
-									data-toggle="dropdown"
-									role="button"
-									aria-expanded="false"
-								>
-									<i className="fa fa-wrench" />
-								</a>
-								<ul className="dropdown-menu" role="menu">
-									<li>
-										<a href="#">Settings 1</a>
-									</li>
-									<li>
-										<a href="#">Settings 2</a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a className="close-link">
-									<i className="fa fa-close" />
+									<i className={this.props.size===12 ? "fa fa-compress" : "fa fa-expand"} />
 								</a>
 							</li>
 						</ul>
@@ -121,7 +89,7 @@ class ChartContainer extends React.Component {
 }
 
 ChartContainer.defaultProps = {
-	size: 4
+	size: 6
 };
 
 module.exports = ChartContainer;

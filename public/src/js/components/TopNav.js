@@ -8,7 +8,7 @@ class TopNav extends React.Component {
 		super();
 
 		this.handleExpandMenu = this.handleExpandMenu.bind(this);
-		this.state = { on: "" };
+		this.state = {on: "" };
 	}
 
 	handleExpandMenu(name) {
@@ -27,11 +27,14 @@ class TopNav extends React.Component {
 				<div className="nav_menu">
 					<nav>
 						<ul className="nav navbar-nav navbar-right">
+							{/* user profile */}
 							<UserProfile
 								name="Profile"
 								handleExpandMenu={this.handleExpandMenu}
 								selected={selected}
 							/>
+
+							{/* Open Dashboard*/}
 							<NavSetting
 								name="Open"
 								icon="cog"
@@ -39,6 +42,8 @@ class TopNav extends React.Component {
 								handleExpandMenu={this.handleExpandMenu}
 								selected={selected}
 							/>
+
+							{/* Close Dashboard*/}
 							<NavSetting
 								name="Save"
 								icon="save"
@@ -48,6 +53,8 @@ class TopNav extends React.Component {
 							/>
 						</ul>
 					</nav>
+
+					{/* title of main content */}
 					<h3 style={{ marginLeft: "20px" }}>话单分析系统</h3>
 				</div>
 			</div>
