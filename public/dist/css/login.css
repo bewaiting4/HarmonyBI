@@ -1,0 +1,59 @@
+HTML,
+BODY {
+    height: 100%;
+}
+
+BODY {
+    background: url("../images/bg-login.jpeg");
+    background-size: 100% 100%;
+}
+
+.box {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+    height: 170px;
+    width: 300px;
+    padding: 20px;
+
+    background: #112233;
+    border: 1px solid #656cc7;
+    border-radius: 2px
+}
+
+.box>FORM>DIV {
+    margin-bottom: 15px;
+}
+
+.box>FORM .title {
+	margin-bottom: 20px;
+}
+
+.box INPUT {
+    display: inline-block;
+    border-radius: 2px;
+    height: 20px;
+    width: 294px;
+}
+
+.box .button INPUT {
+	background: #52a6fd;
+	border: none;
+	color: #fff;
+	height: 26px;
+	width: 300px;
+}
+
+.box .title {
+    color: #fff;
+    text-align: center;
+}
+
+.box .error {
+	color: red;
+	text-align: center;
+}

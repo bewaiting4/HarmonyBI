@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="css/login.css">
+    <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <title>Harmony BI - Login</title>
+</head>
+
+<body>
+    <div class="box">
+        <form method="post">
+            <div class="title">
+                话单分析系统
+            </div>
+            <div class="username">
+                <input name="login" type="text" placeholder="请输入用户名">
+            </div>
+            <div class="password">
+                <input name="password" type="password" placeholder="请输入密码">
+            </div>
+            <div class="button">
+                <input type="submit" value="登录">
+            </div>
+            <div class="error">
+                <span><%= locals.errors %></span>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

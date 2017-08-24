@@ -8,7 +8,7 @@ app.set('views', './public/dist');
 app.use(express.static('./public/dist'));
 
 // Setup the app middlware.
-require('./middleware/appMiddlware')(app);
+require('./middleware/appMiddleware')(app);
 
 // Default page.
 app.get('/', function(req, res) {
