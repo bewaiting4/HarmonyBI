@@ -2,10 +2,11 @@
 <html lang="en">
 
 <head>
-    <link type="text/css" rel="stylesheet" href="css/login.css">
     <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
     <meta charset="UTF-8">
     <title>Harmony BI - Login</title>
+    <link type="text/css" rel="stylesheet" href="css/font-awesome.css">
+    <link type="text/css" rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
@@ -14,20 +15,35 @@
             <div class="title">
                 话单分析系统
             </div>
-            <div class="username">
-                <input name="login" type="text" placeholder="请输入用户名">
+            <div class="error <%= locals.errors %>">
+                <span>登录失败！</span>
+                <div class="dismiss">
+                    <i class="fa fa-close"></i>
+                </div>
             </div>
-            <div class="password">
-                <input name="password" type="password" placeholder="请输入密码">
+            <div class="username inputbox">
+                <div class="icon">
+                    <i class="fa fa-user"></i>
+                </div>
+                <input class="input" name="login" type="text" placeholder="请输入用户名">
+            </div>
+            <div class="password inputbox">
+                <div class="icon">
+                    <i class="fa fa-lock"></i>
+                </div>
+                <input class="input" name="password" type="password" placeholder="请输入密码">
+                <div class="eye">
+                    <i class="fa fa-eye"></i>
+                </div>
             </div>
             <div class="button">
-                <input type="submit" value="登录">
-            </div>
-            <div class="error">
-                <span><%= locals.errors %></span>
+                <input class="submit" type="submit" value="登录">
             </div>
         </form>
     </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/login.js"></script>
 </body>
 
 </html>
