@@ -4,8 +4,14 @@ BODY {
 }
 
 BODY {
+    background-color: #000;
     background: url("../images/bg-login.jpeg");
     background-size: 100% 100%;
+}
+
+@font-face {
+    font-family: "FZLTXHK--GBK1-0";
+    src: url("../fonts/FZLTXHK--GBK1-0.ttf") format("ttf");
 }
 
 .box {
@@ -16,44 +22,125 @@ BODY {
     right: 0;
 
     margin: auto;
-    height: 170px;
-    width: 300px;
-    padding: 20px;
+    height: 270px;
+    width: 404px;
+    padding: 30px;
 
-    background: #112233;
-    border: 1px solid #656cc7;
-    border-radius: 2px
-}
+    background: #323947;
+    box-shadow: 0px 2px 4px #000;
 
-.box>FORM>DIV {
-    margin-bottom: 15px;
-}
-
-.box>FORM .title {
-	margin-bottom: 20px;
+    font-family: "FZLTXHK--GBK1-0";
 }
 
 .box INPUT {
-    display: inline-block;
-    border-radius: 2px;
-    height: 20px;
-    width: 294px;
-}
-
-.box .button INPUT {
-	background: #52a6fd;
-	border: none;
-	color: #fff;
-	height: 26px;
-	width: 300px;
+    font-size: 12px;
+    font-family: "FZLTXHK--GBK1-0";
 }
 
 .box .title {
+    margin-bottom: 5px;
+    line-height: 32px;
+    font-size: 22px;
     color: #fff;
     text-align: center;
 }
 
 .box .error {
-	color: red;
-	text-align: center;
+    background: red;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 20px;
+    font-size: 11px;
+    padding-left: 10px;
+    visibility: hidden;
+}
+
+.box .error.show {
+    visibility: visible;
+}
+
+.box .error .dismiss {
+    float: right;
+    height: 20px;
+    width: 20px;
+}
+
+.box .inputbox {
+    background-color: #fff;
+    border-radius: 4px;
+    margin-bottom: 20px
+}
+
+.box .inputbox .input {
+    display: inline-block;
+    border: none;
+    line-height: 28px;
+    width: 340px;
+}
+
+.box .inputbox .input:focus {
+    outline: none;
+}
+
+.box .inputbox .icon {
+    float: left;
+    padding-top: 5px;
+    padding-right: 5px;
+    height: 25px;
+    width: 25px;
+    color: #8494a5;
+}
+
+.box .inputbox.focus .icon {
+    color: #0d89ff;
+}
+
+.box .inputbox .fa {
+    width: 20px;
+    padding-left: 10px;
+}
+
+.box .password .eye {
+    float: right;
+    padding-top: 5px;
+    height: 25px;
+    width: 30px;
+    color: #8494a5;
+}
+
+.box .password .eye.show {
+    color: #0d89ff;
+}
+
+.box .password .eye .fa {
+    padding-left: 5px;
+}
+
+.box .button {
+    margin-bottom: 20px;
+}
+
+.box .button .submit {
+    background-color: #0d89ff;
+    border: none;
+    color: #fff;
+    padding: 0px;
+    line-height: 30px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.box .delimiter {
+    border-top: 1px solid #fff;
+    margin-bottom: 20px;
+}
+
+.box .button .admin-submit {
+    background-color: transparent;
+    border: 1px solid #0d89ff;
+    color: #fff;
+    padding: 0px;
+    line-height: 28px;
+    border-radius: 4px;
+    width: 100%;
 }
