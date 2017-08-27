@@ -23,3 +23,9 @@ $('.box .password .eye').click(function () {
 		$(this).parent().find('input').attr('type', 'password');
 	}
 });
+
+$('.admin-submit').click(function () {
+	$('.admin').val('admin');
+
+	$('.login-form').submit();
+});

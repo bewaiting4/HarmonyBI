@@ -10,7 +10,7 @@ module.exports = function(app) {
     app.use(morgan('dev'));
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
-    app.use(cookieParser());
+    app.use(cookieParser('mstr'));
     app.use(expressSession({
     	secret: 'mstr',
     	resave: false,

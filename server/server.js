@@ -19,6 +19,10 @@ app.get('/', function(req, res) {
 var api = require('./routes/api/api');
 app.use('/api', api);
 
+// Setup the admin page.
+var admin = require('./routes/admin/admin');
+app.use('/admin', admin);
+
 // Set up global error handling.
 app.use(function(err, req, res, next) {
     // If error thrown from jwt validation check.
