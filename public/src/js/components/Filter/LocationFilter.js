@@ -7,7 +7,7 @@ class LocationFilter extends React.Component {
 		super(props);
 
 		this.wrapper = new EChartsWrapper(this);
-		this.id = 'locFilter';
+		this.id = 'locMap';
 	}
 
 	componentDidMount() {
@@ -19,6 +19,7 @@ class LocationFilter extends React.Component {
 			<Tabs defaultActiveKey={1} id="loc_filter" justified className="tab_loc filter_nav">
 				<Tab eventKey={1} title="地图定位">
 					<div>
+						<span>案发地点及敏感区</span>
 						<div id={this.id} style={{width: "200px", height: "200px"}}/>
 					</div>
 				</Tab>

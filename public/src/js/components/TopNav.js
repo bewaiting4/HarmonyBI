@@ -55,7 +55,7 @@ class TopNav extends React.Component {
 					</nav>
 
 					{/* title of main content */}
-					<h3 style={{ marginLeft: "20px" }}>话单分析系统</h3>
+					<h3 className="menu_title" style={{ marginLeft: "20px" }}>分析页面</h3>
 				</div>
 			</div>
 		);

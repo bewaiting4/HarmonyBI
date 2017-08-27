@@ -58,13 +58,14 @@ class ChartContainer extends React.Component {
         			columns={this.getColumns()}
         			rowGetter={this.rowGetter}
         			rowsCount={this.props.data.length}
-        			minHeight={200} />;
+        			minHeight={this.props.size===12 ? (this.props.viewHeight - 120) : 200} 
+        		/>;
 		} else {
-			vizContent = <div id={myId} style={{ height: this.props.size===12 ? (this.props.viewHeight - 120) + 'px' : '200px' }} />;
+			vizContent = <div id={myId} style={{ height: this.props.size===12 ? (this.props.viewHeight - 120) + 'px' : '190px' }} />;
 		}
 
 		return (
-			<div className={sizeCss}>
+			<div className={sizeCss + " chartContainer"}>
 				<div className="x_panel">
 					<div className="x_title">
 						<h2>

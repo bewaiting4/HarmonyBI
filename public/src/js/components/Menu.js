@@ -66,24 +66,27 @@ class Menu extends React.Component {
 
         return (
             <div className="col-md-3 left_col" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
+                <div className="side_bar"/>
+                <div className="filter_bg"/>
                 <div className="left_col scroll-view">
                     {/*nav title, toggler*/}
                     <div
                         className="navbar nav_title"
-                        style={{
-                            border: 0,
-                            width: "100%"
-                        }}
                     >
                         <a className="site_title" onClick={this.handleClick}>
-                            <FontAwesome name="filter"/>
+                            {/*<FontAwesome name="filter"/>*/}
+
+                            <img src="../icons/svg/filtericon/fold@1x.svg" className="logo"/>
+                            {/*<object type="image/svg+xml" data="../icons/svg/filtericon/fold@1x.svg" className="logo"></object>*/}
+                            
                             <h3>话单分析系统</h3>
+
                         </a>
                     </div>
 
                     {/* pdf export */}
                     <div
-                        className="navbar nav_title"
+                        className="navbar nav_title export"
                         style={{
                             border: 0
                         }}
@@ -91,7 +94,7 @@ class Menu extends React.Component {
                         <a className="site_title" onClick={this.handleDownload}>
                             <FontAwesome name="download"/>
                                 <button
-                                    className="btn btn-success export"
+                                    className="btn btn-success"
                                 >
                                     输出分析报告
                                 </button>

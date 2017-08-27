@@ -52,9 +52,10 @@ class DocumentView extends React.Component {
 	* flag: true for expand, false for collapse
 	*/
 	handleExpandCollapse(id, flag) {
+		this.hashCharts[id].size = flag ? 12 : 6;
 		this.setState({
 			fullScreen: flag ? id : ""
-		})
+		})		
 	}
 
 	render() {
@@ -73,7 +74,7 @@ class DocumentView extends React.Component {
   				onExpandCollapse={this.handleExpandCollapse}
   			/>);
 		} else {
-			charts = <ChartContainer id="chart9" type="table" size={12} data={this.props.data.vizData}/>;
+			charts = <ChartContainer id="chart9" type="table" size={12} data={this.props.data.vizData} viewHeight={this.props.dim.height}/>;
 		}
 
 		return (

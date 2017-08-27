@@ -13,6 +13,7 @@ import Model from "../model/Model";
 import style from "./AppContainer.css";
 
 require('../build/scss/untitled.scss');
+//require('../build/scss/custom.scss');
 
 class AppContainer extends React.Component {
 	constructor() {
@@ -124,7 +125,7 @@ class AppContainer extends React.Component {
 								dim={{height: this.state.height}}
 							/>
 							<TopNav />
-							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - 360, height: this.state.height - 45 - 59}}/>
+							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - 360, height: this.state.height - 44 - 54}}/>
 							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>

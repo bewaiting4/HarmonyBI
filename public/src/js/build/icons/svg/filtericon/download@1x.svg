@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>filtericon/download@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M20.625,16.25 L19.875,16.25 C19.675,16.25 19.5,16.425 19.5,16.625 L19.5,19.125 C19.5,19.325 19.325,19.5 19.125,19.5 L10.875,19.5 C10.675,19.5 10.5,19.325 10.5,19.125 L10.5,16.625 C10.5,16.425 10.325,16.25 10.125,16.25 L9.375,16.25 C9.175,16.25 9,16.425 9,16.625 L9,20 C9,20.55 9.45,21 10,21 L20,21 C20.55,21 21,20.55 21,20 L21,16.625 C21,16.425 20.825,16.25 20.625,16.25 Z M15.275,17.9 L18.65,14.525 C18.8,14.375 18.8,14.15 18.65,14 L18.125,13.475 C17.975,13.325 17.75,13.325 17.6,13.475 L16.2,14.875 C16.05,15.025 15.775,14.925 15.775,14.7 L15.775,9.375 C15.75,9.175 15.55,9 15.375,9 L14.625,9 C14.425,9 14.25,9.175 14.25,9.375 L14.25,14.675 C14.25,14.9 13.975,15 13.825,14.85 L12.425,13.45 C12.275,13.3 12.05,13.3 11.9,13.45 L11.375,14 C11.225,14.15 11.225,14.375 11.375,14.525 L14.75,17.9 C14.9,18.05 15.125,18.05 15.275,17.9 Z" id="path-1"></path>
+    </defs>
+    <g id="components" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="assets-2" transform="translate(-113.000000, -17.000000)">
+            <g id="filtericon/export-normal" transform="translate(112.000000, 16.000000)">
+                <g id="Group-44" transform="translate(1.000000, 1.000000)">
+                    <rect id="Rectangle-Copy-2" fill="#0D89FF" x="0" y="0" width="30" height="30" rx="15"></rect>
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#FFFFFF" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

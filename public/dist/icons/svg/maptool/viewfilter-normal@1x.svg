@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>maptool/viewfilter-normal@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="24" height="24" rx="2"></rect>
+        <filter x="-25.0%" y="-20.8%" width="150.0%" height="150.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.329411765   0 0 0 0 0.411764706   0 0 0 0 0.552941176  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="components" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="assets-2" transform="translate(-881.000000, -97.000000)">
+            <g id="maptool/viewfilter-normal" transform="translate(885.000000, 100.000000)">
+                <g id="Group-11">
+                    <g id="Rectangle-391-Copy-5">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <rect stroke="#CBD1DB" stroke-width="1" x="-0.5" y="-0.5" width="25" height="25" rx="2"></rect>
+                    </g>
+                </g>
+                <g id="Group" transform="translate(5.250000, 6.750000)" fill="#A8B7C7">
+                    <path d="M9.77961985,0.214970276 L0.600072673,0.214970276 C0.289952836,0.214970276 0.145230245,0.566439425 0.331302147,0.793860638 L4.34218537,5.48700751 C4.46623331,5.6317301 4.52825728,5.83847665 4.52825728,6.02454856 L4.52825728,9.00169899 C4.52825728,9.16709624 4.69365452,9.31181883 4.85905177,9.31181883 L5.47929144,9.31181883 C5.64468869,9.31181883 5.76873662,9.16709624 5.76873662,9.00169899 L5.76873662,6.02454856 C5.76873662,5.817802 5.85143525,5.6317301 5.99615784,5.48700751 L10.0483904,0.793860638 C10.2344623,0.566439425 10.0897397,0.214970276 9.77961985,0.214970276 L9.77961985,0.214970276 Z" id="Shape"></path>
+                    <path d="M11.2930655,7.69554849 L13.0338594,5.94610493 C13.1142037,5.86597774 13.1142037,5.74578696 13.0338594,5.66565978 L12.766045,5.38521463 C12.6857006,5.30508744 12.5651841,5.30508744 12.4848398,5.38521463 L10.7306552,7.13465819 C10.6770923,7.18807631 10.596748,7.18807631 10.5431851,7.13465819 L8.78900048,5.3718601 C8.70865615,5.29173291 8.58813965,5.29173291 8.50779531,5.3718601 L8.22659015,5.65230525 C8.14624582,5.73243243 8.14624582,5.85262321 8.22659015,5.9327504 L9.98077475,7.68219396 C10.0343376,7.73561208 10.0343376,7.81573927 9.98077475,7.86915739 L8.21319943,9.63195548 C8.13285509,9.71208267 8.13285509,9.83227345 8.21319943,9.91240064 L8.49440459,10.1928458 C8.57474892,10.272973 8.69526542,10.272973 8.77560976,10.1928458 L10.5297944,8.44340223 C10.5833572,8.3899841 10.6637016,8.3899841 10.7172645,8.44340223 L12.4714491,10.1928458 C12.5517934,10.272973 12.6723099,10.272973 12.7526542,10.1928458 L13.0338594,9.91240064 C13.1142037,9.83227345 13.1142037,9.71208267 13.0338594,9.63195548 L11.2930655,7.88251192 C11.2395026,7.8290938 11.2395026,7.74896661 11.2930655,7.69554849 L11.2930655,7.69554849 Z" id="close"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
