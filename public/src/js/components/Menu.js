@@ -18,11 +18,9 @@ class Menu extends React.Component {
         this.dftState = {
             onTimeFilter: false,
             onLocationFilter: false,
-            onMobileFilter: false,
             onIdNumberFilter: false,
-            onLanguageFilter: false,
-            onPhoneTypeFilter: false
         };
+        this.filters = [];
         this.state = _.assignIn({}, this.dftState);
     }
 
@@ -36,13 +34,13 @@ class Menu extends React.Component {
     }
 
     componentDidMount() {
-        if (!this.props.navSize) {
+        if (!this.props.isUnfold) {
             this.setState(_.assign({}, this.dftState));
         }
     }
 
     handleOpenFilter(name) {
-        if (!this.props.navSize) {
+        if (!this.props.isUnfold) {
             this.props.onToggleChange();
         }
 
@@ -58,40 +56,42 @@ class Menu extends React.Component {
     render() {
         const onTimeFilter = this.state.onTimeFilter;
         const onLocationFilter = this.state.onLocationFilter;
-        const onMobileFilter = this.state.onMobileFilter;
         const onIdNumberFilter = this.state.onIdNumberFilter;
-        const onPhoneTypeFilter = this.state.onPhoneTypeFilter;
-        const onLanguageFilter = this.state.onLanguageFilter;
-        const navSize = this.props.navSize;
+        const isUnfold = this.props.isUnfold;
 
         return (
             <div className="col-md-3 left_col" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
+                <div className="side_bar"/>
+                <div className="filter_bg"/>
                 <div className="left_col scroll-view">
+
                     {/*nav title, toggler*/}
                     <div
                         className="navbar nav_title"
-                        style={{
-                            border: 0,
-                            width: "100%"
-                        }}
                     >
                         <a className="site_title" onClick={this.handleClick}>
-                            <FontAwesome name="filter"/>
+                            {/*<FontAwesome name="filter"/>*/}
+
+                            <img src={"../icons/svg/filtericon/" + (isUnfold? "unfold" : "fold") + "@1x.svg"} className="logo"/>
+                            {/*<object type="image/svg+xml" data="../icons/svg/filtericon/fold@1x.svg" className="logo"></object>*/}
+                            
                             <h3>话单分析系统</h3>
+
                         </a>
                     </div>
 
                     {/* pdf export */}
                     <div
-                        className="navbar nav_title"
+                        className="navbar nav_title export"
                         style={{
                             border: 0
                         }}
                     >
                         <a className="site_title" onClick={this.handleDownload}>
-                            <FontAwesome name="download"/>
+                            {/*<FontAwesome name="download"/>*/}
+                            <img src="../icons/svg/filtericon/download@1x.svg" className="logo"/>
                                 <button
-                                    className="btn btn-success export"
+                                    className="btn btn-success"
                                 >
                                     输出分析报告
                                 </button>
@@ -110,9 +110,9 @@ class Menu extends React.Component {
                                 <FilterPortlet
                                     name="Time"
                                     text="案发时间"
-                                    navSize={navSize}
+                                    isUnfold={isUnfold}
                                     onOpenFilter={this.handleOpenFilter}
-                                    icon="map-marker"
+                                    icon={onTimeFilter ? "date-set": "date-unset"}
                                     onFilter={onTimeFilter}
                                 >
                                     <TimeFilter/>
@@ -121,9 +121,9 @@ class Menu extends React.Component {
                                 <FilterPortlet
                                     name="Location"
                                     text="案发地点"
-                                    navSize={navSize}
+                                    isUnfold={isUnfold}
                                     onOpenFilter={this.handleOpenFilter}
-                                    icon="puzzle-piece"
+                                    icon={onLocationFilter ? "map-set": "map-unset"}
                                     onFilter={onLocationFilter}
                                 >
                                     <LocationFilter/>
@@ -132,15 +132,21 @@ class Menu extends React.Component {
                                 <FilterPortlet
                                     name="IdNumber"
                                     text="案发相关人员"
-                                    navSize={navSize}
+                                    isUnfold={isUnfold}
                                     onOpenFilter={this.handleOpenFilter}
-                                    icon="id-card-o"
+                                    icon={onIdNumberFilter ? "id-set": "id-unset"}
                                     onFilter={onIdNumberFilter}
                                 />
                             </ul>
                         </div>
                     </div>
                     {/*sidebar menu*/}
+
+                    {/*sidebar menu*/}
+                    <div id="sidebar-footer" className="sidebar-footer">
+                        <span className="content">重置所有筛选条件</span>
+                        <span className="resetall"><img src={"../icons/svg/filtericon/resetall" + (this.filters.length > 0 ? "-active" : "") + "@1x.svg"} className="logo"/></span>
+                    </div>
                 </div>
             </div>
         );

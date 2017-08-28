@@ -1,7 +1,7 @@
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var auth = require('./authMiddleware');
-var cookieParser = require('cookie-Parser');
+var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 
 // setup global middleware here

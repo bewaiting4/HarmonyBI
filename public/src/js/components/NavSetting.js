@@ -19,15 +19,17 @@ class NavSetting extends React.Component {
         return (
             <li className={openUserMenu ? "open" : ""}>
                 <a
-                    className="user-profile dropdown-toggle"
+                    className="settings dropdown-toggle"
                     data-toggle="dropdown"
                     aria-expanded={openUserMenu ? "true" : "false"}
                     onClick={this.expandMenu}
                 >
 
-                    <FontAwesome name={this.props.icon} size="2x" />
-
-                    <FontAwesome name="angle-down" />
+                  <span className='fa-stack fa-lg'>
+                    <FontAwesome name='circle' stack='2x'/>
+                    <FontAwesome name={this.props.icon} stack='1x'/>
+                  </span>
+                    
                 </a>
 
                 <ul className="dropdown-menu dropdown-usermenu pull-right">

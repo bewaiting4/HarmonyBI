@@ -13,6 +13,7 @@ import Model from "../model/Model";
 import style from "./AppContainer.css";
 
 require('../build/scss/untitled.scss');
+//require('../build/scss/custom.scss');
 
 class AppContainer extends React.Component {
 	constructor() {
@@ -25,7 +26,7 @@ class AppContainer extends React.Component {
 
 		this.state = {
 			docData: null,
-			navSize: true,
+			isUnfold: true,
 			activeTab: 0,
 			width: '0',
 			heigth: '0'
@@ -57,7 +58,7 @@ class AppContainer extends React.Component {
 	handleToggle() {
 		this.setState(function(prevState, props) {
 			return {
-				navSize: !prevState.navSize
+				isUnfold: !prevState.isUnfold
 			};
 		});
 	}
@@ -110,21 +111,21 @@ class AppContainer extends React.Component {
 
 	render() {
 		const myData = this.state.docData;
-		const navSize = this.state.navSize;
+		const isUnfold = this.state.isUnfold;
 
 		if (this.state.docData) {
 			return (
-				<div className={navSize ? "nav-md" : "nav-sm"}>
+				<div className={isUnfold ? "nav-md" : "nav-sm"}>
 					<div className="container body">
 						<div className="main_container">
 							<Menu
 								onToggleChange={this.handleToggle}
-								navSize={navSize}
+								isUnfold={isUnfold}
 								onExport={this.exportPDF}
 								dim={{height: this.state.height}}
 							/>
 							<TopNav />
-							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - 360, height: this.state.height - 45 - 59}}/>
+							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - 360, height: this.state.height - 44 - 54}} isUnfold={this.state.isUnfold}/>
 							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>

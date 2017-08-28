@@ -22,9 +22,13 @@ class UserProfile extends React.Component {
                     aria-expanded={openUserMenu ? "true" : "false"}
                     onClick={this.expandMenu}
                 >
-                    <FontAwesome name="user" size="2x" />
-                    {this.props.userName}
-                    <FontAwesome name="angle-down" />
+
+                    <span className='fa-stack fa-lg'>
+                        <FontAwesome name='circle' stack='2x'/>
+                        <FontAwesome name="user" stack='1x' style={{left: '-2px'}}/>
+                        <FontAwesome name="angle-down" stack='1x'style={{left: '6px', "font-size": '10px'}}/>
+                    </span>
+
                 </a>
 
                 <ul className="dropdown-menu dropdown-usermenu pull-right">
@@ -43,7 +47,7 @@ class UserProfile extends React.Component {
 }
 
 UserProfile.defaultProps = {
-    userName: "李佳"
+    userName: "admin"
 }
 
 module.exports = UserProfile;

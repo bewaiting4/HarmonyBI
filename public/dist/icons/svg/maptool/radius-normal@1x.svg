@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>maptool/radius-normal@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="24" height="24" rx="2"></rect>
+        <filter x="-25.0%" y="-20.8%" width="150.0%" height="150.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.329411765   0 0 0 0 0.411764706   0 0 0 0 0.552941176  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="components" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="assets-2" transform="translate(-845.000000, -97.000000)">
+            <g id="maptool/radious-normal" transform="translate(849.000000, 100.000000)">
+                <g id="Group-11">
+                    <g id="Rectangle-391-Copy-5">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <rect stroke="#CBD1DB" stroke-width="1" x="-0.5" y="-0.5" width="25" height="25" rx="2"></rect>
+                    </g>
+                </g>
+                <g id="Group" transform="translate(6.000000, 6.000000)" fill="#A8B7C7">
+                    <path d="M6,11.1778954 C8.85967266,11.1778954 11.1778954,8.85967266 11.1778954,6 C11.1778954,3.14032734 8.85967266,0.822104609 6,0.822104609 C3.14032734,0.822104609 0.822104609,3.14032734 0.822104609,6 C0.822104609,8.85967266 3.14032734,11.1778954 6,11.1778954 Z M6,12 C2.6862915,12 0,9.3137085 0,6 C0,2.6862915 2.6862915,0 6,0 C9.3137085,0 12,2.6862915 12,6 C12,9.3137085 9.3137085,12 6,12 Z" id="Combined-Shape" fill-rule="nonzero"></path>
+                    <polygon id="Rectangle-6" points="6.3839273 5.6160727 6.3839273 4.08036348 5.6160727 4.08036348 5.6160727 5.6160727 4.08036348 5.6160727 4.08036348 6.3839273 5.6160727 6.3839273 5.6160727 7.91963652 6.3839273 7.91963652 6.3839273 6.3839273 7.91963652 6.3839273 7.91963652 5.6160727"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

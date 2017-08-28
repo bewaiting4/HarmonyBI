@@ -1,4 +1,4 @@
-var themeCfg = {
+/*
 	"color": [
 		"#26B99A",
 		"#34495E",
@@ -8,6 +8,21 @@ var themeCfg = {
 		"#8abb6f",
 		"#759c6a",
 		"#bfd3b7"
+	],
+
+*/
+var themeCfg = {
+	"color": [
+		"#1266D8",
+		"#5085E3",
+		"#515DA9",
+		"#41A5C4",
+		"#DE0CA3",
+		"#088490",
+		"#F996F1",
+		"#8B56F0",
+		"#C79FBE",
+		"#BF4B9A"
 	],
 	"title": {
 		"itemGap": 8,
@@ -700,7 +715,7 @@ class EChartsWrapper {
 			renderMap2(id);
 		} else {
 			if (!chartInstance) {
-				chartInstance = echarts.init(document.getElementById(id), type !== "network" && this.theme);	
+				chartInstance = echarts.init(document.getElementById(id), this.theme);	
 			} 
 			
 			chartInstance.setOption(this.getChartOption(type));;
