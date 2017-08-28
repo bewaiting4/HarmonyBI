@@ -67,6 +67,7 @@ class DocumentView extends React.Component {
   				key={chart.id} 
   				id={chart.id} 
   				type={chart.type} 
+  				isUnfold={this.props.isUnfold}
   				{...chart.title && {title: chart.title}}
   				{...chart.size && {size: chart.size}}
   				{...chart.data && {data: me.props.data.vizData}}
@@ -74,7 +75,7 @@ class DocumentView extends React.Component {
   				onExpandCollapse={this.handleExpandCollapse}
   			/>);
 		} else {
-			charts = <ChartContainer id="chart9" type="table" size={12} data={this.props.data.vizData} viewHeight={this.props.dim.height}/>;
+			charts = <ChartContainer id="chart9" type="table" size={12} data={this.props.data.vizData} viewHeight={this.props.dim.height} isUnfold={this.props.isUnfold}/>;
 		}
 
 		return (

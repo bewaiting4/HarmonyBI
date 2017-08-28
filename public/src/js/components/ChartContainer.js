@@ -42,6 +42,7 @@ class ChartContainer extends React.Component {
 	}
 
 	render() {
+		const chart_height = this.props.isUnfold ? 190 : 320;
 		const myId = this.props.id || "mainb";
 		const title = this.props.title || "图表";
 		const sizeCss =
@@ -58,10 +59,10 @@ class ChartContainer extends React.Component {
         			columns={this.getColumns()}
         			rowGetter={this.rowGetter}
         			rowsCount={this.props.data.length}
-        			minHeight={this.props.size===12 ? (this.props.viewHeight - 120) : 200} 
+        			minHeight={this.props.size===12 ? (this.props.viewHeight - 120) : chart_height} 
         		/>;
 		} else {
-			vizContent = <div id={myId} style={{ height: this.props.size===12 ? (this.props.viewHeight - 120) + 'px' : '190px' }} />;
+			vizContent = <div id={myId} style={{ height: this.props.size===12 ? (this.props.viewHeight - 120) + 'px' : (chart_height + 'px') }} />;
 		}
 
 		return (

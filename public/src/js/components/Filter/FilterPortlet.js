@@ -34,8 +34,9 @@ class FilterPortlet extends React.Component {
 		return (
 			<li>
 				<a className="site_title" onClick={this.openFilter}>
- 	 				<FontAwesome name={this.props.icon} className="side_bar-icon"/>
-					<div className="filter_title">
+ 	 				{/*<FontAwesome name={this.props.icon} className="side_bar-icon"/>*/}
+ 	 				<img src={"../icons/svg/filtericon/" + (this.props.icon)+ "@1x.svg"} className="logo"/>
+					<div className={"filter_title" + (this.props.onFilter ? " unfold" : "")}>
 						<FontAwesome name={"chevron-" + (this.props.onFilter ? "down" : "right")} className="chevron-icon"/>
 						<span className="name">{this.props.text}</span>
 						<FontAwesome name="undo" className="undo-icon"/>

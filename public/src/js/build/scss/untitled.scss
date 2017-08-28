@@ -32,11 +32,16 @@ $btn-export-padding: 32px;
 $btn-export-height: 32px;
 $filter-item-padding: 20px;
 $filter-item-title-height: 44px;
+$filter_tab-border-radius: 3px;
 
 
 $filter-item-width: 280px;
 $filter-bgcolor: #222937;
+$filter_tab-bgcolor: #323947;
 $filter-sidebar-fill: #161E2C;
+$filter-hover-bgcolor: rgba(255, 255, 255, 0.06);
+
+$input-fill-color: #161E2C;
 
 /* color system */
 $fill1: #1A66D9; /*blue*/
@@ -209,14 +214,7 @@ html , body{
 .nav-sm .hidden-small {
     visibility: hidden
 }
-.nav-sm .container.body .right_col {
-    padding: 10px 20px;
-    /*margin-left: 70px;*/
-    margin-left: $menu-width-sm;
-    z-index: 2
-}
 .nav-sm .navbar.nav_title {
-    /*width: 70px*/
     width: $menu-width-sm;
 }
 .nav-sm .navbar.nav_title a span {
@@ -232,12 +230,6 @@ html , body{
     /*margin-left: 70px;*/
     margin-left: $menu-width-sm;
     z-index: 2
-}
-.nav-sm .nav.side-menu li a {
-    text-align: center !important;
-    font-weight: 400;
-    font-size: 10px;
-    padding: 10px 5px
 }
 .nav-sm .nav.child_menu li.active,
 .nav-sm .nav.side-menu li.active-sm {
@@ -752,9 +744,6 @@ a:focus {
     display: block;
     cursor: pointer
 }
-.nav.side-menu>li>a {
-    margin-bottom: 6px
-}
 .nav.side-menu>li>a:hover {
     color: #F2F5F7 !important
 }
@@ -766,10 +755,6 @@ a:focus {
 
 .nav.child_menu {
     display: none
-}
-.nav.child_menu li:hover,
-.nav.child_menu li.active {
-    background-color: rgba(255, 255, 255, 0.06)
 }
 /*
 .nav.child_menu li {
@@ -1684,29 +1669,6 @@ span.right {
 }
 .tile_info a {
     text-overflow: ellipsis
-}
-.sidebar-footer {
-    bottom: 0px;
-    clear: both;
-    display: block;
-    padding: 5px 0 0 0;
-    position: fixed;
-    width: 230px;
-    background: $filter-bgcolor;
-    z-index:999;
-}
-.sidebar-footer a {
-    padding: 7px 0 3px;
-    text-align: center;
-    width: 25%;
-    font-size: 17px;
-    display: block;
-    float: left;
-    background: #172D44;
-    cursor: pointer;
-}
-.sidebar-footer a:hover {
-    background: #425567
 }
 .tile_count {
     margin-bottom: 20px;
@@ -4271,6 +4233,11 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 }
 }
 /*====================================================================================================*/
+BODY {
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif, "FZLTXHK--GBK1-0";
+    color: #FFFFFF;
+}
+
 /*
 * Top Nav
 */
@@ -4279,8 +4246,8 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     background-color: $nav-bgcolor;
 
     .menu_title {
-        font-family: "FZLTXHK--GBK1-0";
         font-size: 22px;
+        font-weight: normal;
         color: #FFFFFF;
         line-height: $nav-line-height;
         margin: ($top-nav-height - $nav-line-height)/2 0 ($top-nav-height - $nav-line-height)/2 $nav-padding-h;
@@ -4323,9 +4290,9 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 /*
 * document view
 */
-.nav-md .container.body .right_col {
+.container.body .right_col {
     padding: $doc-padding-v/2 $doc-padding-h/2 0;
-    margin-left: $menu-width-md;
+    color: #73879C;
 
     .row {
         margin: 0;
@@ -4359,6 +4326,16 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 
     .chartContainer {
         padding: $doc-padding-v/2 $doc-padding-h/2; 
+    }
+}
+.nav-md {
+    .container.body .right_col {
+        margin-left: $menu-width-md;
+    }
+}
+.nav-sm  {
+    .container.body .right_col {
+        margin-left: $menu-width-sm;
     }
 }
 
@@ -4409,6 +4386,11 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 }
 
 .main_menu  {
+
+    .nav.side-menu>li>a {
+        margin-top: 20px
+    }
+
     .site_title {
         line-height: 44px;
         height: 44px;
@@ -4416,9 +4398,10 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
         .filter_title {
             display: inline-block;
             width: $menu-width-md - $menu-width-sm - (2 * $filter-item-padding);
-            background-color: transparent;
+            background-color: $filter_tab-bgcolor;
             margin-left: $filter-item-padding;
             margin-right: $filter-item-padding;
+            border-radius: $filter_tab-border-radius;
 
             .name {
                 padding-left: 6px;
@@ -4434,7 +4417,7 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
         }
 
         span {
-            line-height: 44px;
+            line-height: 40px;
         }
     }
 
@@ -4457,11 +4440,15 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
         &.chevron-icon {
             float: left;
             margin-left: 10px;
+            padding-top: 4px;
+            line-height: 40px;
         }
 
         &.undo-icon {
             float: right;
             margin-right: 10px;
+            padding-top: 4px;
+            line-height: 40px;
         }
     }
 
@@ -4485,10 +4472,13 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 .filter_nav {
     margin-left: $menu-width-sm + $filter-item-padding;
     margin-right: $filter-item-padding;
+    padding-top: 20px;
+    border-bottom-left-radius: $filter_tab-border-radius;
+    border-bottom-right-radius: $filter_tab-border-radius;
 
-    .nav-tabs {
+    .tab-content {
+        background-color: $filter_tab-bgcolor;
         padding-top: 10px;
-        padding-bottom: 10px;
     }
 
     .nav > li > a {
@@ -4499,21 +4489,30 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     .nav-tabs.nav-justified > .active > a:focus {
         border: none;
         border-bottom: 2px solid #0D89FF;
-        background-color: #2A3F54;
+        background-color: transparent;
         color: white;
     }
 
-    .nav-tabs.nav-justified > .active > a:hover {
-        background-color: rgba(255, 255, 255, 0.06);
+    .nav-tabs.nav-justified {
+        & > .active {
+        }
+
+        &> a:hover {
+            background-color: $filter-bgcolor;
+        }
+
     }
 
     .nav-tabs.nav-justified > li > a {
         border: none;
     }
 
-    .nav.child_menu li:hover, .nav.child_menu li.active {
-        background-color: rgba(255, 255, 255, 0.06);
+    .nav.child_menu li:hover {
+        background-color: $filter-bgcolor;
     }    
+    .nav.child_menu li.active {
+
+    }
 }
 
 .tab_time {
@@ -4525,9 +4524,34 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
         /* height TODO */
     }
 
+    .rdtPicker thead tr:first-child th:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    .rdtPicker button:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    td.rdtMonth:hover,
+    td.rdtYear:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    .rdtCounter .rdtBtn:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    .rdtPicker td.rdtDay:hover,
+    .rdtPicker td.rdtHour:hover,
+    .rdtPicker td.rdtMinute:hover,
+    .rdtPicker td.rdtSecond:hover,
+    .rdtPicker .rdtTimeToggle:hover {
+        background: $filter-hover-bgcolor;
+    }
+
     .rdtPicker {
         width: 94%;
-        background-color: rgba(255, 255, 255, 0.06);
+        background-color: $filter-bgcolor;
         font-size: 9px;
         border: none;
         margin-top: -35px;
@@ -4537,6 +4561,7 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 
     .rdtPicker td, .rdtPicker th {
         height: 22px;
+        font-weight: normal;
     }
 
     .rdtPicker th {
@@ -4545,6 +4570,11 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 
     .rdtPicker tfoot {
         border-top: none;
+    }
+
+    .form-control {
+        background-color: $input-fill-color;
+        border: none;
     }
 
     .days_delta {
@@ -4556,9 +4586,14 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
         input {
             width: 45px;
             float: right;
+            background-color: $input-fill-color;
+            border: none;
         }
     }
 
+
+
+    /* date range picker */
     .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months {
         width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);
         padding: 0;
@@ -4566,6 +4601,8 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 
     .date-picker-wrapper {
         background-color: transparent;
+        font-weight: normal;
+        color: #FFFFFF;
 
         .month-wrapper {
             width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding) !important;
@@ -4620,9 +4657,91 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     }
 }
 
+.logo {
+    vertical-align: middle;
+    width: 32px;
+    margin-top: -6px;
+    margin-left: 11px;
+    margin-right: 11px;
+}
+
+.export {
+    .logo {
+        margin-top: 0;
+    }
+}
+
 /**
 * tab location
 */
+
+.tab_loc {
+    .tab-content {
+    }
+
+    .map_container {
+        padding: 0px 14px 14px 14px;
+
+        label {
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+    }
+
+    .CI_container,
+    .region_container {
+        padding: 0 10px;
+        width: 100%;
+        height: 200px;
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            .form-control {
+                border: none;
+            }
+
+            .input-group-btn > .btn {
+                background-color: $input-fill-color;
+                border: none;
+            }
+        }
+    }
+
+    .separator {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .btn-group-justified > .btn, .btn-group-justified > .btn-group {
+        padding: 0 5px;
+    }
+
+    .btn-group-justified > .dropdown:first-child {
+        padding-left: 0;
+    }
+
+    .btn-group-justified > .dropdown:last-child {
+        padding-right: 0;
+    }
+
+    .btn-group {
+        button {
+            color: #FFFFFF;
+            background-color: $input-fill-color;
+            border: none;
+            font-size: 12px;
+        }
+    }
+
+    input {
+        background-color: $input-fill-color;
+    }
+
+}
 
 #locMap {
     margin: auto;
@@ -4663,6 +4782,7 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
         padding: 0;
         margin: 0;
         color: #FFFFFF;
+        font-family: "FZLTXHK--GBK1-0";
     }
 
     &.export {
@@ -4689,6 +4809,50 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 }
 
 /**
+* filter footer
+*/
+.sidebar-footer {
+    bottom: 0px;
+    clear: both;
+    display: block;
+    padding: 0;
+    position: fixed;
+    width: $menu-width-md - $menu-width-sm;
+    margin-left: $menu-width-sm;
+    padding: 6px 0;
+    background: $filter-bgcolor;
+    z-index:999;
+
+
+    .content {
+        line-height: 32px;
+        margin-left: $filter-item-padding;
+    }
+    .logo {
+        float: right;
+        margin-top: 0;
+        margin-right: $filter-item-padding;
+    }
+
+    /* reserved */
+    a {
+        padding: 7px 0 3px;
+        text-align: center;
+        width: 25%;
+        font-size: 17px;
+        display: block;
+        float: left;
+        background: #172D44;
+        cursor: pointer;
+
+        &:hover {
+            background: #425567
+        }
+    }
+
+}
+
+/**
 *  Foot
 */
 
@@ -4696,7 +4860,9 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     background-color: #2A3F54;
 
     li {
-        padding: 6px 10px 6px 10px;
+        padding: 0px 10px 0px 10px;
+        margin: 6px 0;
+        border-right: 1px solid rgba(255,255,255, 0.45);
 
         a {
             padding: 0px 20px 0px 20px;
@@ -4717,13 +4883,10 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     display: none;
 }
 
-.logo {
-    vertical-align: middle;
-    margin-top: -6px;
-    margin-left: 11px;
-    margin-right: 11px;
-}
-
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
     background-color: #0D89FF;
+}
+
+label {
+    font-weight: normal;
 }

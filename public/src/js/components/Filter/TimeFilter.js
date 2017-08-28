@@ -37,7 +37,7 @@ class TimeFilter extends React.Component {
 
 		var navRange = <Tabs defaultActiveKey={1} justified id="tab_time" className="tab_time filter_nav">
 				<Tab eventKey={1} title="精确案发时间" bsClass="timetab">
-					<div style={{height: "235px"}}>
+					<div style={{height: "215px"}}>
 						<Datetime locale="zh-cn" open={true}/>
 						<div className="days_delta">
 							<label>案发前</label>
@@ -50,7 +50,7 @@ class TimeFilter extends React.Component {
 					</div>
 				</Tab>
 				<Tab eventKey={2} title="大致案发时段" bsClass="timetab">
-						<div style={{height: "250px"}}>
+						<div style={{height: "290px"}}>
 							{timeRange}
 						</div>
 				</Tab>
