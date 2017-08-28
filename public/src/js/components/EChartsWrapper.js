@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /*
 	"color": [
 		"#26B99A",
@@ -569,64 +571,86 @@ function renderMap(id) {
 
 }
 
-function getPieOption() {
+function getPieOption(data) {
+
+	function getPhoneTypeList(data) {
+		var res = {},
+			mapIMEI2PhoneType = function(imei) {
+				// var map = {};
+
+				// if (map[imei] !== undefined) {
+				// 	return map[imei];
+				// } else {
+				// 	return 'else';
+				// }
+
+				return imei;
+			},
+			calc = function(imei, res) {
+				var t = mapIMEI2PhoneType(imei);
+
+				if (t === undefined || t === null) {
+					return ;
+				}
+				
+				if (res[t] !== undefined) {
+					res[t]++;
+				} else {
+					res[t] = 1;
+				}
+			};
+
+		for (var i = 0; i < data.length; i++) {
+			var datum = data[i];
+
+			calc(datum['f_IMEI'], res);
+			calc(datum['t_IMEI'], res);
+		}
+
+		return res;
+	}
+
+	var phoneTypes = getPhoneTypeList(data);
+	var attrElems = _.keys(phoneTypes);
+
+	var labelOption = {
+			normal: {
+                    position: 'outside',
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 14
+                    },
+                    formatter: '{b}\n\n{c}'
+			}
+		};
+	var chartData = _.map(phoneTypes, function(value, prop) {
+		return {
+			name: prop,
+			value: value
+			//label: labelOption
+		};
+	});
+
+	console.log(JSON.stringify(attrElems));
+
 	return {
 		tooltip: {
 			trigger: 'item',
 			formatter: "{a} <br/>{b} : {c} ({d}%)"
 		},
 		legend: {
-			x: 'center',
+			show: false,
+			x: 'left',
 			y: 'bottom',
-			data: ['Direct Access', 'E-mail Marketing', 'Union Ad', 'Video Ads', 'Search Engine']
-		},
-		toolbox: {
-			show: true,
-			feature: {
-				magicType: {
-					show: true,
-					type: ['pie', 'funnel'],
-					option: {
-						funnel: {
-							x: '25%',
-							width: '50%',
-							funnelAlign: 'left',
-							max: 1548
-						}
-					}
-				},
-				restore: {
-					show: true,
-					title: "Restore"
-				},
-				saveAsImage: {
-					show: true,
-					title: "Save Image"
-				}
-			}
+			data: attrElems
 		},
 		calculable: true,
 		series: [{
-			name: '访问来源',
+			name: '手机型号',
 			type: 'pie',
 			radius: '55%',
 			center: ['50%', '48%'],
-			data: [{
-				value: 335,
-				name: 'Direct Access'
-			}, {
-				value: 310,
-				name: 'E-mail Marketing'
-			}, {
-				value: 234,
-				name: 'Union Ad'
-			}, {
-				value: 135,
-				name: 'Video Ads'
-			}, {
-				value: 1548,
-				name: 'Search Engine'
-			}]
+			data: chartData
 		}]
 	};
 }
@@ -704,7 +728,7 @@ class EChartsWrapper {
 		this.theme = themeCfg;
 	}
 
-	renderChart(id, type, chartInstance) {
+	renderChart(id, type, chartInstance, data) {
 		this.init_echarts();
 
 		if (type === "table") {
@@ -718,20 +742,20 @@ class EChartsWrapper {
 				chartInstance = echarts.init(document.getElementById(id), this.theme);	
 			} 
 			
-			chartInstance.setOption(this.getChartOption(type));;
+			chartInstance.setOption(this.getChartOption(type, data));;
 		}
 
 		return chartInstance;
 	}
 
-	getChartOption(type) {
+	getChartOption(type, data) {
 		var fn = {
 			"bar": getBarOption,
 			"network": getNetworkOption,
 			"line": getLineOption,
 			"pie": getPieOption
 		}
-		return fn[type]();
+		return fn[type](data);
 	}
 
 	resizeChart(chartInstance) {

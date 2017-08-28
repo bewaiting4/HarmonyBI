@@ -24,6 +24,7 @@ class DocumentView extends React.Component {
 			id: "chart5",
 			type: "pie",
 			title: "嫌疑人手机型号",
+			data: true
 		}, {
 			id: "chart6",
 			type: "table",

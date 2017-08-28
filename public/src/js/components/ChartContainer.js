@@ -16,7 +16,7 @@ class ChartContainer extends React.Component {
 
 	componentDidMount() {
 		if (this.props.type !== 'table' ) {
-			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance);
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data);
 		}
 	}
 
