@@ -3,6 +3,6 @@ module.exports = {
     logging: false,
     requireLogin: false,
     db: {
-        url: 'mongodb://localhost/nodeblog-test'
+        url: 'mongodb://localhost/harmonybi'
     }
 };

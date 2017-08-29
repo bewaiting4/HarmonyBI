@@ -1,5 +1,8 @@
 module.exports = {
     // disbable logging for production
     logging: false,
-    requireLogin: true
+    requireLogin: true,
+    db: {
+        url: 'mongodb://localhost/harmonybi'
+    }
 };

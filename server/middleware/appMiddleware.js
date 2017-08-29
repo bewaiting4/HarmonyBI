@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var auth = require('./authMiddleware');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
+var config = require('../config/config');
 
 // setup global middleware here
 module.exports = function(app) {
@@ -10,9 +11,9 @@ module.exports = function(app) {
     app.use(morgan('dev'));
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
-    app.use(cookieParser('mstr'));
+    app.use(cookieParser(config.secret));
     app.use(expressSession({
-    	secret: 'mstr',
+    	secret: config.secret,
     	resave: false,
     	saveUninitialized: false
     }));

@@ -11,6 +11,7 @@
     "build": "node node_modules/webpack/bin/webpack --config ./webpack.dev.config.js --progress --colors"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
     "colors": "^1.1.2",
@@ -24,8 +25,9 @@
     "input-moment": "^0.3.4",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "mongoose": "^4.11.2",
+    "mongoose": "^4.11.8",
     "morgan": "^1.8.2",
+    "mssql": "^4.0.4",
     "promise-polyfill": "^6.0.2",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",

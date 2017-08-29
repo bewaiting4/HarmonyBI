@@ -55,7 +55,7 @@ BODY {
     visibility: hidden;
 }
 
-.box .error.show {
+.box .error.visible {
     visibility: visible;
 }
 

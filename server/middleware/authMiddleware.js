@@ -1,10 +1,10 @@
 var everyauth = require('everyauth');
 var logger = require('../util/logger');
 var config = require('../config/config');
-var users = require('../config/users.json');
+var User = require('../db/user/user');
 
 everyauth.everymodule.findUserById(function(req, userId, callback) {
-    callback(undefined, { userId: userId });
+    User.findById(userId, callback);
 });
 
 everyauth.password
@@ -12,44 +12,22 @@ everyauth.password
     .postLoginPath('/login') // Uri path that your login form POSTs to
     .loginView('login')
     .authenticate(function(login, password) {
-        
-        var user = users.find(function(user) {
-            return user.login === login && user.password === password;
-        });
 
-        if (user) {
-            logger.log('User logged in: ' + login);
+        var promise = this.Promise();
 
-            return {
-                id: user.id,
-                login: user.login,
-                name: user.name
-            };
-        } else {
-            return ['visible'];
-        }
+        User.findOne({ login, login })
+            .then(function(user) {
+                if (!user || !user.authenticate(password)) {
+                    return promise.fulfill(['visible']);
+                } else {
+                    logger.log(user.name + ' has logged in.');
 
+                    promise.fulfill(user);
+                }
 
+            });
 
-        // Either, we return a user or an array of errors if doing sync auth.
-        // Or, we return a Promise that can fulfill to promise.fulfill(user) or promise.fulfill(errors)
-        // `errors` is an array of error message strings
-        //
-        // e.g., 
-        // Example 1 - Sync Example
-        // if (usersByLogin[login] && usersByLogin[login].password === password) {
-        //   return usersByLogin[login];
-        // } else {
-        //   return ['Login failed'];
-        // }
-        //
-        // Example 2 - Async Example
-        // var promise = this.Promise()
-        // YourUserModel.find({ login: login}, function (err, user) {
-        //   if (err) return promise.fulfill([err]);
-        //   promise.fulfill(user);
-        // }
-        // return promise;
+        return promise;
     })
     .loginSuccessRedirect('/') // Where to redirect to after a login
     .getRegisterPath('/register') // Uri path to the registration page
@@ -66,13 +44,31 @@ everyauth.password
 
 module.exports = function(app) {
 
-    app.post('/login', function (req, res, next) {
+    app.post('/login', function(req, res, next) {
 
         var admin = req.body.admin;
 
+        // Admin login..
         if (admin === 'admin') {
-            res.redirect('/admin');
+            var login = req.body.login,
+                password = req.body.password;
+
+            User.findOne({ login, login })
+                .then(function(user) {
+                    if (!user || !user.admin || !user.authenticate(password)) {
+                        res.render('login', {
+                            locals: {
+                                errors: 'visible'
+                            }
+                        });
+                    } else {
+                        logger.log(user.name + ' has logged in as admin.');
+
+                        res.redirect('/admin');
+                    }
+                });
         } else {
+            // General user login.
             next();
         }
     });

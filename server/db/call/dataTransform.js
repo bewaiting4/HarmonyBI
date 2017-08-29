@@ -1,6 +1,6 @@
 var csv = require('csv-array');
-var logger = require('../util/logger');
-var EnumCallType = require('./EnumCallType');
+var logger = require('../../util/logger');
+var EnumCallType = require('./enumCallType');
 var fs = require('fs');
 
 var LOGGER_CLASS = 'Data Transforming: ';
@@ -304,7 +304,7 @@ var fnTransformer = function fnTransformer(data) {
     });
 
     // Write to file.
-    var stream = fs.createWriteStream('../routes/api/viz/vizData.json');
+    var stream = fs.createWriteStream('../../routes/api/viz/vizData.json');
     stream.once('open', function(fd) {
         stream.write('[\n');
 

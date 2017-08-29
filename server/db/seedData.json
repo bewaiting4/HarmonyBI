@@ -1,0 +1,19 @@
+{
+    "users": [
+    {
+        "login": "admin",
+        "password": "",
+        "name": "admin",
+        "admin": true
+    },
+    {
+        "login": "test",
+        "password": "test",
+        "name": "test"
+    },
+    {
+        "login": "zf",
+        "password": "zf",
+        "name": "张帆"
+    }]
+}
