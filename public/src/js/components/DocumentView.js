@@ -18,8 +18,9 @@ class DocumentView extends React.Component {
 			type: "map"
 		}, {
 			id: "chart4",
-			type: "line",
+			type: "combo",
 			title: "嫌疑人通话时长和次数趋势",
+			data: true
 		}, {
 			id: "chart5",
 			type: "pie",

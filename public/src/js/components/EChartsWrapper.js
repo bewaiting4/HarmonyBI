@@ -237,89 +237,151 @@ function getBarOption() {
 }
 
 //echart Line
-function getLineOption() {
-	return {
-		title: {
-			text: 'Line Graph',
-			subtext: 'Subtitle'
-		},
-		tooltip: {
-			trigger: 'axis'
-		},
-		legend: {
-			x: 220,
-			y: 40,
-			data: ['Intent', 'Pre-order', 'Deal']
-		},
-		toolbox: {
-			show: true,
-			feature: {
-				magicType: {
-					show: true,
-					title: {
-						line: 'Line',
-						bar: 'Bar',
-						stack: 'Stack',
-						tiled: 'Tiled'
-					},
-					type: ['line', 'bar', 'stack', 'tiled']
-				},
-				restore: {
-					show: true,
-					title: "Restore"
-				},
-				saveAsImage: {
-					show: true,
-					title: "Save Image"
-				}
+function getComboOption(data) {
+
+	function getBarInitialOption(number) {
+		return {
+			name: number,
+			type: 'bar',
+			data: []
+		};
+	}
+
+	function getLineInitialOption(number) {
+		return {
+			name: number,
+			type: 'line',
+			yAxisIndex: 1,
+			data: []
+		};
+	}
+
+	function getLegend1Data() {
+		return ["通话时长", "通话次数"];
+	}
+
+	function getLegend2Data() {
+		return [];
+	}
+
+	function parseData(data) {
+		var res = {},
+			hashNumber = {};
+
+		function hashData(date, number, duration) {
+			hashNumber[number] = true;
+
+			res[date][number] = res[date][number] || {duration: 0, count: 0};
+
+			if (!isNaN(duration)) {
+				res[date][number].duration += duration;
 			}
+
+			res[date][number].count++;
+		}
+
+		for (var i = 0; i < data.length; i++) {
+			var datum = data[i],
+				date = datum['call_start'].split(' ')[0],
+				time = datum['call_start'].split(' ')[1],
+				duration = parseInt(datum['call_duration']),
+				from = datum['f_number'],
+				to = datum['t_number'];
+
+			res[date] = res[date] || {};
+
+			// if ((from === "15199289734" || to === "15199289734")) {
+			// 	console.log(date + ' ' + duration);
+			// 	// continue;
+			// }
+
+
+
+			if (from) {
+				hashData(date, from, duration);
+			}
+
+			if (!!to && from !== to) {
+				hashData(date, to, duration);
+			}
+		}
+
+		function generateSeries(res) {
+			var durationSeries = {},
+				countSeries = {};
+
+			_.forEach(hashNumber, function(value, number) {
+				durationSeries[number] = getBarInitialOption(number);
+				// countSeries[number] = getLineInitialOption(number);
+
+				for (var i in res) {
+					var point = res[i][number];
+
+					if (point && point.duration) {
+						durationSeries[number].data.push(point.duration);
+					} else {
+						durationSeries[number].data.push(NaN);
+					}
+
+					// if (point && point.count) {
+					// 	countSeries[number].data.push(point.count);
+					// } else {
+					// 	countSeries[number].data.push(NaN);
+					// }
+
+				}
+			});
+
+			// return _.concat(_.values(durationSeries), _.values(countSeries));
+			return _.values(durationSeries);
+		}
+
+		return {
+			axis: _.keys(res),
+			legend: _.keys(hashNumber),
+			series: generateSeries(res)
+		}
+	}
+
+	var traces = parseData(data);
+
+	return {
+		tooltip: {
+			trigger: 'item'
+		},
+		grid: {
+			top: '10',
+			left: '60',
+			right: '60',
+			bottom: '60'
+		},
+		dataZoom: [
+			{
+				type: 'slider',
+				show: true,
+				start: 0, 
+				end: 10,
+				handleSize: 8
+			}
+		],
+		legend: {
+			show: false,
+			top: 'top',
+			left: 'left',
+			data: traces.legend
 		},
 		calculable: true,
 		xAxis: [{
 			type: 'category',
 			boundaryGap: false,
-			data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+			data: traces.axis
 		}],
 		yAxis: [{
 			type: 'value'
+		}, {
+			type: 'value'
 		}],
-		series: [{
-			name: 'Deal',
-			type: 'line',
-			smooth: true,
-			itemStyle: {
-				normal: {
-					areaStyle: {
-						type: 'default'
-					}
-				}
-			},
-			data: [10, 12, 21, 54, 260, 830, 710]
-		}, {
-			name: 'Pre-order',
-			type: 'line',
-			smooth: true,
-			itemStyle: {
-				normal: {
-					areaStyle: {
-						type: 'default'
-					}
-				}
-			},
-			data: [30, 182, 434, 791, 390, 30, 10]
-		}, {
-			name: 'Intent',
-			type: 'line',
-			smooth: true,
-			itemStyle: {
-				normal: {
-					areaStyle: {
-						type: 'default'
-					}
-				}
-			},
-			data: [1320, 1132, 601, 234, 120, 90, 20]
-		}]
+		series: traces.series
 	};
 }
 
@@ -631,8 +693,6 @@ function getPieOption(data) {
 		};
 	});
 
-	console.log(JSON.stringify(attrElems));
-
 	return {
 		tooltip: {
 			trigger: 'item',
@@ -752,8 +812,8 @@ class EChartsWrapper {
 		var fn = {
 			"bar": getBarOption,
 			"network": getNetworkOption,
-			"line": getLineOption,
-			"pie": getPieOption
+			"pie": getPieOption,
+			"combo": getComboOption
 		}
 		return fn[type](data);
 	}
