@@ -34,10 +34,12 @@ class ChartContainer extends React.Component {
 
 	getColumns() {
 		return [
-			{key: "f_number", name: "主叫号码"}, 
-			{key: "t_number", name: "被叫号码"},
-			{key: "call_start", name: "开始时间"},
-			{key: "call_duration", name: "通话时长"}
+			{key: "f_number", name: "本方号码"}, 
+			{key: "f_district", name: "本方归属地"},
+			{key: "t_number", name: "对方号码"},
+			{key: "t_district", name: "对方归属地"},
+			{key: "call_start", name: "通话开始时间"},
+			{key: "call_duration", name: "通话时长(秒)"}
 		];
 	}
 
