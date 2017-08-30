@@ -12,10 +12,12 @@ class DocumentView extends React.Component {
 			type: "network",
 		}, {
 			id: "chart2",
-			type: "map2"
+			type: "map2",
+			data: true
 		}, {
 			id: "chart3",
-			type: "map"
+			type: "map",
+			data: true
 		}, {
 			id: "chart4",
 			type: "combo",
@@ -72,7 +74,7 @@ class DocumentView extends React.Component {
   				isUnfold={this.props.isUnfold}
   				{...chart.title && {title: chart.title}}
   				{...chart.size && {size: chart.size}}
-  				{...chart.data && {data: me.props.data.vizData}}
+  				data={me.props.data.vizData}
   				{...{viewHeight: this.props.dim.height}}
   				onExpandCollapse={this.handleExpandCollapse}
   			/>);
