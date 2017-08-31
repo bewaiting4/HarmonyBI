@@ -3,16 +3,21 @@ var Schema = mongoose.Schema;
 
 // Schema definition.
 var FilterSchema = new Schema({
-    
+
     name: {
         type: String,
         required: true
-    }
+    },
 
     create_date: {
         type: Date,
         required: true
-    }
+    },
+
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
 
     date_from: {
         type: Date
@@ -35,26 +40,31 @@ var FilterSchema = new Schema({
     },
 
     ci_from: {
-        type: Array
+        type: String
     },
 
     ci_to: {
-        type: Array
+        type: String
     },
 
     district: {
-        type: Array
+        type: String
     },
 
     idigit: {
-        type: Array
+        type: String
     },
 
     number: {
-        type: Array
+        type: String
     }
-
-
 });
+
+FilterSchema.pre('validate', function(next) {
+
+    this.create_date = new Date().toISOString();
+
+    next();
+})
 
 module.exports = mongoose.model('filter', FilterSchema);

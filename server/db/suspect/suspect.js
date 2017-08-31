@@ -18,6 +18,7 @@ var SuspectSchema = new Schema({
         type: String
     },
 
+    // Should be one of EnumSuspectType
     type: {
         type: Number
     }

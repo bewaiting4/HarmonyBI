@@ -1,6 +1,7 @@
 var logger = require('../util/logger');
 var User = require('./user/user');
 var Suspect = require('./suspect/suspect');
+var Filter = require('./filter/filter');
 var seedData = require('./seedData.json');
 
 logger.log('Seeding the Database');
@@ -16,7 +17,7 @@ var createDoc = function(model, doc) {
 var cleanDB = function() {
     logger.log('... cleaning the DB');
 
-    var cleanPromises = [User]
+    var cleanPromises = [ User, Suspect, Filter ]
         .map(function(model) {
             return model.remove().exec();
         });
@@ -52,7 +53,22 @@ var createSuspects = function(data) {
         });
 };
 
-cleanDB()
+var createFilters = function(data) {
+
+    var promises = seedData.filters.map(function(filter) {
+        return createDoc(Filter, filter);
+    });
+
+    return Promise.all(promises)
+        .then(function(filters) {
+            logger.log('Seeded DB with ' + filters.length + ' filters.');
+
+            return filters;
+        });
+};
+
+module.exports = cleanDB()
     .then(createUsers)
     .then(createSuspects)
+    .then(createFilters)
     .catch(logger.log.bind(logger));

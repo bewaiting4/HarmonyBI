@@ -3,7 +3,20 @@ var logger = require('../../../util/logger');
 var _ = require('lodash');
 var Suspect = require('../../../db/suspect/suspect');
 
-// lock down the right routes :)
+/* Suspect data format sample:
+{
+    number: '',
+
+    // 身份证
+    idigit: '',
+    
+    name: '',
+    
+    type: EnumSuspectType
+}
+*/
+
+// Pre-precess the id.
 router.param('id', function(req, res, next, id) {
     Suspect.findById(id)
         .then(function(suspect) {
@@ -37,7 +50,7 @@ router.route('/')
 
             res.json({ _id: suspect._id });
         });
-    })
+    });
 
 router.route('/:id')
     .get(function(req, res, next) {

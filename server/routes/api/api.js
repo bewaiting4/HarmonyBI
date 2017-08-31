@@ -10,4 +10,6 @@ router.use('/viz', require('./viz/vizRouter'));
 
 router.use('/suspect', require('./suspect/suspectRouter'));
 
+router.use('/filter', require('./filter/filterRouter'));
+
 module.exports = router;

@@ -1,6 +1,7 @@
 var router = require('express').Router();
-var vizModel = require('./vizModel');
 var logger = require('../../../util/logger');
+var _ = require('lodash');
+var Filter = require('../../../db/filter/filter');
 
 /* Filter data format sample:
 {
@@ -25,19 +26,74 @@ var logger = require('../../../util/logger');
 }
 */
 
+// Pre-precess the id.
+router.param('id', function(req, res, next, id) {
+    Filter.findById(id)
+        .then(function(filter) {
+            if (!filter) {
+                next(new Error('No filter with that id'));
+            } else {
+                req.filter = filter;
+                next();
+            }
+        }, function(err) {
+            next(err);
+        });
+});
+
 router.route('/')
-    .post(function(req, res, next) {
-        var filter = req.body;
-
-        logger.log('FILTER: ');
-        logger.log(filter);
-
-        vizModel.getVizData(filter)
-            .then(function(viz) {
-                res.json(viz);
+    .get(function(req, res, next) {
+        Filter.find({})
+            .then(function(filters) {
+                res.json(filters);
             }, function(err) {
                 next(err);
             });
+    })
+    .post(function(req, res, next) {
+        var newFilter = new Filter(req.body);
+
+        // Attach the author.
+        if (req.session.auth) {
+            newFilter.user = req.session.auth._id;
+        }
+
+        newFilter.save(function(err, filter) {
+            if (err) {
+                next(err);
+            }
+
+            res.json({ _id: filter._id });
+        });
+    });
+
+router.route('/:id')
+    .get(function(req, res, next) {
+        var filter = req.filter;
+        res.json(filter);
+    })
+    .put(function(req, res, next) {
+        var filter = req.filter,
+            update = req.body;
+
+        _.merge(filter, update);
+
+        filter.save(function(err, saved) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(saved);
+            }
+        })
+    })
+    .delete(function(req, res, next) {
+        req.filter.remove(function(err, removed) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(removed);
+            }
+        });
     });
 
 module.exports = router;

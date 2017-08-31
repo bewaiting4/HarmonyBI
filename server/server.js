@@ -1,26 +1,7 @@
 var express = require('express');
-var app = express();
-var config = require('./config/config');
 var logger = require('./util/logger');
-var mongoose = require('mongoose');
 
-// Connect to MongDB.
-mongoose.connect(config.db.url, {
-    useMongoClient: true
-});
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on('error', function(err) {
-    logger.log(err);
-});
-db.once('open', function() {
-    logger.log('Mongo DB connection estabilished.')
-});
-
-// Prepare database data for dev.
-if (config.seed) {
-    require('./db/seed');
-}
+var app = express();
 
 // Setup app environment.
 app.set('view engine', 'ejs');

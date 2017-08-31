@@ -16,12 +16,27 @@
         "password": "zf",
         "name": "张帆"
     }],
+
     "suspects": [
     {
         "number": "15292971744",
         "idigit": "123456",
         "name": "张飞",
         "type": 1
-    }
-    ]
+    }],
+
+    "filters": [
+    {
+        "name": "sample",
+        "date_from": "2016-11-15 08:35:51",
+        "date_to": "2016-11-20 08:35:51",
+        "lat": "",
+        "long": "",
+        "radius": "",
+        "ci_from": "23351;23352",
+        "ci_to": "",
+        "district": "",
+        "idigit": "123456;789012",
+        "number": "15292971744"
+    }]
 }
