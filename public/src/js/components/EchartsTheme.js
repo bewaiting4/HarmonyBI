@@ -1,14 +1,14 @@
-{
+module.exports = {
 	"color": [
-		"#1266D8"
-		"#5085E3"
-		"#515DA9"
-		"#41A5C4"
-		"#DE0CA3"
-		"#088490"
-		"#F996F1"
-		"#8B56F0"
-		"#C79FBE"
+		"#1266D8",
+		"#5085E3",
+		"#515DA9",
+		"#41A5C4",
+		"#DE0CA3",
+		"#088490",
+		"#F996F1",
+		"#8B56F0",
+		"#C79FBE",
 		"#BF4B9A"
 	],
 	"title": {
@@ -132,4 +132,4 @@
 		"detail": { "textStyle": { "color": "auto" } }
 	},
 	"textStyle": { "fontFamily": "Arial, Verdana, sans-serif" }
-}
+};
