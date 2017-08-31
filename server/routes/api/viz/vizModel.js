@@ -40,10 +40,10 @@ vizModel = {
                 }
 
                 // 案发地点 - CI
-                if (filter.ci_from && row.f_CI && [].concat(filter.ci_from).indexOf(row.f_CI) === -1) {
+                if (filter.ci_from && row.f_CI && filter.ci_from.split(';').indexOf(row.f_CI) === -1) {
                     return false;
                 }
-                if (filter.ci_from && row.t_CI && [].concat(filter.ci_to).indexOf(row.t_CI) === -1) {
+                if (filter.ci_from && row.t_CI && filter.ci_to.split(';').indexOf(row.t_CI) === -1) {
                     return false;
                 }
 
@@ -54,10 +54,10 @@ vizModel = {
                 }
 
                 // 案发相关人员
-                if (filter.idigit && row.f_idigit && [].concat(filter.idigit).indexOf(row.f_idigit) === -1) {
+                if (filter.idigit && row.f_idigit && filter.idigit.split(';').indexOf(row.f_idigit) === -1) {
                     return false;
                 }
-                if (filter.number && row.f_number && [].concat(filter.number).indexOf(row.f_number) === -1) {
+                if (filter.number && row.f_number && filter.number.split(';').indexOf(row.f_number) === -1) {
                     return false;
                 }
 

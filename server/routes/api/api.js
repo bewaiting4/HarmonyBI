@@ -8,4 +8,6 @@ router.get('/', function(req, res) {
 
 router.use('/viz', require('./viz/vizRouter'));
 
+router.use('/suspect', require('./suspect/suspectRouter'));
+
 module.exports = router;

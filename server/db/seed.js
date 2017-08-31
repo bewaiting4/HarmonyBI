@@ -1,5 +1,6 @@
 var logger = require('../util/logger');
 var User = require('./user/user');
+var Suspect = require('./suspect/suspect');
 var seedData = require('./seedData.json');
 
 logger.log('Seeding the Database');
@@ -37,6 +38,21 @@ var createUsers = function(data) {
         });
 };
 
+var createSuspects = function(data) {
+
+    var promises = seedData.suspects.map(function(suspect) {
+        return createDoc(Suspect, suspect);
+    });
+
+    return Promise.all(promises)
+        .then(function(suspects) {
+            logger.log('Seeded DB with ' + suspects.length + ' suspects.');
+
+            return suspects;
+        });
+};
+
 cleanDB()
     .then(createUsers)
+    .then(createSuspects)
     .catch(logger.log.bind(logger));

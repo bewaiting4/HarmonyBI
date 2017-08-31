@@ -15,5 +15,13 @@
         "login": "zf",
         "password": "zf",
         "name": "张帆"
-    }]
+    }],
+    "suspects": [
+    {
+        "number": "15292971744",
+        "idigit": "123456",
+        "name": "张飞",
+        "type": 1
+    }
+    ]
 }
