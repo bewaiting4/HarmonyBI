@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import themeCfg from './EChartsTheme'
+import themeCfg from './EChartsThemeConfig';
 
 //echart Bar
 function getBarOption() {
@@ -89,13 +89,13 @@ function getBarOption() {
 }
 
 //echart Line
-function getComboOption(data) {
+function getComboOption(data, subType) {
 
 	function getBarInitialOption(number) {
 		return {
 			name: number,
 			type: 'bar',
-			stack: "时长",
+			stack: subType === 2 ? "时长" : null, 
 			data: []
 		};
 	}
@@ -238,7 +238,64 @@ function getComboOption(data) {
 	};
 }
 
-function getNetworkOption() {
+function getNetworkOption(data) {
+
+	function parseData(data) {
+		var mapping = {}
+
+		function setupData(from, to, duration) {
+			mapping[from] = mapping[from] || {};
+			mapping[from][to] = mapping[from][to] || {duration: 0, count: 0};
+			if (!isNaN(duration)) {
+				mapping[from][to].duration += duration;
+			}
+			mapping[from][to].count++;
+		}
+
+		for (var i = 0; i < data.length; i++) {
+			var datum = data[i],
+				from = datum['f_number'],
+				to = datum['t_number'],
+				duration = parseInt(datum['call_duration']);
+
+			if (!from || !to) {
+				continue ;
+			}
+
+			if (mapping[from] || !mapping[to]) {
+				setupData(from, to, duration);
+			} else {
+				setupData(to, from, duration);
+			}
+		}
+
+		var nodes = {},
+			links = [];
+
+		function getNodeInitialOption(name) {
+			return {name: name, value: 0, draggable: true}
+		}
+
+		for (var from in mapping) {
+			for (var to in mapping[from]) {
+				nodes[from] = nodes[from] || getNodeInitialOption(from);
+				nodes[to] = nodes[to] || getNodeInitialOption(to);
+
+				nodes[from].value += mapping[from][to].duration;
+				nodes[to].value += mapping[from][to].duration;
+
+				links.push({source: from, target: to, value: mapping[from][to].count});
+			}
+		}
+
+		return {
+			data: _.map(nodes, function(node, key) {return {name: key, value: node.value}}),
+			links: links
+		}
+	}
+
+	var traces = parseData(data);
+
 	return {
 		title: {
 			text: ''
@@ -263,32 +320,33 @@ function getNetworkOption() {
 
 			{
 				type: 'graph',
-				layout: 'force',
-				symbolSize: 45,
+				layout: 'circular',
+				symbolSize: 15,
 				focusNodeAdjacency: true,
 				roam: true,
-				categories: [{
-					name: '朋友',
-					itemStyle: {
-						normal: {
-							color: "#009800",
-						}
-					}
-				}, {
-					name: '战友',
-					itemStyle: {
-						normal: {
-							color: "#4592FF",
-						}
-					}
-				}, {
-					name: '亲戚',
-					itemStyle: {
-						normal: {
-							color: "#3592F",
-						}
-					}
-				}],
+				edgeLength: [5, 30],
+				// categories: [{
+				// 	name: '朋友',
+				// 	itemStyle: {
+				// 		normal: {
+				// 			color: "#009800",
+				// 		}
+				// 	}
+				// }, {
+				// 	name: '战友',
+				// 	itemStyle: {
+				// 		normal: {
+				// 			color: "#4592FF",
+				// 		}
+				// 	}
+				// }, {
+				// 	name: '亲戚',
+				// 	itemStyle: {
+				// 		normal: {
+				// 			color: "#3592F",
+				// 		}
+				// 	}
+				// }],
 				label: {
 					normal: {
 						show: true,
@@ -298,7 +356,7 @@ function getNetworkOption() {
 					}
 				},
 				force: {
-					repulsion: 1000
+					repulsion: 50
 				},
 				edgeSymbolSize: [4, 50],
 				edgeLabel: {
@@ -310,120 +368,8 @@ function getNetworkOption() {
 						formatter: "{c}"
 					}
 				},
-				data: [{
-					name: '徐贱云',
-					draggable: true,
-				}, {
-					name: '冯可梁',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '邓志荣',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '李荣庆',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '郑志勇',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '赵英杰',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '王承军',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '陈卫东',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '邹劲松',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '赵成',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '陈现忠',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '陶泳',
-					category: 1,
-					draggable: true,
-				}, {
-					name: '王德福',
-					category: 1,
-					draggable: true,
-				}],
-				links: [{
-					source: 0,
-					target: 1,
-					category: 0,
-					value: '朋友'
-				}, {
-					source: 0,
-					target: 2,
-					value: '战友'
-				}, {
-					source: 0,
-					target: 3,
-					value: '房东'
-				}, {
-					source: 0,
-					target: 4,
-					value: '朋友'
-				}, {
-					source: 1,
-					target: 2,
-					value: '表亲'
-				}, {
-					source: 0,
-					target: 5,
-					value: '朋友'
-				}, {
-					source: 4,
-					target: 5,
-					value: '姑姑'
-				}, {
-					source: 2,
-					target: 8,
-					value: '叔叔'
-				}, {
-					source: 0,
-					target: 12,
-					value: '朋友'
-				}, {
-					source: 6,
-					target: 11,
-					value: '爱人'
-				}, {
-					source: 6,
-					target: 3,
-					value: '朋友'
-				}, {
-					source: 7,
-					target: 5,
-					value: '朋友'
-				}, {
-					source: 9,
-					target: 10,
-					value: '朋友'
-				}, {
-					source: 3,
-					target: 10,
-					value: '朋友'
-				}, {
-					source: 2,
-					target: 11,
-					value: '同学'
-				}],
+				data: traces.data,
+				links: traces.links,
 				lineStyle: {
 					normal: {
 						opacity: 0.9,
@@ -607,12 +553,14 @@ function getPieOption(data) {
 			trigger: 'item',
 			formatter: "{a} <br/>{b} : {c} ({d}%)"
 		},
-		legend: {
-			show: false,
-			x: 'left',
-			y: 'bottom',
-			data: attrElems
-		},
+	    legend: {
+	        type: 'scroll',
+	        orient: 'vertical',
+	        right: 10,
+	        top: 20,
+	        bottom: 20,
+	        data: attrElems
+	    },
 		calculable: true,
 		series: [{
 			name: '手机型号',
@@ -679,6 +627,104 @@ function renderMap2(id) {
 
 }
 
+function getTCommOption(data) {
+
+	function renderItem(params, api) {
+	    var start = api.coord([api.value(0), api.value(3)]);
+	    var end = api.coord([api.value(1), api.value(2)]);
+	    var size = api.size([hashTimeStamp[api.value(1)] - hashTimeStamp[api.value(0)], hashNumber[api.value(3)] - hashNumber[api.value(2)]]);
+	    var style = api.style();
+
+	    return {
+	        type: 'rect',
+	        shape: {
+	            x: start[0],
+	            y: start[1],
+	            width: end[0] - start[0],
+	            height: end[1] - start[1]
+	        },
+	        style: style
+	    };
+	}
+
+	var hashNumber = {};
+	var hashTimeStamp = {};
+	var arrTimeStamp = [];
+	var series = [];
+	var idxNumber = 0;
+	for (var i = 10; i >= 0; i--) {
+		var datum = data[i],
+			callStart = datum['call_start'],
+			callEnd = datum['call_end'],
+			date = datum['call_start'].split(' ')[0],
+			time = datum['call_start'].split(' ')[1],
+			duration = parseInt(datum['call_duration']),
+			from = datum['f_number'],
+			to = datum['t_number'];
+
+		if (from && hashNumber[from] === undefined) {
+			hashNumber[from] = idxNumber++;
+		}
+
+		if (to && hashNumber[to] === undefined) {
+			hashNumber[to] = idxNumber++;
+		}
+
+		arrTimeStamp.push(callStart);
+		
+		if (!callEnd) {
+			var dd = new Date(callStart);
+			dd.setTime(dd.getTime() + (duration * 1000));
+			arrTimeStamp.push(dd);
+		}
+
+		series.push([callStart, callEnd, from, to]);
+	}
+
+	arrTimeStamp.sort(function(a, b) {
+		return (new Date(a)) - (new Date(b));
+	})
+
+	arrTimeStamp.forEach(function(t, idx) {
+		hashTimeStamp[t] = idx;
+	});
+
+	return {
+	    title: {
+	        text: '通话记录',
+	        left: 'center'
+	    },
+	    tooltip: {
+	    },
+	    xAxis: {
+	        type: 'time',
+	        data: _.keys(hashTimeStamp),
+	        axisline: {
+	        	show: true
+	        }
+	    },
+	    yAxis: {
+	    	type: 'category',
+	    	data: _.keys(hashNumber),
+	    	axisline: {
+	        	show: false
+	        }
+	    },
+	    series: [{
+	        type: 'custom',
+	        renderItem: renderItem,
+	        dimensions: ['call_start', 'call_end', 'f_number', 'to_number'],
+	        encode: {
+	            x: [0, 1],
+	            y: [2, 3],
+	            tooltip: [0, 1, 2, 3],
+	            itemName: 2
+	        },
+	        data: series
+	    }]
+	};
+}
+
 function renderTable(id) {
 	$('#' + id).dataTable();
 }
@@ -697,7 +743,7 @@ class EChartsWrapper {
 		this.theme = themeCfg;
 	}
 
-	renderChart(id, type, chartInstance, data) {
+	renderChart(id, type, chartInstance, data, subType) {
 		this.init_echarts();
 
 		if (type === "table") {
@@ -711,20 +757,21 @@ class EChartsWrapper {
 				chartInstance = echarts.init(document.getElementById(id), this.theme);	
 			} 
 			
-			chartInstance.setOption(this.getChartOption(type, data));;
+			chartInstance.setOption(this.getChartOption(type, data, subType));;
 		}
 
 		return chartInstance;
 	}
 
-	getChartOption(type, data) {
+	getChartOption(type, data, subType) {
 		var fn = {
 			"bar": getBarOption,
 			"network": getNetworkOption,
 			"pie": getPieOption,
-			"combo": getComboOption
+			"combo": getComboOption,
+			"tcomm": getTCommOption
 		}
-		return fn[type](data);
+		return fn[type](data, subType);
 	}
 
 	resizeChart(chartInstance) {
