@@ -12,10 +12,6 @@ class DocumentView extends React.Component {
 			type: "network",
 			title: "嫌疑人社会关系"
 		}, {
-			id: "chart2",
-			type: "map2",
-			title: "嫌疑人轨迹"
-		}, {
 			id: "chart3",
 			type: "map",
 			title: "嫌疑人社会关系地理分布"
@@ -24,16 +20,26 @@ class DocumentView extends React.Component {
 			type: "combo",
 			title: "嫌疑人通话时长和次数趋势"
 		}, {
+			id: "chart4-2",
+			type: "combo",
+			title: "嫌疑人通话时长和次数趋势",
+			subType: 2
+		}, {
 			id: "chart5",
 			type: "pie",
 			title: "嫌疑人手机型号"
+		}, {
+			id: "chart2",
+			type: "map2",
+			title: "嫌疑人轨迹"
 		}, {
 			id: "chart6",
 			type: "table",
 			title: "紧密联系人名单"
 		}, {
 			id: "chart7",
-			type: "bar",
+			type: "tcomm",
+			title: "嫌疑犯通话记录"
 		}, {
 			id: "chart8",
 			type: "table",
@@ -78,6 +84,7 @@ class DocumentView extends React.Component {
 				id={chart.id} 
 				type={chart.type} 
 				isUnfold={this.props.isUnfold}
+				{...chart.subType && {subType: chart.subType}}
 				{...chart.title && {title: chart.title}}
 				{...chart.size && {size: chart.size}}
 				data={me.props.data.vizData}
