@@ -1,6 +1,6 @@
-import React from 'react'
-import ReactDataGrid from 'react-data-grid'
-import EChartsWrapper from './EChartsWrapper.js'
+import React from 'react';
+import EChartsWrapper from './Viz/EChartsWrapper.js';
+import Grid from './Viz/Grid';
 
 class ChartContainer extends React.Component {
 	constructor(props) {
@@ -8,9 +8,6 @@ class ChartContainer extends React.Component {
 
 		this.wrapper = new EChartsWrapper(this);
 		this.toggleExpandCollapse = this.toggleExpandCollapse.bind(this);
-		this.rowGetter = this.rowGetter.bind(this);
-		this.getColumns = this.getColumns.bind(this);
-
 		this.chartInstance = null;
 	}
 
@@ -21,30 +18,19 @@ class ChartContainer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		this.wrapper.resizeChart(this.chartInstance);
+		if (this.props.type !== 'table' ) {
+			this.wrapper.resizeChart(this.chartInstance);
+		}
 	}
 
 	toggleExpandCollapse() {
 		this.props.onExpandCollapse(this.props.id, this.props.size === 12 ? false : true);
 	}
 
-  	rowGetter(i) {
-    	return this.props.data[i];
-  	}
-
-	getColumns() {
-		return [
-			{key: "f_number", name: "本方号码"}, 
-			{key: "f_district", name: "本方归属地"},
-			{key: "t_number", name: "对方号码"},
-			{key: "t_district", name: "对方归属地"},
-			{key: "call_start", name: "通话开始时间"},
-			{key: "call_duration", name: "通话时长(秒)"}
-		];
-	}
-
 	render() {
-		const chart_height = this.props.isUnfold ? 190 : 320;
+		const chart_height_regular = this.props.isUnfold ? 190 : 320;
+		const chart_height_full = this.props.viewHeight - 120;
+		const chart_height = this.props.size===12 ?  chart_height_full : chart_height_regular;
 		const myId = this.props.id || "mainb";
 		const title = this.props.title || "图表";
 		const sizeCss =
@@ -56,15 +42,9 @@ class ChartContainer extends React.Component {
 
 		var vizContent;
 		if (this.props.type === "table") {
-			vizContent = 
-				<ReactDataGrid
-        			columns={this.getColumns()}
-        			rowGetter={this.rowGetter}
-        			rowsCount={this.props.data.length}
-        			minHeight={this.props.size===12 ? (this.props.viewHeight - 120) : chart_height} 
-        		/>;
+			vizContent = <Grid data={this.props.data} height={chart_height}/>				
 		} else {
-			vizContent = <div id={myId} style={{ height: this.props.size===12 ? (this.props.viewHeight - 120) + 'px' : (chart_height + 'px') }} />;
+			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} />;
 		}
 
 		return (
