@@ -2,7 +2,7 @@ import React from 'react'
 import {Tabs, Tab, ButtonGroup, DropdownButton, MenuItem} from 'react-bootstrap'
 import Select from 'react-select';
 
-import EChartsWrapper from '../EChartsWrapper'
+import EChartsWrapper from '../Viz/EChartsWrapper'
 
 import style from 'react-select/dist/react-select.css';
 
@@ -20,6 +20,15 @@ class LocationFilter extends React.Component {
 	}
 
 	render() {
+		var options = [
+		  { value: 'one', label: 'One' },
+		  { value: 'two', label: 'Two' }
+		];
+
+		function logChange(val) {
+		  console.log("Selected: " + JSON.stringify(val));
+		}
+
 		return (
 			<Tabs defaultActiveKey={1} id="loc_filter" justified className="tab_loc filter_nav">
 				<Tab eventKey={1} title="地图定位" className="tab_map">
@@ -31,6 +40,13 @@ class LocationFilter extends React.Component {
 				<Tab eventKey={2} title="CI基站定位" className="tab_CI">
 					<div className="CI_container">
 						<label>主叫方</label>
+						<Select
+						  name="form-field-name"
+						  value="one"
+						  options={options}
+						  onChange={logChange}
+						/>		
+
 					    <div className="input-group">
         					<input type="text" className="form-control" placeholder="搜索CI基站" name="q"/>
         					<div className="input-group-btn">

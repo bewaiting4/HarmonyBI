@@ -30,7 +30,7 @@ class DocumentView extends React.Component {
 			title: "嫌疑人手机型号"
 		}, {
 			id: "chart2",
-			type: "map2",
+			type: "map",
 			title: "嫌疑人轨迹"
 		}, {
 			id: "chart6",
