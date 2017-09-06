@@ -76,7 +76,7 @@ module.exports = function(app) {
     app.use(everyauth.middleware());
 
     // Check authentication for all requests.
-    app.get('/', function(req, res, next) {
+    app.use(function(req, res, next) {
         if (!config.requireLogin || req.session.auth) {
             next();
         } else {

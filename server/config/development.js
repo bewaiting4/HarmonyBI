@@ -3,7 +3,7 @@ module.exports = {
     dev: true,
     logging: true,
     requireLogin: false,
-    seed: true,
+    seed: false,
     db: {
         //url: 'mongodb://localhost/harmonybi'
         url: 'mongodb://harmonybi:harmonybi@ds161713.mlab.com:61713/heroku_0rx6ndpb'

@@ -12,7 +12,9 @@ class Model {
     getFilter() {
         // TODO: Should get filter conditions from fitler panel.
         return {
-            test: 'abc'
+            date_from: '2016-11-20 00:00:01',
+            date_to: '2016-11-22 00:00:01',
+            suspects: '[{\"number\":\"15199289734\",\"type\":1}]'
         };
     }
 
@@ -32,37 +34,38 @@ class Model {
 
             this._lastFilter = filter;
 
-            callbacks = [ callback ];
+            callbacks = [callback];
 
             fetch('/api/viz', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(filter)
-            })
-            .then(res => res.json())
-            .then(resData => {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(filter)
+                })
+                .then(res => res.json())
+                .then(resData => {
 
-                callbacks.forEach(function(callback) {
-                    callback(resData);
+                    callbacks.forEach(function (callback) {
+                        callback(resData);
+                    });
+
+                    callbacks = [];
+
+                    me._vizData = resData;
+
+                    me._isLoading = false;
+                }).catch(ex => {
+                    console.log('Getting viz data failed', ex)
                 });
-
-                callbacks = [];
-
-                me._vizData = resData;
-
-                me._isLoading = false;
-            }).catch(ex => {
-                console.log('Getting viz data failed', ex)
-            });
         }
     }
 }
 
 var model;
 
-module.exports = function() {
+module.exports = function () {
     if (!model) {
         model = new Model();
     }

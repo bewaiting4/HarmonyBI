@@ -21,36 +21,41 @@ var Filter = require('../../../db/filter/filter');
     "district": [ ],
 
     // 案发相关人员
-    "idigit": [ ],
-    "number": [ ]
+    "suspects": [
+        {
+            "number": "123",
+            "idigit": "123",
+            "type": "123"
+        }
+    ]
 }
 */
 
 // Pre-precess the id.
-router.param('id', function(req, res, next, id) {
+router.param('id', function (req, res, next, id) {
     Filter.findById(id)
-        .then(function(filter) {
+        .then(function (filter) {
             if (!filter) {
                 next(new Error('No filter with that id'));
             } else {
                 req.filter = filter;
                 next();
             }
-        }, function(err) {
+        }, function (err) {
             next(err);
         });
 });
 
 router.route('/')
-    .get(function(req, res, next) {
+    .get(function (req, res, next) {
         Filter.find({})
-            .then(function(filters) {
+            .then(function (filters) {
                 res.json(filters);
-            }, function(err) {
+            }, function (err) {
                 next(err);
             });
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         var newFilter = new Filter(req.body);
 
         // Attach the author.
@@ -58,27 +63,29 @@ router.route('/')
             newFilter.user = req.session.auth._id;
         }
 
-        newFilter.save(function(err, filter) {
+        newFilter.save(function (err, filter) {
             if (err) {
                 next(err);
             }
 
-            res.json({ _id: filter._id });
+            res.json({
+                _id: filter._id
+            });
         });
     });
 
 router.route('/:id')
-    .get(function(req, res, next) {
+    .get(function (req, res, next) {
         var filter = req.filter;
         res.json(filter);
     })
-    .put(function(req, res, next) {
+    .put(function (req, res, next) {
         var filter = req.filter,
             update = req.body;
 
         _.merge(filter, update);
 
-        filter.save(function(err, saved) {
+        filter.save(function (err, saved) {
             if (err) {
                 next(err);
             } else {
@@ -86,8 +93,8 @@ router.route('/:id')
             }
         })
     })
-    .delete(function(req, res, next) {
-        req.filter.remove(function(err, removed) {
+    .delete(function (req, res, next) {
+        req.filter.remove(function (err, removed) {
             if (err) {
                 next(err);
             } else {
