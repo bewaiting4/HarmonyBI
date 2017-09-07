@@ -65,17 +65,31 @@ function getNetworkOption(data) {
 		animationEasingUpdate: 'quinticInOut',
 		label: {
 			normal: {
-				show: true,
+				show: false,
 				textStyle: {
 					fontSize: 12
 				},
 			}
 		},
-		legend: {
-			x: "center",
-			show: false,
-			data: ["朋友", "战友", '亲戚']
-		},
+		brush: {
+	        outOfBrush: {
+	            color: '#abc'
+	        },
+	        brushStyle: {
+	            borderWidth: 2,
+	            color: 'rgba(0,0,0,0.2)',
+	            borderColor: 'rgba(0,0,0,0.5)',
+	        },
+	        seriesIndex: [0, 1],
+	        throttleType: 'debounce',
+	        throttleDelay: 300,
+	        geoIndex: 0
+    	},
+		// legend: {
+		// 	x: "center",
+		// 	show: false,
+		// 	data: ["朋友", "战友", '亲戚']
+		// },
 		series: [
 
 			{
@@ -109,7 +123,7 @@ function getNetworkOption(data) {
 				// }],
 				label: {
 					normal: {
-						show: true,
+						show: false,
 						textStyle: {
 							fontSize: 12
 						},
@@ -121,7 +135,7 @@ function getNetworkOption(data) {
 				edgeSymbolSize: [4, 50],
 				edgeLabel: {
 					normal: {
-						show: true,
+						show: false,
 						textStyle: {
 							fontSize: 10
 						},
@@ -130,6 +144,14 @@ function getNetworkOption(data) {
 				},
 				data: traces.data,
 				links: traces.links,
+				itemStyle: {
+					normal: {
+						color: 'grey'
+					},
+					emphasis: {
+						color: 'blue'
+					}
+				},
 				lineStyle: {
 					normal: {
 						opacity: 0.9,

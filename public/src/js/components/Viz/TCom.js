@@ -61,10 +61,6 @@ function getTCommOption(data) {
 	});
 
 	return {
-	    title: {
-	        text: '通话记录',
-	        left: 'center'
-	    },
 	    tooltip: {
 	    },
 	    xAxis: {

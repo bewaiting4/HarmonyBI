@@ -10,17 +10,24 @@ class Grid extends React.Component {
 	}
 
   	rowGetter(i) {
+  		if (this.props.rowGetter) {
+  			return this.props.rowGetter(i);
+  		}
     	return this.props.data[i];
   	}
 
 	getColumns() {
+		if (this.props.getColumns) {
+			return this.props.getColumns();
+		}
+
 		return [
-			{key: "f_number", name: "本方号码"}, 
-			{key: "f_district", name: "本方归属地"},
-			{key: "t_number", name: "对方号码"},
-			{key: "t_district", name: "对方归属地"},
-			{key: "call_start", name: "通话开始时间"},
-			{key: "call_duration", name: "通话时长(秒)"}
+			{key: "f_number", name: "本方号码"},
+			{key: "f_district", name: "本方号码归属地"},
+			{key: "call_start", name: "通讯时间"},
+			{key: "call_duration", name: "通讯时长"},
+			{key: "t_number", name: "对方号码"}, 
+			{key: "t_district", name: "对方号码归属地"}
 		];
 	}
 

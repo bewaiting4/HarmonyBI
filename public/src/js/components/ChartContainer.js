@@ -1,6 +1,8 @@
 import React from 'react';
 import EChartsWrapper from './Viz/EChartsWrapper.js';
 import Grid from './Viz/Grid';
+import GridCallList from './Viz/GridCallList';
+import GridCandidateList from './Viz/GridCandidateList';
 
 class ChartContainer extends React.Component {
 	constructor(props) {
@@ -12,24 +14,41 @@ class ChartContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		if (this.props.type !== 'table' ) {
+		if (this.props.category === 'echarts' ) {
 			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.subType);
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.type !== 'table' ) {
+		if (this.props.category === 'echarts' ) {
 			this.wrapper.resizeChart(this.chartInstance);
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.subType);
 		}
 	}
 
 	toggleExpandCollapse() {
-		this.props.onExpandCollapse(this.props.id, this.props.size === 12 ? false : true);
+		this.props.onExpandCollapse(this.props.id, this.props.size === 12 ? false : true);	
+	}
+
+	getVizContent(myId, chart_height) {
+		var vizContent;
+
+		if (this.props.type === "tableCallList") {
+			vizContent = <GridCallList data={this.props.data} height={chart_height}/>
+		} else if (this.props.type === "tableSuspectList") {
+			vizContent = <GridCandidateList data={this.props.data} height={chart_height}/>
+		} else if (this.props.type === "tableContactList") {
+			vizContent = <GridCandidateList data={this.props.data} height={chart_height}/>
+		} else {
+			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} />;
+		}
+
+		return vizContent;
 	}
 
 	render() {
-		const chart_height_regular = this.props.isUnfold ? 190 : 320;
-		const chart_height_full = this.props.viewHeight - 120;
+		const chart_height_regular = Math.min((this.props.viewDim.width - 112) / 2, this.props.viewDim.height - 90); //this.props.isUnfold ? 190 : 320;
+		const chart_height_full = Math.min(this.props.viewDim.width - 112, this.props.viewDim.height - 90);
 		const chart_height = this.props.size===12 ?  chart_height_full : chart_height_regular;
 		const myId = this.props.id || "mainb";
 		const title = this.props.title || "图表";
@@ -39,13 +58,6 @@ class ChartContainer extends React.Component {
 			" col-sm-" +
 			this.props.size +
 			" col-xs-12";
-
-		var vizContent;
-		if (this.props.type === "table") {
-			vizContent = <Grid data={this.props.data} height={chart_height}/>				
-		} else {
-			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} />;
-		}
 
 		return (
 			<div className={sizeCss + " chartContainer"}>
@@ -64,7 +76,7 @@ class ChartContainer extends React.Component {
 						<div className="clearfix" />
 					</div>
 					<div className="x_content">
-						{vizContent}
+						{this.getVizContent(myId, chart_height)}
 					</div>
 				</div>
 			</div>
