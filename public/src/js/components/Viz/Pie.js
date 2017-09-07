@@ -38,7 +38,7 @@ function getPieOption(data) {
 	}
 
 	var phoneTypes = getPhoneTypeList(data);
-	var attrElems = _.keys(phoneTypes);
+//	var attrElems = _.keys(_.sortBy(phoneTypes, [function(value) {return value}], ['desc']));
 
 	var labelOption = {
 			normal: {
@@ -57,6 +57,8 @@ function getPieOption(data) {
 			//label: labelOption
 		};
 	});
+
+	var attrElems = _.take(_.sortBy(chartData, function(d) {return -d.value}), 5).map(function(d){return d.name;});
 
 	return {
 		tooltip: {

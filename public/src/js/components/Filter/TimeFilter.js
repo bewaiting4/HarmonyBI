@@ -11,16 +11,24 @@ class TimeFilter extends React.Component {
 	}
 
 	componentDidMount() {
+		var me = this;
+
 		$('#picker6').dateRangePicker({
 			inline:true,
 			container: '#picker6_container',
 			format: 'DD.MM.YYYY HH:mm',
 			language: 'cn',
+			defaultTime: new Date('2016-11-15'), // TODO get default date
+			defaultEndTime: new Date('2016-11-25'), // TODO get default date
 			alwaysOpen:true,
 			time: {
 				enabled: true
 			}
+		}).bind('datepicker-change', function(evt, obj) {
+			me.props.onSetDateRange(obj.date1, obj.date2);
 		});
+
+		//$('#picker6').data('dateRangePicker').setDateRange('2016-11-15','2016-11-25');
 	}
 
 	render() {

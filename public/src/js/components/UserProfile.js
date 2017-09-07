@@ -26,7 +26,7 @@ class UserProfile extends React.Component {
                     <span className='fa-stack fa-lg'>
                         <FontAwesome name='circle' stack='2x'/>
                         <FontAwesome name="user" stack='1x' style={{left: '-2px'}}/>
-                        <FontAwesome name="angle-down" stack='1x'style={{left: '6px', "font-size": '10px'}}/>
+                        <FontAwesome name="angle-down" stack='1x'style={{left: '6px', "fontSize": '10px'}}/>
                     </span>
 
                 </a>

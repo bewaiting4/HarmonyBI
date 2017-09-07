@@ -10,57 +10,78 @@ class DocumentView extends React.Component {
 		this.charts = [{
 			id: "chart1",
 			type: "network",
+			category: "echarts",
+			title: "嫌疑人社会关系"
+		}, {
+			id: "chart1-2",
+			type: "network",
+			category: "echarts",
 			title: "嫌疑人社会关系"
 		}, {
 			id: "chart3",
 			type: "map",
+			category: "echarts",			
+			title: "主嫌疑人社会关系地理分布"
+		}, {
+			id: "chart3-2",
+			type: "map",
+			category: "echarts",			
 			title: "嫌疑人社会关系地理分布"
+		}, {
+			id: "chart2",
+			type: "map",
+			category: "echarts",			
+			title: "主嫌疑人轨迹"
+		}, {
+			id: "chart2-2",
+			type: "map",
+			category: "echarts",			
+			title: "嫌疑人轨迹"
 		}, {
 			id: "chart4",
 			type: "combo",
+			category: "echarts",			
 			title: "嫌疑人通话时长和次数趋势"
 		}, {
 			id: "chart4-2",
 			type: "combo",
+			category: "echarts",
 			title: "嫌疑人通话时长和次数趋势",
 			subType: 2
 		}, {
 			id: "chart5",
+			category: "echarts",
 			type: "pie",
 			title: "嫌疑人手机型号"
 		}, {
-			id: "chart2",
-			type: "map",
-			title: "嫌疑人轨迹"
-		}, {
-			id: "chart6",
-			type: "table",
-			title: "紧密联系人名单"
-		}, {
 			id: "chart7",
 			type: "tcomm",
+			category: "echarts",
 			title: "嫌疑犯通话记录"
 		}, {
+			id: "chart6",
+			type: "tableContactList",
+			category: "reactgrid",
+			title: "紧密联系人名单"
+		}, {
 			id: "chart8",
-			type: "table",
+			type: "tableSuspectList",
+			category: "reactgrid",			
 			title: "嫌疑人名单"
 		}];
 
 		this.grid = [{
 			id: "chart9",
-			type: "table",
+			type: "tableCallList",
+			category: "reactgrid",			
 			title: "话单",
 			size: 12
 		}];
 
-		this.chartsInPage = {
-			0: this.charts,
-			1: this.grid
-		}
-
 		this.hashCharts = _.keyBy(this.charts, 'id');
 
 		this.handleExpandCollapse = this.handleExpandCollapse.bind(this);
+		this.getChartsInPage = this.getChartsInPage.bind(this);
 
 		this.state = {
 			fullScreen: ""
@@ -77,9 +98,16 @@ class DocumentView extends React.Component {
 		})		
 	}
 
+	getChartsInPage(tab) {
+		return {
+			0: this.state.fullScreen !== "" ? [_.assign(this.hashCharts[this.state.fullScreen], {size: 12})] : this.charts,
+			1: this.grid
+		}[tab];
+	}
+
 	render() {
 		let me = this;
-		let charts = (this.state.fullScreen !== "" ? [_.assign(this.hashCharts[this.state.fullScreen], {size: 12})] : this.chartsInPage[this.props.tab]).map((chart)=> <ChartContainer 
+		let charts = this.getChartsInPage(this.props.tab).map((chart)=> <ChartContainer 
 				key={chart.id} 
 				id={chart.id} 
 				type={chart.type} 
@@ -87,8 +115,9 @@ class DocumentView extends React.Component {
 				{...chart.subType && {subType: chart.subType}}
 				{...chart.title && {title: chart.title}}
 				{...chart.size && {size: chart.size}}
+				{...chart.category && {category: chart.category}}
 				data={me.props.data.vizData}
-				{...{viewHeight: this.props.dim.height}}
+				{...{viewDim: this.props.dim}}
 				onExpandCollapse={this.handleExpandCollapse}
 			/>);
 

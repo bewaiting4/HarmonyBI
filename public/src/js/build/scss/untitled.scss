@@ -4594,7 +4594,8 @@ BODY {
 
 
     /* date range picker */
-    .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months {
+    .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months,
+    .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months.has-gap {
         width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);
         padding: 0;
     }
@@ -4654,6 +4655,10 @@ BODY {
 
     .date-picker-wrapper .footer {
         padding-top: 0;
+    }
+
+    .date-picker-wrapper .gap {
+        display: none !important;
     }
 }
 

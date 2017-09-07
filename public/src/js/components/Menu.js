@@ -2,9 +2,7 @@ import React from "react";
 import _ from "lodash";
 import FontAwesome from "react-fontawesome";
 
-import FilterPortlet from "./Filter/FilterPortlet";
-import LocationFilter from "./Filter/LocationFilter"
-import TimeFilter from "./Filter/TimeFilter"
+import FilterPanel from './Filter/FilterPanel'
 
 import style from "./Menu.css";
 
@@ -15,13 +13,9 @@ class Menu extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleOpenFilter = this.handleOpenFilter.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
-        this.dftState = {
-            onTimeFilter: false,
-            onLocationFilter: false,
-            onIdNumberFilter: false,
-        };
+        this.handleSetDateRange = this.handleSetDateRange.bind(this);
+
         this.filters = [];
-        this.state = _.assignIn({}, this.dftState);
     }
 
     handleClick(e) {
@@ -33,30 +27,17 @@ class Menu extends React.Component {
         this.props.onExport();
     }
 
-    componentDidMount() {
-        if (!this.props.isUnfold) {
-            this.setState(_.assign({}, this.dftState));
-        }
-    }
-
     handleOpenFilter(name) {
         if (!this.props.isUnfold) {
             this.props.onToggleChange();
         }
+    }
 
-        this.setState(function(prevState, props) {
-            let res = {}; 
-            const prop = "on" + name + "Filter";
-            res[prop] = !prevState[prop];
-
-            return res;
-        });
+    handleSetDateRange(date1, date2) {
+        this.props.onSetDateRange(date1, date2);
     }
 
     render() {
-        const onTimeFilter = this.state.onTimeFilter;
-        const onLocationFilter = this.state.onLocationFilter;
-        const onIdNumberFilter = this.state.onIdNumberFilter;
         const isUnfold = this.props.isUnfold;
 
         return (
@@ -100,47 +81,7 @@ class Menu extends React.Component {
 
                     <div className="clearfix"/>
 
-                    {/*sidebar menu*/}
-                    <div
-                        id="sidebar-menu"
-                        className="main_menu_side hidden-print main_menu"
-                    >
-                        <div className="menu_section">
-                            <ul className="nav side-menu">
-                                <FilterPortlet
-                                    name="Time"
-                                    text="案发时间"
-                                    isUnfold={isUnfold}
-                                    onOpenFilter={this.handleOpenFilter}
-                                    icon={onTimeFilter ? "date-set": "date-unset"}
-                                    onFilter={onTimeFilter}
-                                >
-                                    <TimeFilter/>
-                                </FilterPortlet>
-
-                                <FilterPortlet
-                                    name="Location"
-                                    text="案发地点"
-                                    isUnfold={isUnfold}
-                                    onOpenFilter={this.handleOpenFilter}
-                                    icon={onLocationFilter ? "map-set": "map-unset"}
-                                    onFilter={onLocationFilter}
-                                >
-                                    <LocationFilter/>
-                                </FilterPortlet>
-
-                                <FilterPortlet
-                                    name="IdNumber"
-                                    text="案发相关人员"
-                                    isUnfold={isUnfold}
-                                    onOpenFilter={this.handleOpenFilter}
-                                    icon={onIdNumberFilter ? "id-set": "id-unset"}
-                                    onFilter={onIdNumberFilter}
-                                />
-                            </ul>
-                        </div>
-                    </div>
-                    {/*sidebar menu*/}
+                    <FilterPanel isUnfold={isUnfold} onOpenFilter={this.handleOpenFilter} onSetDateRange={this.handleSetDateRange}/>
 
                     {/*sidebar menu*/}
                     <div id="sidebar-footer" className="sidebar-footer">

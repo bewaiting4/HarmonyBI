@@ -21,6 +21,8 @@ class AppContainer extends React.Component {
 
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleTabSwitch = this.handleTabSwitch.bind(this);
+		this.handleSetDateRange = this.handleSetDateRange.bind(this);
+
 		this.exportPDF = this.exportPDF.bind(this);
 		this.dataModel = Model();
 
@@ -42,17 +44,42 @@ class AppContainer extends React.Component {
 			}.bind(this)
 		);
 
+		// this.dataModel.getSuspectData(
+		// 	function(data) {
+		// 		this.suspects = data;
+
+		// 		this.dataModel.addSuspect(
+		// 			{
+		// 				number: '233434',
+		// 				idigit: '11111111111',
+		// 				type: 0
+		// 			},
+		// 			function(data) {
+		// 				console.log(data);
+		// 			}.bind(this)
+		// 		);
+
+		// 		this.dataModel.getSuspect(
+		// 			this.suspects[0]._id,
+		// 			function(data) {
+		// 				console.log(data);
+		// 			}.bind(this)
+		// 		);
+
+
+		// 	}.bind(this)
+		// );
+
 		this.updateWindowDimensions();
 	  	window.addEventListener('resize', this.updateWindowDimensions);
 	}
 
 	componentWillUnmount() {
-	  window.removeEventListener('resize', this.updateWindowDimensions);
+		window.removeEventListener('resize', this.updateWindowDimensions);
 	}
 
 	updateWindowDimensions() {
-		console.log('update dim');
-	  this.setState({ width: window.innerWidth, height: window.innerHeight + $(window).scrollTop() });
+		this.setState({ width: window.innerWidth, height: window.innerHeight + $(window).scrollTop() });
 	}
 
 	handleToggle() {
@@ -65,6 +92,19 @@ class AppContainer extends React.Component {
 
 	handleTabSwitch(tabIdx) {
 		this.setState({activeTab: tabIdx});
+	}
+
+	handleSetDateRange(date1, date2) {
+		this.dataModel.setFilter({
+			'date_from': new Date(date1),
+			'date_to': new Date(date2)
+		});
+
+		this.dataModel.getVizData(
+			function(data) {
+				this.setState({ docData: data });
+			}.bind(this)
+		);
 	}
 
 	exportPDF() {
@@ -123,9 +163,10 @@ class AppContainer extends React.Component {
 								isUnfold={isUnfold}
 								onExport={this.exportPDF}
 								dim={{height: this.state.height}}
+								onSetDateRange={this.handleSetDateRange}
 							/>
 							<TopNav />
-							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - 360, height: this.state.height - 44 - 54}} isUnfold={this.state.isUnfold}/>
+							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} isUnfold={this.state.isUnfold}/>
 							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>
