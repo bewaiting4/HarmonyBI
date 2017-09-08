@@ -9,61 +9,63 @@ var Suspect = require('../../../db/suspect/suspect');
 
     // 身份证
     idigit: '',
-    
+
     name: '',
-    
+
     type: EnumSuspectType
 }
 */
 
 // Pre-precess the id.
-router.param('id', function(req, res, next, id) {
+router.param('id', function (req, res, next, id) {
     Suspect.findById(id)
-        .then(function(suspect) {
+        .then(function (suspect) {
             if (!suspect) {
                 next(new Error('No suspect with that id'));
             } else {
                 req.suspect = suspect;
                 next();
             }
-        }, function(err) {
+        }, function (err) {
             next(err);
         });
 });
 
 router.route('/')
-    .get(function(req, res, next) {
+    .get(function (req, res, next) {
         Suspect.find({})
-            .then(function(suspects) {
+            .then(function (suspects) {
                 res.json(suspects);
-            }, function(err) {
+            }, function (err) {
                 next(err);
             });
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         var newSuspect = new Suspect(req.body);
 
-        newSuspect.save(function(err, suspect) {
+        newSuspect.save(function (err, suspect) {
             if (err) {
                 next(err);
             }
 
-            res.json({ _id: suspect._id });
+            res.json({
+                _id: suspect._id
+            });
         });
     });
 
 router.route('/:id')
-    .get(function(req, res, next) {
+    .get(function (req, res, next) {
         var suspect = req.suspect;
         res.json(suspect);
     })
-    .put(function(req, res, next) {
+    .put(function (req, res, next) {
         var suspect = req.suspect,
             update = req.body;
 
         _.merge(suspect, update);
 
-        suspect.save(function(err, saved) {
+        suspect.save(function (err, saved) {
             if (err) {
                 next(err);
             } else {
@@ -71,8 +73,8 @@ router.route('/:id')
             }
         })
     })
-    .delete(function(req, res, next) {
-        req.suspect.remove(function(err, removed) {
+    .delete(function (req, res, next) {
+        req.suspect.remove(function (err, removed) {
             if (err) {
                 next(err);
             } else {
@@ -82,13 +84,18 @@ router.route('/:id')
     });
 
 router.route('/number/:number')
-    .get(function(req, res, next) {
-        Suspect.find({ number: req.params.number })
-            .then(function(suspects) {
+    .get(function (req, res, next) {
+        Suspect.find({
+                number: req.params.number
+            })
+            .then(function (suspects) {
                 res.json(suspects);
-            }, function(err) {
+            }, function (err) {
                 next(err);
             });
     });
 
+/**
+ * @deprecated since suspects is part of filter now.
+ */
 module.exports = router;

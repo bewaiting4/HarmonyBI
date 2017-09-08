@@ -24,4 +24,7 @@ var SuspectSchema = new Schema({
     }
 });
 
+/**
+ * @deprecated since suspects is part of filter now.
+ */
 module.exports = mongoose.model('suspect', SuspectSchema);
