@@ -73,9 +73,9 @@ class FilterPanel extends React.Component {
                             isUnfold={isUnfold}
                             onOpenFilter={this.handleOpenFilter}
                             icon={onLocationFilter ? "map-set": "map-unset"}
-                            onFilter={onLocationFilter}
+                            onFilter={onLocationFilter}                            
                         >
-                            <LocationFilter/>
+                            <LocationFilter CIData={this.props.CIData}/>
                         </FilterPortlet>
 
                         <FilterPortlet

@@ -11,7 +11,7 @@ class DocumentView extends React.Component {
 			id: "chart1",
 			type: "network",
 			category: "echarts",
-			title: "嫌疑人社会关系"
+			title: "主嫌疑人社会关系"
 		}, {
 			id: "chart1-2",
 			type: "network",

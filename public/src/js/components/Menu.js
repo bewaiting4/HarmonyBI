@@ -81,7 +81,7 @@ class Menu extends React.Component {
 
                     <div className="clearfix"/>
 
-                    <FilterPanel isUnfold={isUnfold} onOpenFilter={this.handleOpenFilter} onSetDateRange={this.handleSetDateRange}/>
+                    <FilterPanel isUnfold={isUnfold} onOpenFilter={this.handleOpenFilter} onSetDateRange={this.handleSetDateRange} CIData={this.props.CIData}/>
 
                     {/*sidebar menu*/}
                     <div id="sidebar-footer" className="sidebar-footer">

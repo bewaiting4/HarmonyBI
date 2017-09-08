@@ -15,6 +15,21 @@ import style from "./AppContainer.css";
 require('../build/scss/untitled.scss');
 //require('../build/scss/custom.scss');
 
+function parseCIData(data) {
+	var dataLen = data.length,
+		hash = {};
+
+	for (var i = 0; i < dataLen; i++) {
+		var fCI = data[i]['f_CI'],
+			tCI = data[i]['t_CI'];
+
+		hash[fCI] = true;
+		hash[tCI] = true;
+	}
+
+	return hash;
+}
+
 class AppContainer extends React.Component {
 	constructor() {
 		super();
@@ -22,6 +37,8 @@ class AppContainer extends React.Component {
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleTabSwitch = this.handleTabSwitch.bind(this);
 		this.handleSetDateRange = this.handleSetDateRange.bind(this);
+
+		this.updateVizDataModel = this.updateVizDataModel.bind(this);
 
 		this.exportPDF = this.exportPDF.bind(this);
 		this.dataModel = Model();
@@ -40,7 +57,7 @@ class AppContainer extends React.Component {
 	componentDidMount() {
 		this.dataModel.getVizData(
 			function(data) {
-				this.setState({ docData: data });
+				this.updateVizDataModel(data);
 			}.bind(this)
 		);
 
@@ -82,6 +99,11 @@ class AppContainer extends React.Component {
 		this.setState({ width: window.innerWidth, height: window.innerHeight + $(window).scrollTop() });
 	}
 
+	updateVizDataModel(data) {
+ 	 	this.CIData = parseCIData(data.vizData);
+		this.setState({ docData: data });
+	}
+
 	handleToggle() {
 		this.setState(function(prevState, props) {
 			return {
@@ -102,7 +124,7 @@ class AppContainer extends React.Component {
 
 		this.dataModel.getVizData(
 			function(data) {
-				this.setState({ docData: data });
+				this.updateVizDataModel(data);
 			}.bind(this)
 		);
 	}
@@ -164,6 +186,7 @@ class AppContainer extends React.Component {
 								onExport={this.exportPDF}
 								dim={{height: this.state.height}}
 								onSetDateRange={this.handleSetDateRange}
+								CIData={this.CIData}
 							/>
 							<TopNav />
 							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} isUnfold={this.state.isUnfold}/>
