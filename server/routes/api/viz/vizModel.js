@@ -1,18 +1,15 @@
 var vizData = require('./vizData.json');
 var logger = require('../../../util/logger');
-var viz = require('../../../db/viz/viz');
+var call = require('../../../db/call/call');
+var service = require('../../../db/service/service');
 
 function getVizData(filter) {
 
     // Get result from database.
-    return viz.getData(filter)
-        .then(function (result) {
-            return {
-                vizData: result.resolvedCalls,
-                suspects: result.suspects
-            };
-        }, function (err) {
-            logger.error(err);
+    return call.getData(filter)
+        .then(function (modelData) {
+            // Get number service status and
+            return service.getData(modelData.numbers, modelData);
         });
 }
 

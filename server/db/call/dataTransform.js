@@ -17,7 +17,7 @@ function copyIfNone(from, to) {
 function transform(data) {
     var callMap = {},
         resolvedCalls = [],
-        suspects = {},
+        numbers = {},
         i,
         row,
         key,
@@ -38,8 +38,8 @@ function transform(data) {
         row = data[i];
 
         // Collect all involved numbers in a list.
-        suspects[row.f_number] = true;
-        suspects[row.t_number] = true;
+        numbers[row.f_number] = true;
+        numbers[row.t_number] = true;
 
         switch (parseInt(row.type_code)) {
             // 主叫
@@ -294,7 +294,6 @@ function transform(data) {
         }
     }
 
-
     // Collect rest calls.
     for (key in callMap) {
         row = callMap[key];
@@ -310,8 +309,8 @@ function transform(data) {
     });
 
     return {
-        resolvedCalls: resolvedCalls,
-        suspects: Object.keys(suspects)
+        vizData: resolvedCalls,
+        numbers: Object.keys(numbers)
     }
 }
 
@@ -336,23 +335,12 @@ function writeToFile(resolvedCalls) {
 function parseCSV() {
     // Read and parse csv data.
     csv.parseCSV("calldata.csv", function (data) {
-        var date1 = new Date();
 
-        var transformedData = transform(data);
+        var modelData = transform(data);
 
-        console.log(transformedData.suspects.length);
-        transformedData.suspects.sort();
-        transformedData.suspects.forEach(function (c) {
-            console.log(c);
-        });
-
-        console.log(new Date() - date1);
-
-        //writeToFile(transformedData.resolvedCalls);
+        //writeToFile(modelData.vizData);
     }, true);
 }
-
-parseCSV();
 
 module.exports = {
     transform: transform,
