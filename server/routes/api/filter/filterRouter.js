@@ -21,7 +21,7 @@ var Filter = require('../../../db/filter/filter');
     "district": [ ],
 
     // 案发相关人员
-    "suspects": [
+    "numbers": [
         {
             "number": "123",
             "idigit": "123",
