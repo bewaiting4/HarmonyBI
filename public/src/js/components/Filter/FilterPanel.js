@@ -3,6 +3,7 @@ import style from "./FilterPanel.css";
 import FilterPortlet from "./FilterPortlet";
 import LocationFilter from "./LocationFilter"
 import TimeFilter from "./TimeFilter"
+import SuspectFilter from "./SuspectFilter"
 
 
 class FilterPanel extends React.Component {
@@ -85,7 +86,9 @@ class FilterPanel extends React.Component {
                             onOpenFilter={this.handleOpenFilter}
                             icon={onIdNumberFilter ? "id-set": "id-unset"}
                             onFilter={onIdNumberFilter}
-                        />
+                        >
+                        	<SuspectFilter />
+                        </FilterPortlet>
                     </ul>
                 </div>
             </div>
