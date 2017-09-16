@@ -12,9 +12,10 @@ class Model {
     getFilter() {
         // TODO: Should get filter conditions from fitler panel.
         return this.condition || {
-            date_from: '2016-11-20 00:00:01',
-            date_to: '2016-11-22 00:00:01',
-            suspects: '[{\"number\":\"15199289734\",\"type\":1}]'
+            date_from: '2017-02-12 19:20:01',
+            date_to: '2017-02-15 19:20:01',
+            //ci_from: '23631',
+            numbers: '[{\"number\":\"15199289734\",\"type\":1,\"serviceSpan\":2},{\"number\":\"15001505425\",\"type\":1,\"serviceSpan\":2}]'
         };
     }
 
@@ -24,81 +25,81 @@ class Model {
 
     getSuspectData(callback) {
         fetch('/api/suspect', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(resData => {
-            callback(resData);
-        }).catch(ex => {
-            console.log('Getting suspect data failed', ex)
-        });
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(resData => {
+                callback(resData);
+            }).catch(ex => {
+                console.log('Getting suspect data failed', ex)
+            });
     }
 
     getSuspect(id, callback) {
         fetch('/api/suspect/' + id, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-        .then(res => res.json())
-        .then(resData => {
-            callback(resData);
-        }).catch(ex => {
-            console.log('Getting suspect data failed', ex)
-        });        
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(res => res.json())
+            .then(resData => {
+                callback(resData);
+            }).catch(ex => {
+                console.log('Getting suspect data failed', ex)
+            });
 
     }
 
     addSuspect(info, callback) {
         fetch('/api/suspect', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(info)
-        })
-        .then(res => res.json())
-        .then(resData => {
-            callback(resData);
-        }).catch(ex => {
-            console.log('Getting suspect data failed', ex)
-        });        
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(info)
+            })
+            .then(res => res.json())
+            .then(resData => {
+                callback(resData);
+            }).catch(ex => {
+                console.log('Getting suspect data failed', ex)
+            });
     }
 
     updateSuspect(id, info, callback) {
-        fetch('/api/suspect/:' + id,  {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(info)
-        })
-        .then(res => res.json())
-        .then(resData => {
-            callback(resData);
-        }).catch(ex => {
-            console.log('Getting suspect data failed', ex)
-        });                
+        fetch('/api/suspect/:' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(info)
+            })
+            .then(res => res.json())
+            .then(resData => {
+                callback(resData);
+            }).catch(ex => {
+                console.log('Getting suspect data failed', ex)
+            });
     }
 
     deleteSuspect(info, callback) {
         fetch('/api/suspect', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(info)
-        })
-        .then(res => res.json())
-        .then(resData => {
-            callback(resData);
-        }).catch(ex => {
-            console.log('Getting suspect data failed', ex)
-        });                
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(info)
+            })
+            .then(res => res.json())
+            .then(resData => {
+                callback(resData);
+            }).catch(ex => {
+                console.log('Getting suspect data failed', ex)
+            });
     }
 
 

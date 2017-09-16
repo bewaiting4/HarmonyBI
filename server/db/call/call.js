@@ -60,10 +60,8 @@ function filterData(data, filter) {
         }
 
         // 案发地点 - CI
-        if (filter.ci_from.length > 0 && filter.ci_from.indexOf(row.f_CI) === -1) {
-            return false;
-        }
-        if (filter.ci_to.length > 0 && filter.ci_to.indexOf(row.t_CI) === -1) {
+        if (filter.ci_from.length > 0 && filter.ci_from.indexOf(row.CI) === -1 &&
+            filter.ci_to.length > 0 && filter.ci_to.indexOf(row.CI) === -1) {
             return false;
         }
 
@@ -73,22 +71,18 @@ function filterData(data, filter) {
         }
 
         // 案发相关人员
-        if (filter.idigit && row.f_idigit && filter.idigit.split(';').indexOf(row.f_idigit) === -1) {
-            return false;
-        }
-        if (filter.number && row.f_number && filter.number.split(';').indexOf(row.f_number) === -1) {
-            return false;
-        }
-        if (filter.suspects.length > 0) {
-            var hasSuspects = filter.suspects.filter(function (suspect) {
-                return parseInt(suspect.type, 10) !== enumSuspectType.suspect ||
-                    suspect.number === row.f_number &&
-                    suspect.idigit === row.f_idiget;
+        var hasSuspects = filter.suspects.filter(function (suspect) {
+                return suspect.number === row.f_number || suspect.number === row.t_number;
+            }).length > 0,
+            hasUnknowns = filter.unknowns.filter(function (unknown) {
+                return unknown.number === row.f_number || unknown.number === row.t_number;
+            }).length > 0,
+            hasVictims = filter.victims.filter(function (victim) {
+                return victim.number === row.f_number || victim.number === row.t_number;
             }).length > 0;
 
-            if (!hasSuspects) {
-                return false;
-            }
+        if (!hasSuspects && !hasUnknowns || hasVictims) {
+            return false;
         }
 
         return true;
@@ -122,6 +116,8 @@ function getDataFromCVS(filter) {
             data = filterData(data, filter);
 
             var transformedData = dataTransform.transform(data);
+
+            transformedData.filter = filter;
 
             resolve(transformedData);
 

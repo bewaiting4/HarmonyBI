@@ -26,20 +26,18 @@ function transform(data) {
     logger.log(LOGGER_CLASS + 'Start transforming ' + data.length + ' data entries.');
 
     // Sort
-    logger.log(LOGGER_CLASS + 'Sorting...');
     data.sort(function (row1, row2) {
         return new Date(row1.date_time) - new Date(row2.date_time);
     });
 
     // Merging
-    logger.log(LOGGER_CLASS + 'Merging...');
     for (i = 0; i < data.length; i++) {
 
         row = data[i];
 
         // Collect all involved numbers in a list.
-        numbers[row.f_number] = true;
-        numbers[row.t_number] = true;
+        numbers[row.f_number] = {};
+        numbers[row.t_number] = {};
 
         switch (parseInt(row.type_code)) {
             // 主叫
@@ -298,8 +296,12 @@ function transform(data) {
     for (key in callMap) {
         row = callMap[key];
 
-        if (row && row.f_number && row.f_number !== '' && row.t_number && row.t_number !== '') {
-            resolvedCalls.push(callMap[key]);
+        if (row && row.f_number && row.t_number) {
+            // Collect all involved numbers in a list.
+            numbers[row.f_number] = {};
+            numbers[row.t_number] = {};
+
+            resolvedCalls.push(row);
         }
     }
 
@@ -310,7 +312,7 @@ function transform(data) {
 
     return {
         vizData: resolvedCalls,
-        numbers: Object.keys(numbers)
+        numbers: numbers
     }
 }
 

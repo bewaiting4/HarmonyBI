@@ -88,11 +88,11 @@ function calculateServiceSpan(data, numbers) {
         var time = ((row.end ? new Date(row.end) : new Date()) - new Date(row.start));
 
         serviceSpan[row.number] = {
-            start: row.start,
-            end: row.end,
+            serviceStart: row.start,
+            serviceEnd: row.end,
             inUse: (!row.end || (new Date() - new Date(row.end) < 86400000)) ? enumServiceStatus.INUSE : enumServiceStatus.OUTUSE,
-            time: time / 31536000000,
-            type: time < 15894000000 ? enumServiceType.TEMP : (time < 63072000000 ? enumServiceType.SHORT : enumServiceType.LONG),
+            serviceTime: time / 31536000000,
+            serviceType: time < 15894000000 ? enumServiceType.TEMP : (time < 63072000000 ? enumServiceType.SHORT : enumServiceType.LONG),
             isSpecialNumber: isSpecialNumber(row.number) ? 1 : 0
         }
     });
@@ -100,11 +100,11 @@ function calculateServiceSpan(data, numbers) {
     (numbers || []).forEach(function (number) {
         if (!serviceSpan[number]) {
             serviceSpan[number] = {
-                start: null,
-                end: null,
+                serviceStart: null,
+                serviceEnd: null,
                 inUse: enumServiceStatus.UNKNOWN,
-                time: -1,
-                type: enumServiceType.UNKNOWN,
+                serviceTime: -1,
+                serviceType: enumServiceType.UNKNOWN,
                 isSpecialNumber: isSpecialNumber(number) ? 1 : 0
             }
         }
@@ -149,6 +149,24 @@ function getDataFromCVS(numbers, modelData) {
     });
 }
 
+function getDataFromInput(numbers, modelData) {
+    var serviceSpan = {};
+
+    (numbers || []).forEach(function (number) {
+        var record = (modelData.filter.suspects || []).filter(function (suspect) {
+            return suspect.number === number;
+        })[0];
+
+        modelData.numbers[number] = {
+            serviceTime: record ? record.serviceSpan : -1,
+            serviceType: record ? record.serviceSpan : 1,
+            isSpecialNumber: isSpecialNumber(number)
+        };
+    });
+
+    return modelData;
+}
+
 module.exports = {
-    getData: getDataFromCVS
+    getData: getDataFromInput
 }

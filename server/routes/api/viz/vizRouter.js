@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var vizModel = require('./vizModel');
 var logger = require('../../../util/logger');
+var enumSuspectType = require('../../../db/suspect/enumSuspectType')
 
 var LOGGER_CLASS = '/api/viz: ';
 
@@ -44,14 +45,37 @@ router.route('/')
         filter.ci_from = filter.ci_from ? filter.ci_from.split(';') : [];
         filter.ci_to = filter.ci_to ? filter.ci_to.split(';') : [];
         filter.district = filter.district ? filter.district.split(';') : [];
-        filter.suspects = filter.suspects ? JSON.parse(filter.suspects) : [];
+
+        numbers = filter.numbers = filter.numbers ? JSON.parse(filter.numbers) : [];
+        var suspects = [],
+            unknowns = [],
+            victims = [];
+        numbers.forEach(function (number) {
+            if (parseInt(number.type, 10) === enumSuspectType.SUSPECT) {
+                suspects.push(number);
+            } else if (parseInt(number.type, 10) === enumSuspectType.VICTIM) {
+                victims.push(number);
+            } else {
+                unknowns.push(number);
+            }
+        });
+        filter.suspects = suspects;
+        filter.unknowns = unknowns;
+        filter.victims = victims;
 
         // Process data.
         vizModel.getVizData(filter)
             .then(function (modelData) {
                 logger.log(LOGGER_CLASS + 'Sent viz data');
 
-                res.json(modelData);
+                req.session.modelData = modelData;
+
+                res.json({
+                    vizData: modelData.vizData,
+                    threeMonthCalls: modelData.threeMonthCalls,
+                    suspectTable: modelData.suspectTable,
+                    contactTable: modelData.contactTable
+                });
             })
             .catch(function (err) {
                 logger.error(err);
