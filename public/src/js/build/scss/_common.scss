@@ -1,0 +1,43 @@
+/* general layout */
+$page-height-tt: 900px;
+$page-width-tt: 1440px;
+$menu-width-md: 480px;
+$top-nav-height: 54px;
+$tab-bar-height: 44px;
+$menu-width-sm: 54px;
+$doc-padding-v: 22px;
+$doc-padding-h: 24px;
+$chart-content-padding: 10px;
+$chart-hd-line-height: 16px;
+$chart-height-sm: 238px;
+$chart-width-sm: 444px;
+$chart-height-md: 368px;
+$chart-width-md: 658px;
+$chart-hd-padding-v: 10px;
+$viz-top-legend-height: 20px;
+$font-color: #FFF;
+
+/* tab bar */
+$tab-padding: 24px;
+
+/* filter panel */
+$filter-title-height: 56px;
+$btn-export-padding: 32px;
+$btn-export-height: 32px;
+$filter-item-padding: 20px;
+$filter-item-title-height: 44px;
+$filter_tab-border-radius: 3px;
+
+
+$filter-item-width: 280px;
+$filter-bgcolor: #222937;
+$filter_tab-bgcolor: #323947;
+$filter-sidebar-fill: #161E2C;
+$filter-hover-bgcolor: rgba(255, 255, 255, 0.06);
+
+$input-fill-color: #161E2C;
+
+/* color system */
+$fill1: #1A66D9; /*blue*/
+$fill2: #1B304B; /* dark blue*/
+$color3: #424F69; /* gery */

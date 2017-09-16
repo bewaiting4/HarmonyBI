@@ -47,7 +47,7 @@ class ChartContainer extends React.Component {
 	}
 
 	render() {
-		const chart_height_regular = Math.min((this.props.viewDim.width - 112) / 2, this.props.viewDim.height - 90); //this.props.isUnfold ? 190 : 320;
+		const chart_height_regular = Math.max(/*((this.props.viewDim.width - 112) / 2) * 0.75*/150, (this.props.viewDim.height - 162)/2); //this.props.isUnfold ? 190 : 320;
 		const chart_height_full = Math.min(this.props.viewDim.width - 112, this.props.viewDim.height - 90);
 		const chart_height = this.props.size===12 ?  chart_height_full : chart_height_regular;
 		const myId = this.props.id || "mainb";

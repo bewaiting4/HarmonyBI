@@ -1,10 +1,9 @@
-import React from "react";
-import _ from "lodash";
-import FontAwesome from "react-fontawesome";
+import React from "react"
+import _ from "lodash"
+import FontAwesome from "react-fontawesome"
+import FilterPanel from "./Filter/FilterPanel"
 
-import FilterPanel from './Filter/FilterPanel'
-
-import style from "./Menu.css";
+import style from "./Menu.css"
 
 class Menu extends React.Component {
     constructor() {
@@ -14,6 +13,7 @@ class Menu extends React.Component {
         this.handleOpenFilter = this.handleOpenFilter.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
         this.handleSetDateRange = this.handleSetDateRange.bind(this);
+        this.applyFilter = this.applyFilter.bind(this);
 
         this.filters = [];
     }
@@ -24,7 +24,11 @@ class Menu extends React.Component {
     }
 
     handleDownload() {
-        this.props.onExport();
+        this.props.onOpenExport();
+    }
+
+    applyFilter() {
+        alert("applyFilter");
     }
 
     handleOpenFilter(name) {
@@ -68,14 +72,23 @@ class Menu extends React.Component {
                             border: 0
                         }}
                     >
-                        <a className="site_title" onClick={this.handleDownload}>
+                        <a className="site_title">
                             {/*<FontAwesome name="download"/>*/}
-                            <img src="../icons/svg/filtericon/download@1x.svg" className="logo"/>
-                                <button
-                                    className="btn btn-success"
-                                >
-                                    输出分析报告
-                                </button>
+                            <img src="../icons/svg/filtericon/download@1x.svg" className="logo" onClick={this.handleDownload}/>
+
+                            <button
+                                className="btn btn-success"
+                                onClick={this.applyFilter}                                
+                            >
+                                生成分析报告
+                            </button>
+
+                            <button
+                                className="btn btn-success"
+                                onClick={this.handleDownload}
+                            >
+                                导出分析报告
+                            </button>
                         </a>
                     </div>
 

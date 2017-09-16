@@ -106,6 +106,10 @@ class DocumentView extends React.Component {
 	}
 
 	render() {
+		if (window.clientDebug) {
+			console.log('DocumentView render');
+		}
+
 		let me = this;
 		let charts = this.getChartsInPage(this.props.tab).map((chart)=> <ChartContainer 
 				key={chart.id} 

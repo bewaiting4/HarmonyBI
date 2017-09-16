@@ -32,7 +32,7 @@ class GridCandidateList extends React.Component {
 	}
 
 	componentDidUpdate() {
-		this.grid.updateMetrics();
+		this.refs.grid.updateMetrics();
 	}
 
 	render() {
@@ -41,7 +41,7 @@ class GridCandidateList extends React.Component {
 			rowGetter={this.rowGetter}
 			rowsCount={this.props.data.length}
 			minHeight={this.props.height}
-			ref={(input) => { this.grid = input; }}
+			ref='grid'
 		/>;
 	}
 }
