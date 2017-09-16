@@ -1,18 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import _ from "lodash";
+import React from "react"
+import ReactDOM from "react-dom"
+import _ from "lodash"
+import Menu from "./Menu"
+import TopNav from "./TopNav"
+import DocumentView from "./DocumentView"
+import TabBar from "./TabBar"
+import ExportDialog from "./ExportDialog"
+import PDFExporter from "./PDFExporter"
+import Model from "../model/Model"
 
-import Menu from "./Menu";
-import TopNav from "./TopNav";
+import style from "./AppContainer.css"
 
-import DocumentView from "./DocumentView";
-import TabBar from "./TabBar";
-
-import Model from "../model/Model";
-
-import style from "./AppContainer.css";
-
-require('../build/scss/untitled.scss');
+require('../build/scss/untitled.scss')
 //require('../build/scss/custom.scss');
 
 function parseCIData(data) {
@@ -39,8 +38,12 @@ class AppContainer extends React.Component {
 		this.handleSetDateRange = this.handleSetDateRange.bind(this);
 
 		this.updateVizDataModel = this.updateVizDataModel.bind(this);
+		this.openExport = this.openExport.bind(this);
+		this.closeExport = this.closeExport.bind(this);
 
 		this.exportPDF = this.exportPDF.bind(this);
+		this.Exporter = PDFExporter();
+
 		this.dataModel = Model();
 
 		this.state = {
@@ -48,7 +51,8 @@ class AppContainer extends React.Component {
 			isUnfold: true,
 			activeTab: 0,
 			width: '0',
-			heigth: '0'
+			heigth: '0',
+            showExport: false
 		};
 
   		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -129,49 +133,30 @@ class AppContainer extends React.Component {
 		);
 	}
 
+	openExport() {
+    	this.refs.expDlg.setState({
+            showExport: true
+        });
+	}
+
+    handleExport() {
+        this.exportPDF();     
+    }
+
+    closeExport() {
+    	this.refs.expDlg.setState({
+            showExport: false
+        });
+    }
+
 	exportPDF() {
-		var doc = new jsPDF("p", "pt");
-		var chartNd = document.getElementById("chart1");
-		var canvas = chartNd.getElementsByTagName("canvas")[0];
-		var cvsWidth = canvas.width;
-		var cvsHeight = canvas.height;
-		var url = canvas.toDataURL("image/png");
-		var pdfWidth = doc.internal.pageSize.width;
-		var pdfHeight = doc.internal.pageSize.height;
-
-		// add title
-		doc.text("新疆和田地区皮山县2.11特大暴恐案件分析报告", 50, 30);
-
-		// add chart
-		doc.addImage(
-			url,
-			"JPEG",
-			pdfWidth / 4,
-			60,
-			pdfWidth / 2,
-			pdfWidth / 2 * cvsHeight / cvsWidth
-		);
-
-		// add table
-		var columns = ["f_number", "t_number", "call_start", "call_duration"];
-		var rows = [];
-		_.forEach(this.state.docData.vizData, function(row) {
-			var newRow = [];
-			_.forEach(columns, function(prop) {
-				newRow.push(row[prop]);
-			});
-			rows.push(newRow);
-		});
-		doc.autoTable(columns, rows, {
-			margin: { top: 60 + pdfWidth / 2 * cvsHeight / cvsWidth + 50 }
-		});
-
-		// save document
-		//doc.save('报告.pdf');
-		doc.output("dataurlnewwindow");
+		Exporter.export();
 	}
 
 	render() {
+		if (window.clientDebug) {
+			console.log('AppContainer render');
+		}
 		const myData = this.state.docData;
 		const isUnfold = this.state.isUnfold;
 
@@ -187,12 +172,15 @@ class AppContainer extends React.Component {
 								dim={{height: this.state.height}}
 								onSetDateRange={this.handleSetDateRange}
 								CIData={this.CIData}
+								onOpenExport={this.openExport}
 							/>
 							<TopNav />
 							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} isUnfold={this.state.isUnfold}/>
 							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>
+                	
+                	<ExportDialog ref="expDlg" show={this.state.showExport} onClose={this.closeExport} onExport={this.handleExport}/>
 				</div>
 			);
 		} else {
