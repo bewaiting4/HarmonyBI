@@ -26,6 +26,7 @@
         "lodash": "^4.17.4",
         "moment": "^2.18.1",
         "mongoose": "^4.11.8",
+        "mongoose-express-session": "0.0.5",
         "morgan": "^1.8.2",
         "mssql": "^4.0.4",
         "promise-polyfill": "^6.0.2",

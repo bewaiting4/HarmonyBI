@@ -2,7 +2,7 @@ module.exports = {
     // enabled logging for development
     dev: true,
     logging: true,
-    requireLogin: false,
+    requireLogin: true,
     seed: false,
     db: {
         //url: 'mongodb://localhost/harmonybi'
