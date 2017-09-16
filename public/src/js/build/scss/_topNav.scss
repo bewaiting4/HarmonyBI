@@ -1,5 +1,3 @@
-@import 'common';
-
 /* constants */
 $nav-padding-h: 24px;
 $nav-icon-padding: 16px;
@@ -54,6 +52,11 @@ $nav-bgcolor: #5D6370;
 .nav_menu {
     height: $top-nav-height;
     background-color: $nav-bgcolor;
+    float: left;
+    border-bottom: 1px solid #D9DEE4;
+    width: 100%;
+    position: relative;
+
 
     .menu_title {
         font-size: 22px;
@@ -91,6 +94,45 @@ $nav-bgcolor: #5D6370;
         padding: ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2 ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2;
     }
 }
+
+a.user-profile {
+    color: #5E6974 !important
+}
+.user-profile img {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    margin-right: 10px
+}
+
+.navbar-nav .open .dropdown-menu {
+    position: absolute;
+    background: #fff;
+    margin-top: 0;
+    border: 1px solid #D9DEE4;
+    -webkit-box-shadow: none;
+    right: 0;
+    left: auto;
+    width: 80px /*220px*/
+}
+.navbar-nav .open .dropdown-menu.msg_list {
+    width: 300px
+}
+
+.navbar-nav>li>a {
+    color: #fff !important
+}
+
+.navbar-nav>li>a {
+    font-weight: 500;
+    color: #ECF0F1 !important;
+    margin-left: 0 !important;
+    line-height: 32px
+}
+.nav.navbar-nav>li>a {
+    color: #515356 !important
+}
+
 
 @media (min-width: 480px) {
     .top_nav .navbar-right li {
