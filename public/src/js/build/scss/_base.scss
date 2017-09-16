@@ -277,33 +277,9 @@ a:focus {
 }
 
 .nav.child_menu {
-    display: none
+    display: none;
+    margin-top: 0;
 }
-/*
-.nav.child_menu li {
-    padding-left: 36px
-}
-.nav-md ul.nav.child_menu li:before {
-    background: #425668;
-    bottom: auto;
-    content: "";
-    height: 8px;
-    left: 23px;
-    margin-top: 15px;
-    position: absolute;
-    right: auto;
-    width: 8px;
-    z-index: 1;
-    border-radius: 50%
-}
-.nav-md ul.nav.child_menu li:after {
-    border-left: 1px solid #425668;
-    bottom: 0;
-    content: "";
-    left: 27px;
-    position: absolute;
-    top: 0
-} done */
 .nav-md ul.nav.child_menu li:last-child::after {
   bottom: 50%;
 }
@@ -1014,13 +990,17 @@ BODY {
 .filter_nav {
     margin-left: $menu-width-sm + $filter-item-padding;
     margin-right: $filter-item-padding;
-    padding-top: 20px;
+    padding-top: 10px;
     border-bottom-left-radius: $filter_tab-border-radius;
     border-bottom-right-radius: $filter_tab-border-radius;
 
     .tab-content {
         background-color: $filter_tab-bgcolor;
         padding-top: 10px;
+    }
+
+    .nav {
+        margin-top: 0;
     }
 
     .nav > li > a {
@@ -1344,6 +1324,7 @@ BODY {
 * tab suspect
 */
 .tab_suspect {
+    padding-top: 16px;
 
     .list {
         display: block;
@@ -1363,6 +1344,9 @@ BODY {
                 color: grey;
                 border: 1px solid;                        
             } 
+            > .phone_search {
+                background-color: $input-fill-color;
+            }
         }
 
         & > * {
@@ -1395,12 +1379,13 @@ BODY {
 
         & > .phone_search {
             width: 94px;
+            min-height: 32px;
             margin-right: 12px;
             padding: 0 0 0 5px;
             line-height: 30px;
             border: 0;
             border-radius: 4px;
-            background-color: $input-fill-color;
+            background-color: $color3;
         }
 
         & > .upload_img {

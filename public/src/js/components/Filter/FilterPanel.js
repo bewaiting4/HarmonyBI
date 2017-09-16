@@ -11,6 +11,7 @@ class FilterPanel extends React.Component {
 		super(props)
 
 		this.handleSetDateRange = this.handleSetDateRange.bind(this);
+		this.handleUpdateSuspect = this.handleUpdateSuspect.bind(this);
 		this.handleOpenFilter = this.handleOpenFilter.bind(this);
 
 		this.dftState = {
@@ -24,6 +25,10 @@ class FilterPanel extends React.Component {
 
     handleSetDateRange(date1, date2) {
         this.props.onSetDateRange(date1, date2);
+    }
+
+    handleUpdateSuspect(list) {
+    	this.props.onUpdateSuspect(list);
     }
 
     componentDidMount() {
@@ -87,7 +92,7 @@ class FilterPanel extends React.Component {
                             icon={onIdNumberFilter ? "id-set": "id-unset"}
                             onFilter={onIdNumberFilter}
                         >
-                        	<SuspectFilter />
+                        	<SuspectFilter onUpdateSuspect={this.handleUpdateSuspect}/>
                         </FilterPortlet>
                     </ul>
                 </div>

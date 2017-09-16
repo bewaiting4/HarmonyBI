@@ -35,7 +35,7 @@ class AppContainer extends React.Component {
 
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleTabSwitch = this.handleTabSwitch.bind(this);
-		this.handleSetDateRange = this.handleSetDateRange.bind(this);
+		this.handleApplyFilter = this.handleApplyFilter.bind(this);
 
 		this.updateVizDataModel = this.updateVizDataModel.bind(this);
 		this.openExport = this.openExport.bind(this);
@@ -120,11 +120,21 @@ class AppContainer extends React.Component {
 		this.setState({activeTab: tabIdx});
 	}
 
-	handleSetDateRange(date1, date2) {
-		this.dataModel.setFilter({
-			'date_from': new Date(date1),
-			'date_to': new Date(date2)
-		});
+	// handleSetDateRange(date1, date2) {
+	// 	this.dataModel.setFilter({
+	// 		'date_from': new Date(date1),
+	// 		'date_to': new Date(date2)
+	// 	});
+
+	// 	this.dataModel.getVizData(
+	// 		function(data) {
+	// 			this.updateVizDataModel(data);
+	// 		}.bind(this)
+	// 	);
+	// }
+
+	handleApplyFilter(filter) {
+		this.dataModel.setFilter(filter);
 
 		this.dataModel.getVizData(
 			function(data) {
@@ -157,10 +167,10 @@ class AppContainer extends React.Component {
 		if (window.clientDebug) {
 			console.log('AppContainer render');
 		}
-		const myData = this.state.docData;
+		const myData = this.state.docData || {vizData: []};
 		const isUnfold = this.state.isUnfold;
 
-		if (this.state.docData) {
+		if (myData) {
 			return (
 				<div className={isUnfold ? "nav-md" : "nav-sm"}>
 					<div className="container body">
@@ -170,7 +180,7 @@ class AppContainer extends React.Component {
 								isUnfold={isUnfold}
 								onExport={this.exportPDF}
 								dim={{height: this.state.height}}
-								onSetDateRange={this.handleSetDateRange}
+								onApplyFilter={this.handleApplyFilter}
 								CIData={this.CIData}
 								onOpenExport={this.openExport}
 							/>
@@ -184,7 +194,7 @@ class AppContainer extends React.Component {
 				</div>
 			);
 		} else {
-			return <div>Loading...</div>;
+			return <div className="loading-bg" style={{width: this.state.width, height: this.state.height}}>Loading...</div>;
 		}
 	}
 }

@@ -12,10 +12,17 @@ class Menu extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleOpenFilter = this.handleOpenFilter.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
-        this.handleSetDateRange = this.handleSetDateRange.bind(this);
-        this.applyFilter = this.applyFilter.bind(this);
 
-        this.filters = [];
+        this.handleSetDateRange = this.handleSetDateRange.bind(this);
+        this.handleSetCIs = this.handleSetCIs.bind(this);
+        this.handleSetPin = this.handleSetPin.bind(this);
+        this.handleSetDistrict = this.handleSetDistrict.bind(this);
+        this.handleSetPersonnel = this.handleSetPersonnel.bind(this);
+        this.handleApplyFilter = this.handleApplyFilter.bind(this);
+
+        this.filters = {};
+        this.timeFilter = {};
+        this.locFilter = {};
     }
 
     handleClick(e) {
@@ -27,10 +34,6 @@ class Menu extends React.Component {
         this.props.onOpenExport();
     }
 
-    applyFilter() {
-        alert("applyFilter");
-    }
-
     handleOpenFilter(name) {
         if (!this.props.isUnfold) {
             this.props.onToggleChange();
@@ -38,7 +41,43 @@ class Menu extends React.Component {
     }
 
     handleSetDateRange(date1, date2) {
-        this.props.onSetDateRange(date1, date2);
+        //this.props.onSetDateRange(date1, date2);
+
+        this.timeFilter = {
+            'date_from': new Date(date1),
+            'date_to': new Date(date2)
+        };
+    }
+
+    handleSetCIs(from, to) {
+        this.locFilter = {
+            ci_from: from,
+            ci_to: to
+        };
+    }
+
+    handleSetPin(lat, long, radius) {
+        this.locFilter = {
+            lat: lat,
+            long: long,
+            radius: radius
+        };
+    }
+
+    handleSetDistrict(district) {
+        this.locFilter = {
+            district: district
+        }
+    }
+
+    handleSetPersonnel(list) {
+        this.pplFilter = {
+            numbers: JSON.stringify(list)
+        }
+    }
+
+    handleApplyFilter() {
+        this.props.onApplyFilter(_.assign({}, this.timeFilter, this.locFilter, this.pplFilter));
     }
 
     render() {
@@ -78,7 +117,7 @@ class Menu extends React.Component {
 
                             <button
                                 className="btn btn-success"
-                                onClick={this.applyFilter}                                
+                                onClick={this.handleApplyFilter}                                
                             >
                                 生成分析报告
                             </button>
@@ -94,7 +133,12 @@ class Menu extends React.Component {
 
                     <div className="clearfix"/>
 
-                    <FilterPanel isUnfold={isUnfold} onOpenFilter={this.handleOpenFilter} onSetDateRange={this.handleSetDateRange} CIData={this.props.CIData}/>
+                    <FilterPanel 
+                        isUnfold={isUnfold} 
+                        onOpenFilter={this.handleOpenFilter} 
+                        onSetDateRange={this.handleSetDateRange} 
+                        onUpdateSuspect={this.handleSetPersonnel}
+                        CIData={this.props.CIData}/>
 
                     {/*sidebar menu*/}
                     <div id="sidebar-footer" className="sidebar-footer">
