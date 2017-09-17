@@ -6,6 +6,8 @@ var seedData = require('./seedData.json');
 
 logger.log('Seeding the Database');
 
+var userId;
+
 var createDoc = function (model, doc) {
     return new Promise(function (resolve, reject) {
         new model(doc).save(function (err, saved) {
@@ -35,6 +37,9 @@ var createUsers = function (data) {
         .then(function (users) {
             logger.log('Seeded DB with ' + users.length + ' users.');
 
+            // Cache a user id to create filter;
+            userId = users[0]._id;
+
             return users;
         });
 };
@@ -57,6 +62,10 @@ var createUsers = function (data) {
 // };
 
 var createFilters = function (data) {
+
+    seedData.filters.forEach(function (filter) {
+        filter.user = userId;
+    });
 
     var promises = seedData.filters.map(function (filter) {
         return createDoc(Filter, filter);
