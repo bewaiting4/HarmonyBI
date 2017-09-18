@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import DefaultFilter from '../../model/DefaultFilter'
 
 var ENUM_CATEGORY = {
         SUSPECT: "嫌疑人",
@@ -57,20 +58,11 @@ class SuspectFilter extends React.Component {
         this.onCatChange = this.onCatChange.bind(this);
         this.onOnlineChange = this.onOnlineChange.bind(this);
 
-        this.suspectList = [{
-            category: ENUM_CATEGORY_VALUE.SUSPECT,
-            phone: 13588888888,
-            online: ENUM_ONLINE_VALUE.SHORT
-        }, {
-            category: ENUM_CATEGORY_VALUE.VICTIM,
-            phone: 13677777777,
-            online: ENUM_ONLINE_VALUE.TEMP
-        }, {
-            category: ENUM_CATEGORY_VALUE.UNKNOWN,
-            phone: 13799999999,
-            online: ENUM_ONLINE_VALUE.LONG
-        }];
-
+        this.suspectList = _.map(JSON.parse(DefaultFilter.numbers), function(o) {
+            // number, type, serviceSpan
+            return {category: o.type, phone: o.number, online: o.serviceSpan};
+        });
+        
         this.dftState = {
             category: ENUM_CATEGORY_VALUE.UNKNOWN,
             online: ENUM_ONLINE_VALUE.TEMP,

@@ -39,6 +39,8 @@ class RegionDropdownGroup extends React.Component {
 		};
 
 		this.setState(obj);
+
+		this.props.onUpdateRegion(this.state.location);
 	}
 
 	onCityChange(val) {
@@ -55,6 +57,8 @@ class RegionDropdownGroup extends React.Component {
 
 			return obj;
 		});
+
+		this.props.onUpdateRegion(this.state.location);
 	}
 
 	onCountyChange(val) {
@@ -71,6 +75,8 @@ class RegionDropdownGroup extends React.Component {
 
 			return obj;
 		});
+
+		this.props.onUpdateRegion(this.state.location);
 	}
 
 	render() {

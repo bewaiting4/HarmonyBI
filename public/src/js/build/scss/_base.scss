@@ -1038,6 +1038,11 @@ BODY {
 }
 
 .tab_time {
+
+    .bgShadow {
+        background: $filter_tab-bgcolor;
+    }
+
     .rdt {
         width: 50%;
         padding-left: 10px;
@@ -1074,7 +1079,7 @@ BODY {
     .rdtPicker {
         width: 94%;
         background-color: $filter-bgcolor;
-        font-size: 9px;
+        font-size: 10px;
         border: none;
         margin-top: -35px;
         margin-left: 98%;
@@ -1097,6 +1102,7 @@ BODY {
     .form-control {
         background-color: $input-fill-color;
         border: none;
+        color: #FFF;
     }
 
     .days_delta {
@@ -1139,6 +1145,7 @@ BODY {
         background-color: transparent;
         font-weight: normal;
         color: #FFFFFF;
+        font-size: 10px;
 
         .month-wrapper {
             width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding) !important;
@@ -1155,6 +1162,12 @@ BODY {
 
         }
         border: 0;
+        padding: 0;
+        width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);;
+    }
+
+    .date-picker-wrapper .month-wrapper table .day {
+        font-size: 10px;
     }
 
     .date-picker-wrapper .time1, .time2 {

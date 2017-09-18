@@ -1,8 +1,9 @@
 import React from 'react'
 import {Tabs, Tab, TabPane} from 'react-bootstrap'
-import moment from "moment";
-import InputMoment from "input-moment";
-import Datetime from "react-datetime";
+import moment from 'moment'
+import InputMoment from 'input-moment'
+import Datetime from 'react-datetime'
+import DefaultFilter from '../../model/DefaultFilter'
 
 class TimeFilter extends React.Component {
 
@@ -17,7 +18,7 @@ class TimeFilter extends React.Component {
 		this.state = {
 			preHours: 48,
 			postHours: 24,
-			caseDate: new moment("2016-11-25")
+			caseDate: moment(DefaultFilter.date_to).subtract(1, 'day')
 		};
 	}
 
@@ -29,8 +30,8 @@ class TimeFilter extends React.Component {
 			container: '#picker6_container',
 			format: 'DD.MM.YYYY HH:mm',
 			language: 'cn',
-			defaultTime: new Date('2016-11-15'), // TODO get default date
-			defaultEndTime: new Date('2016-11-25'), // TODO get default date1
+			defaultTime: new Date(DefaultFilter.date_from), // TODO get default date
+			defaultEndTime: new Date(DefaultFilter.date_to), // TODO get default date1
 			alwaysOpen:true,
 			time: {
 				enabled: true
@@ -71,7 +72,7 @@ class TimeFilter extends React.Component {
 	}
 
 	render() {
-		var timeRange = <div className="col-sm-12">
+		var timeRange = <div className="col-sm-12 bgShadow">
 				<div className="form-group">
 					<input
 						className="input-group date hidden"
@@ -103,7 +104,7 @@ class TimeFilter extends React.Component {
 					</div>
 				</Tab>
 				<Tab eventKey={2} title="大致案发时段" bsClass="timetab">
-						<div style={{height: "290px"}}>
+						<div>
 							{timeRange}
 						</div>
 				</Tab>

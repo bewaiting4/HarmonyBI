@@ -1,8 +1,8 @@
-import React from "react";
-import FontAwesome from "react-fontawesome";
-import Datetime from "react-datetime";
-import moment from "moment";
-import InputMoment from "input-moment";
+import React from 'react'
+import FontAwesome from 'react-fontawesome'
+import Datetime from 'react-datetime'
+import moment from 'moment'
+import InputMoment from 'input-moment'
 
 class FilterPortlet extends React.Component {
 	constructor() {

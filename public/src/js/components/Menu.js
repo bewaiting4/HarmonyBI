@@ -1,28 +1,32 @@
-import React from "react"
-import _ from "lodash"
-import FontAwesome from "react-fontawesome"
-import FilterPanel from "./Filter/FilterPanel"
-
-import style from "./Menu.css"
+import React from 'react'
+import _ from 'lodash'
+import FontAwesome from 'react-fontawesome'
+import FilterPanel from './Filter/FilterPanel'
+import DefaultFilter from '../model/DefaultFilter'
 
 class Menu extends React.Component {
     constructor() {
         super();
+
+        this.handleUpdateFP = this.handleUpdateFP.bind(this);
 
         this.handleClick = this.handleClick.bind(this);
         this.handleOpenFilter = this.handleOpenFilter.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
 
         this.handleSetDateRange = this.handleSetDateRange.bind(this);
-        this.handleSetCIs = this.handleSetCIs.bind(this);
-        this.handleSetPin = this.handleSetPin.bind(this);
-        this.handleSetDistrict = this.handleSetDistrict.bind(this);
         this.handleSetPersonnel = this.handleSetPersonnel.bind(this);
+        this.handleSetLocation = this.handleSetLocation.bind(this);
         this.handleApplyFilter = this.handleApplyFilter.bind(this);
 
-        this.filters = {};
+        this.filters = _.assign({}, DefaultFilter);
         this.timeFilter = {};
         this.locFilter = {};
+    }
+
+    handleUpdateFP() {
+        // sync side bar with main content
+        this.refs.sideBar.style.height = this.refs.main.scrollHeight + "px";   
     }
 
     handleClick(e) {
@@ -49,25 +53,8 @@ class Menu extends React.Component {
         };
     }
 
-    handleSetCIs(from, to) {
-        this.locFilter = {
-            ci_from: from,
-            ci_to: to
-        };
-    }
-
-    handleSetPin(lat, long, radius) {
-        this.locFilter = {
-            lat: lat,
-            long: long,
-            radius: radius
-        };
-    }
-
-    handleSetDistrict(district) {
-        this.locFilter = {
-            district: district
-        }
+    handleSetLocation(loc) {
+        this.locFilter = loc;
     }
 
     handleSetPersonnel(list) {
@@ -85,9 +72,9 @@ class Menu extends React.Component {
 
         return (
             <div className="col-md-3 left_col" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
-                <div className="side_bar"/>
+                <div className="side_bar" ref="sideBar"/>
                 <div className="filter_bg"/>
-                <div className="left_col scroll-view">
+                <div className="left_col scroll-view" ref="main">
 
                     {/*nav title, toggler*/}
                     <div
@@ -137,7 +124,9 @@ class Menu extends React.Component {
                         isUnfold={isUnfold} 
                         onOpenFilter={this.handleOpenFilter} 
                         onSetDateRange={this.handleSetDateRange} 
+                        onUpdateLocation={this.handleSetLocation}
                         onUpdateSuspect={this.handleSetPersonnel}
+                        onUpdateFP={this.handleUpdateFP}
                         CIData={this.props.CIData}/>
 
                     {/*sidebar menu*/}

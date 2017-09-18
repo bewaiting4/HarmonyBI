@@ -1,9 +1,8 @@
-import React from "react";
-import style from "./FilterPanel.css";
-import FilterPortlet from "./FilterPortlet";
-import LocationFilter from "./LocationFilter"
-import TimeFilter from "./TimeFilter"
-import SuspectFilter from "./SuspectFilter"
+import React from 'react'
+import FilterPortlet from './FilterPortlet'
+import LocationFilter from './LocationFilter'
+import TimeFilter from './TimeFilter'
+import SuspectFilter from './SuspectFilter'
 
 
 class FilterPanel extends React.Component {
@@ -12,6 +11,8 @@ class FilterPanel extends React.Component {
 
 		this.handleSetDateRange = this.handleSetDateRange.bind(this);
 		this.handleUpdateSuspect = this.handleUpdateSuspect.bind(this);
+		this.handleUpdateLocation = this.handleUpdateLocation.bind(this);
+
 		this.handleOpenFilter = this.handleOpenFilter.bind(this);
 
 		this.dftState = {
@@ -23,8 +24,16 @@ class FilterPanel extends React.Component {
 		this.state = _.assignIn({}, this.dftState);
 	}
 
+	componentDidUpdate() {
+		this.props.onUpdateFP();
+	}
+
     handleSetDateRange(date1, date2) {
         this.props.onSetDateRange(date1, date2);
+    }
+
+    handleUpdateLocation(filter) {
+    	this.props.onUpdateLocation(filter);
     }
 
     handleUpdateSuspect(list) {
@@ -81,7 +90,7 @@ class FilterPanel extends React.Component {
                             icon={onLocationFilter ? "map-set": "map-unset"}
                             onFilter={onLocationFilter}                            
                         >
-                            <LocationFilter CIData={this.props.CIData}/>
+                            <LocationFilter onUpdateLocation={this.handleUpdateLocation}/>
                         </FilterPortlet>
 
                         <FilterPortlet
