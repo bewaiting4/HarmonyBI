@@ -79,6 +79,12 @@ class RegionDropdownGroup extends React.Component {
 		this.props.onUpdateRegion(this.state.location);
 	}
 
+	resetFilter() {
+		this.setState({
+			location: {}
+		});
+	}
+
 	render() {
 		let optionsCI = createOptionsList(this.props.CIData, true);
 		const prov = this.state.location.province;

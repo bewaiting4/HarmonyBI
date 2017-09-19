@@ -11,43 +11,45 @@ class DocumentView extends React.Component {
 			id: "chart1",
 			type: "network",
 			category: "echarts",
-			title: "主嫌疑人社会关系"
+			title: "嫌疑人社会关系(平时)"
 		}, {
 			id: "chart1-2",
 			type: "network",
 			category: "echarts",
-			title: "嫌疑人社会关系"
+			title: "嫌疑人社会关系(案发)"
 		}, {
 			id: "chart3",
 			type: "map",
 			category: "echarts",			
-			title: "主嫌疑人社会关系地理分布"
+			title: "嫌疑人社会关系地理分布(平时)"
 		}, {
 			id: "chart3-2",
 			type: "map",
 			category: "echarts",			
-			title: "嫌疑人社会关系地理分布"
+			title: "嫌疑人社会关系地理分布(案发)"
 		}, {
 			id: "chart2",
 			type: "map",
 			category: "echarts",			
-			title: "主嫌疑人轨迹"
+			title: "嫌疑人轨迹(平时)"
 		}, {
 			id: "chart2-2",
 			type: "map",
 			category: "echarts",			
-			title: "嫌疑人轨迹"
+			title: "嫌疑人轨迹(案发)"
 		}, {
 			id: "chart4",
 			type: "combo",
 			category: "echarts",			
-			title: "嫌疑人通话时长和次数趋势"
+			title: "嫌疑人通话时长和次数趋势(平时)"
 		}, {
 			id: "chart4-2",
 			type: "combo",
 			category: "echarts",
-			title: "嫌疑人通话时长和次数趋势",
-			subType: 2
+			title: "嫌疑人通话时长和次数趋势(案发)",
+			config: {
+				subType: 2
+			}
 		}, {
 			id: "chart5",
 			category: "echarts",
@@ -116,7 +118,7 @@ class DocumentView extends React.Component {
 				id={chart.id} 
 				type={chart.type} 
 				isUnfold={this.props.isUnfold}
-				{...chart.subType && {subType: chart.subType}}
+				{...chart.config && {config: chart.config}}
 				{...chart.title && {title: chart.title}}
 				{...chart.size && {size: chart.size}}
 				{...chart.category && {category: chart.category}}

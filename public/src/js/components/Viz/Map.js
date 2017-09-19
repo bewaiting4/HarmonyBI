@@ -1,26 +1,36 @@
-function renderMap(id, data) {
+function renderMap(id, data, config) {
 
 	var intervalId,
 		myMap;
 
 
-	//创建和初始化地图函数：
 	function initMap() {
 		if (BMap) {
 			clearInterval(intervalId)
-			createMap(); //创建地图
+			createMap(); 
 			addMarkers(data);
-			setMapEvent(); //设置地图事件
-			addMapControl(); //向地图添加控件
+			setMapEvent(); 
+			addMapControl(); 
 		}
 	}
 
-	//创建地图函数：
 	function createMap() {
-		var map = new BMap.Map(id); //在百度地图容器中创建一个地图
-		var point = new BMap.Point("乌鲁木齐"); //定义一个中心点坐标
-		map.centerAndZoom(point, 17); //设定地图的中心点和坐标并将地图显示在地图容器中
-		myMap = window['map' + id]= map; //将map变量存储在全局
+		var map = new BMap.Map(id); 
+		var point;
+		if (config && (config.lat !== undefined && config.long !== undefined)) {
+			point = new BMap.Point(config.lat-0.003, config.long+0.002);
+		} else {
+			point = new BMap.Point("乌鲁木齐");
+		}
+
+		map.centerAndZoom(point, 17);
+
+		if (config && config.markCenter) {
+			var marker = new BMap.Marker(new BMap.Point(config.lat, config.long));
+			map.addOverlay(marker);
+		}
+
+		myMap = window['map' + id]= map;
 	}
 
 	function addMarkers(data) {
@@ -41,8 +51,8 @@ function renderMap(id, data) {
 		function openInfo(content,e){
 			var p = e.target;
 			var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-			var infoWindow = new BMap.InfoWindow(content);  // 创建信息窗口对象 
-			myMap.openInfoWindow(infoWindow,point); //开启信息窗口
+			var infoWindow = new BMap.InfoWindow(content); 
+			myMap.openInfoWindow(infoWindow,point);
 		}
 
 
@@ -77,7 +87,6 @@ function renderMap(id, data) {
 		myMap.setViewport(points);
 	}
 
-	//地图事件设置函数：
 	function setMapEvent() {
 		myMap.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
 		myMap.enableScrollWheelZoom(); //启用地图滚轮放大缩小

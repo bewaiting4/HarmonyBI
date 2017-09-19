@@ -9,8 +9,6 @@ import ExportDialog from "./ExportDialog"
 import PDFExporter from "./PDFExporter"
 import Model from "../model/Model"
 
-import style from "./AppContainer.css"
-
 require('../build/scss/untitled.scss')
 //require('../build/scss/custom.scss');
 

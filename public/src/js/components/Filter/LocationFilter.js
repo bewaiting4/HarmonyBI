@@ -2,10 +2,10 @@ import React from 'react'
 import _ from 'lodash'
 import {Tabs, Tab} from 'react-bootstrap'
 import Select from 'react-select'
-
 import EChartsWrapper from '../Viz/EChartsWrapper'
 import RegionList from './RegionList'
 import RegionDropdownGroup from './RegionDropdownGroup'
+import DefaultFilter from '../../model/DefaultFilter'
 import CIList from './CIList'
 
 import style from 'react-select/dist/react-select.css'
@@ -20,17 +20,27 @@ class LocationFilter extends React.Component {
 
         this.handleSetCIs = this.handleSetCIs.bind(this);
         this.handleSetPin = this.handleSetPin.bind(this);
-        this.handleSetDistrict = this.handleSetDistrict.bind(this);		
+        this.handleSetDistrict1 = this.handleSetDistrict1.bind(this);
+        this.handleSetDistrict2 = this.handleSetDistrict2.bind(this);
 		
 		this.mapLocId = 'locMap';
 
 		this.optionsCI = _.map(CIList, function(o) {return {value: o, label: o}});
 
-		this.state = {};
+		this.state = {
+			fromCI: DefaultFilter.ci_from
+		};
+
+		this.district1 = {};
+		this.district2 = {};
 	}
 
 	componentDidMount() {
-		this.filterInstance = this.wrapper.renderChart(this.mapLocId, "map", this.filterInstance);
+		this.filterInstance = this.wrapper.renderChart(this.mapLocId, "map", this.filterInstance, null, {
+			lat: 78.456427,
+			long: 37.706936,
+			markCenter: true
+		});
 	}
 
 	onFromCIChange(val) {
@@ -64,18 +74,32 @@ class LocationFilter extends React.Component {
         });
     }
 
-    handleSetDistrict(district) {
+    handleSetDistrict1(district) {
+    	this.district1 = district;
         this.props.onUpdateLocation({
-            district: district
+            district: this.district1 // TODO add district2
         });
     }
 
+    handleSetDistrict2(district) {
+    	this.district2 = district;
+        this.props.onUpdateLocation({
+            district: district2 // TODO add district1
+        });
+    }
+
+    resetFilter() {
+    	this.setState({
+    		fromCI: DefaultFilter.ci_from,
+    		toCI: ""
+    	});
+    }
 
 	render() {
 		let optionsCI = this.optionsCI;//_.map(this.props.CIData, function(value, key) {return {value: key, label: key}});
 
 		return (
-			<Tabs defaultActiveKey={1} id="loc_filter" justified className="tab_loc filter_nav">
+			<Tabs defaultActiveKey={2} id="loc_filter" justified className="tab_loc filter_nav">
 				<Tab eventKey={1} title="地图定位" className="tab_map">
 					<div className="map_container">
 						<label>案发地点及敏感区</label>
@@ -96,9 +120,9 @@ class LocationFilter extends React.Component {
 				<Tab eventKey={3} title="行政区划定位" className="tab_region">
 					<div className="region_container">
 						<label>案发地点</label>
-						<RegionDropdownGroup id="location1"/>
+						<RegionDropdownGroup id="location1" onUpdateRegion={this.handleSetDistrict1}/>
 						<div className="separator"><span>并且</span></div>				  
-						<RegionDropdownGroup id="location2" onUpdateRegion={this.handleSetDistrict}/>
+						<RegionDropdownGroup id="location2" onUpdateRegion={this.handleSetDistrict2}/>
 					</div>
 				</Tab>
 

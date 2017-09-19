@@ -18,10 +18,19 @@ class Menu extends React.Component {
         this.handleSetPersonnel = this.handleSetPersonnel.bind(this);
         this.handleSetLocation = this.handleSetLocation.bind(this);
         this.handleApplyFilter = this.handleApplyFilter.bind(this);
+        this.resetFilter = this.resetFilter.bind(this);
 
         this.filters = _.assign({}, DefaultFilter);
-        this.timeFilter = {};
-        this.locFilter = {};
+        this.timeFilter = {
+            date_from: DefaultFilter.date_from,
+            date_to: DefaultFilter.date_to
+        };
+        this.locFilter = {
+            ci_from: DefaultFilter.fromCI
+        };
+        this.pplFilter = {
+            numbers: DefaultFilter.numbers
+        };
     }
 
     handleUpdateFP() {
@@ -65,6 +74,11 @@ class Menu extends React.Component {
 
     handleApplyFilter() {
         this.props.onApplyFilter(_.assign({}, this.timeFilter, this.locFilter, this.pplFilter));
+    }
+
+    // TODO rewrite with Flux
+    resetFilter() {
+        this.refs.fp.resetFilter();
     }
 
     render() {
@@ -121,6 +135,7 @@ class Menu extends React.Component {
                     <div className="clearfix"/>
 
                     <FilterPanel 
+                        ref="fp"
                         isUnfold={isUnfold} 
                         onOpenFilter={this.handleOpenFilter} 
                         onSetDateRange={this.handleSetDateRange} 
@@ -132,7 +147,7 @@ class Menu extends React.Component {
                     {/*sidebar menu*/}
                     <div id="sidebar-footer" className="sidebar-footer">
                         <span className="content">重置所有筛选条件</span>
-                        <span className="resetall"><img src={"../icons/svg/filtericon/resetall" + (this.filters.length > 0 ? "-active" : "") + "@1x.svg"} className="logo"/></span>
+                        <span className="resetall"><img onClick={this.resetFilter} src={"../icons/svg/filtericon/resetall" + (this.filters.length > 0 ? "-active" : "") + "@1x.svg"} className="logo"/></span>
                     </div>
                 </div>
             </div>

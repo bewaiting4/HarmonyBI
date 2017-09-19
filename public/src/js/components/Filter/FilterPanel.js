@@ -58,6 +58,13 @@ class FilterPanel extends React.Component {
         this.props.onOpenFilter();
     }
 
+    // TODO rewrite with Flux
+    resetFilter() {
+    	this.refs.timeFilter.resetFilter();
+    	this.refs.locFilter.resetFilter();
+    	this.refs.susFilter.resetFilter();
+    }
+
 	render() {
         const onTimeFilter = this.state.onTimeFilter;
         const onLocationFilter = this.state.onLocationFilter;
@@ -79,7 +86,7 @@ class FilterPanel extends React.Component {
                             icon={onTimeFilter ? "date-set": "date-unset"}
                             onFilter={onTimeFilter}
                         >
-                            <TimeFilter onSetDateRange={this.handleSetDateRange}/>
+                            <TimeFilter ref="timeFilter" onSetDateRange={this.handleSetDateRange}/>
                         </FilterPortlet>
 
                         <FilterPortlet
@@ -90,7 +97,7 @@ class FilterPanel extends React.Component {
                             icon={onLocationFilter ? "map-set": "map-unset"}
                             onFilter={onLocationFilter}                            
                         >
-                            <LocationFilter onUpdateLocation={this.handleUpdateLocation}/>
+                            <LocationFilter ref="locFilter" onUpdateLocation={this.handleUpdateLocation}/>
                         </FilterPortlet>
 
                         <FilterPortlet
@@ -101,7 +108,7 @@ class FilterPanel extends React.Component {
                             icon={onIdNumberFilter ? "id-set": "id-unset"}
                             onFilter={onIdNumberFilter}
                         >
-                        	<SuspectFilter onUpdateSuspect={this.handleUpdateSuspect}/>
+                        	<SuspectFilter ref="susFilter" onUpdateSuspect={this.handleUpdateSuspect}/>
                         </FilterPortlet>
                     </ul>
                 </div>

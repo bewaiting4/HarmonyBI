@@ -15,11 +15,13 @@ class TimeFilter extends React.Component {
 		this.onCaseDateChange = this.onCaseDateChange.bind(this);
 		this.updateDateRange = this.updateDateRange.bind(this);
 
-		this.state = {
+		this.dftState = {
 			preHours: 48,
 			postHours: 24,
 			caseDate: moment(DefaultFilter.date_to).subtract(1, 'day')
 		};
+
+		this.state = _.assign({}, this.dftState);
 	}
 
 	componentDidMount() {
@@ -71,6 +73,12 @@ class TimeFilter extends React.Component {
 		this.props.onSetDateRange((new moment(this.state.caseDate)).subtract(this.state.preHours, 'hours').toDate(), (new moment(this.state.caseDate)).add(this.state.postHours, 'hours').toDate());
 	}
 
+	resetFilter() {
+		$('#picker6').data('dateRangePicker').resetMonthsView();
+
+		this.setState(this.dftState);
+	}
+
 	render() {
 		var timeRange = <div className="col-sm-12 bgShadow">
 				<div className="form-group">
@@ -86,7 +94,7 @@ class TimeFilter extends React.Component {
 		var navRange = <Tabs defaultActiveKey={1} justified id="tab_time" className="tab_time filter_nav">
 				<Tab eventKey={1} title="精确案发时间" bsClass="timetab">
 					<div style={{height: "215px"}}>
-						<Datetime locale="zh-cn" open={true} defaultValue={this.state.caseDate} onChange={this.onCaseDateChange}/>
+						<Datetime locale="zh-cn" open={true} value={this.state.caseDate} onChange={this.onCaseDateChange}/>
 						<div className="days_delta">
 							<label>案发前</label>
 							<div className="inputWrap">

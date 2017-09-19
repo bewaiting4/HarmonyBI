@@ -62,7 +62,7 @@ class SuspectFilter extends React.Component {
             // number, type, serviceSpan
             return {category: o.type, phone: o.number, online: o.serviceSpan};
         });
-        
+
         this.dftState = {
             category: ENUM_CATEGORY_VALUE.UNKNOWN,
             online: ENUM_ONLINE_VALUE.TEMP,
@@ -118,6 +118,19 @@ class SuspectFilter extends React.Component {
         this.setState({
             online: val
         });
+    }
+
+    resetFilter() {
+        this.suspectList = _.map(JSON.parse(DefaultFilter.numbers), function(o) {
+            // number, type, serviceSpan
+            return {category: o.type, phone: o.number, online: o.serviceSpan};
+        });
+
+        this.setState({
+            cnt: this.suspectList.length
+        });
+
+        this.props.onUpdateSuspect(this._transform());
     }
 
     render() {
