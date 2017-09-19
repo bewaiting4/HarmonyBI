@@ -19,48 +19,12 @@ var FilterSchema = new Schema({
         ref: 'user'
     },
 
-    date_from: {
-        type: Date
-    },
-
-    date_from: {
-        type: Date
-    },
-
-    lat: {
-        type: String
-    },
-
-    long: {
-        type: String
-    },
-
-    radius: {
-        type: String
-    },
-
-    ci_from: {
-        type: String
-    },
-
-    ci_to: {
-        type: String
-    },
-
-    district: {
-        type: String
-    },
-
-    idigit: {
-        type: String
-    },
-
-    number: {
-        type: String
+    modelData: {
+        type: Object
     }
 });
 
-FilterSchema.pre('validate', function(next) {
+FilterSchema.pre('validate', function (next) {
 
     this.create_date = new Date().toISOString();
 

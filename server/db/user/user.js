@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 // Schema definition.
 var UserSchema = new Schema({
@@ -27,7 +27,7 @@ var UserSchema = new Schema({
     }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
     if (!this.isModified('password')) {
         return next();
     }
@@ -40,11 +40,11 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods = {
     // Check the passwords on login.
-    authenticate: function(plainTextPword) {
+    authenticate: function (plainTextPword) {
         return bcrypt.compareSync(plainTextPword, this.password);
     },
     // Hash the passwords
-    encryptPassword: function(plainTextPword) {
+    encryptPassword: function (plainTextPword) {
         var salt = bcrypt.genSaltSync(10);
 
         return bcrypt.hashSync(plainTextPword, salt);

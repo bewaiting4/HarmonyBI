@@ -1,9 +1,10 @@
 module.exports = {
-    // disbable logging for production
-    logging: false,
+    logging: true,
     requireLogin: true,
+    seed: false,
     db: {
-        url: 'mongodb://localhost/harmonybi'
+        //url: 'mongodb://localhost/harmonybi'
+        url: 'mongodb://harmonybi:harmonybi@ds161713.mlab.com:61713/heroku_0rx6ndpb'
     },
     mssql: {
         user: '...',
