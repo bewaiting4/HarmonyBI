@@ -1,8 +1,10 @@
-import React from 'react';
-import EChartsWrapper from './Viz/EChartsWrapper.js';
-import Grid from './Viz/Grid';
-import GridCallList from './Viz/GridCallList';
-import GridCandidateList from './Viz/GridCandidateList';
+import React from 'react'
+import EChartsWrapper from './Viz/EChartsWrapper.js'
+import Grid from './Viz/Grid'
+import GridCallList from './Viz/GridCallList'
+import GridCandidateList from './Viz/GridCandidateList'
+import GridContactList from './Viz/GridContactList'
+import DefaultData from '../model/DefaultData'
 
 class ChartContainer extends React.Component {
 	constructor(props) {
@@ -38,7 +40,7 @@ class ChartContainer extends React.Component {
 		} else if (this.props.type === "tableSuspectList") {
 			vizContent = <GridCandidateList data={this.props.data} height={chart_height}/>
 		} else if (this.props.type === "tableContactList") {
-			vizContent = <GridCandidateList data={this.props.data} height={chart_height}/>
+			vizContent = <GridContactList data={this.props.data} height={chart_height}/>
 		} else {
 			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} />;
 		}

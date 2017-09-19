@@ -11,7 +11,8 @@ class DocumentView extends React.Component {
 			id: "chart1",
 			type: "network",
 			category: "echarts",
-			title: "嫌疑人社会关系(平时)"
+			title: "嫌疑人社会关系(平时)",
+			data: 'threeMonthCalls'
 		}, {
 			id: "chart1-2",
 			type: "network",
@@ -21,7 +22,8 @@ class DocumentView extends React.Component {
 			id: "chart3",
 			type: "map",
 			category: "echarts",			
-			title: "嫌疑人社会关系地理分布(平时)"
+			title: "嫌疑人社会关系地理分布(平时)",
+			data: 'threeMonthCalls'
 		}, {
 			id: "chart3-2",
 			type: "map",
@@ -31,7 +33,8 @@ class DocumentView extends React.Component {
 			id: "chart2",
 			type: "map",
 			category: "echarts",			
-			title: "嫌疑人轨迹(平时)"
+			title: "嫌疑人轨迹(平时)",
+			data: 'threeMonthCalls'
 		}, {
 			id: "chart2-2",
 			type: "map",
@@ -41,7 +44,8 @@ class DocumentView extends React.Component {
 			id: "chart4",
 			type: "combo",
 			category: "echarts",			
-			title: "嫌疑人通话时长和次数趋势(平时)"
+			title: "嫌疑人通话时长和次数趋势(平时)",
+			data: 'threeMonthCalls'
 		}, {
 			id: "chart4-2",
 			type: "combo",
@@ -64,12 +68,14 @@ class DocumentView extends React.Component {
 			id: "chart6",
 			type: "tableContactList",
 			category: "reactgrid",
-			title: "紧密联系人名单"
+			title: "紧密联系人名单",
+			data: 'contactTable'
 		}, {
 			id: "chart8",
 			type: "tableSuspectList",
 			category: "reactgrid",			
-			title: "嫌疑人名单"
+			title: "嫌疑人名单",
+			data: 'suspectTable'
 		}];
 
 		this.grid = [{
@@ -115,14 +121,14 @@ class DocumentView extends React.Component {
 		let me = this;
 		let charts = this.getChartsInPage(this.props.tab).map((chart)=> <ChartContainer 
 				key={chart.id} 
-				id={chart.id} 
-				type={chart.type} 
+				id={chart.id}
+				type={chart.type}
 				isUnfold={this.props.isUnfold}
 				{...chart.config && {config: chart.config}}
 				{...chart.title && {title: chart.title}}
 				{...chart.size && {size: chart.size}}
 				{...chart.category && {category: chart.category}}
-				data={me.props.data.vizData}
+				data={me.props.data[chart.data] || me.props.data.vizData}
 				{...{viewDim: this.props.dim}}
 				onExpandCollapse={this.handleExpandCollapse}
 			/>);

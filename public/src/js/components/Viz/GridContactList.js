@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 
-class GridCandidateList extends React.Component {
+class GridContactList extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -22,12 +22,9 @@ class GridCandidateList extends React.Component {
 			{key: "district", name: "电话号码归属地"},
 			{key: "lang", name: "语种"},
 			{key: "IMEI", name: "电话机型"},
-			{key: "serviceType", name: "续网能力"},
-			{key: "isSpecialNumber", name: "靓号度"},
-			{key: "closeScore", name: "案发前后紧密度"},
-			{key: "connectionStatus", name: "案发前后联系状况"},
-			{key: "isIntersect", name: "案发前后活动轨迹"},
-			{key: "isPresent", name: "案发前后是否在场"},
+			{key: "callCount", name: "通话次数"},
+			{key: "callTime", name: "通话时长"},
+			{key: "closeScore", name: "紧密度"},
 			{key: "notes", name: "备注"}
 		];
 	}
@@ -47,5 +44,5 @@ class GridCandidateList extends React.Component {
 	}
 }
 
-module.exports = GridCandidateList;
+module.exports = GridContactList;
 
