@@ -1,8 +1,8 @@
-import React from "react";
-import style from "./FilterPanel.css";
-import FilterPortlet from "./FilterPortlet";
-import LocationFilter from "./LocationFilter"
-import TimeFilter from "./TimeFilter"
+import React from 'react'
+import FilterPortlet from './FilterPortlet'
+import LocationFilter from './LocationFilter'
+import TimeFilter from './TimeFilter'
+import SuspectFilter from './SuspectFilter'
 
 
 class FilterPanel extends React.Component {
@@ -10,6 +10,9 @@ class FilterPanel extends React.Component {
 		super(props)
 
 		this.handleSetDateRange = this.handleSetDateRange.bind(this);
+		this.handleUpdateSuspect = this.handleUpdateSuspect.bind(this);
+		this.handleUpdateLocation = this.handleUpdateLocation.bind(this);
+
 		this.handleOpenFilter = this.handleOpenFilter.bind(this);
 
 		this.dftState = {
@@ -21,8 +24,20 @@ class FilterPanel extends React.Component {
 		this.state = _.assignIn({}, this.dftState);
 	}
 
+	componentDidUpdate() {
+		this.props.onUpdateFP();
+	}
+
     handleSetDateRange(date1, date2) {
         this.props.onSetDateRange(date1, date2);
+    }
+
+    handleUpdateLocation(filter) {
+    	this.props.onUpdateLocation(filter);
+    }
+
+    handleUpdateSuspect(list) {
+    	this.props.onUpdateSuspect(list);
     }
 
     componentDidMount() {
@@ -41,6 +56,13 @@ class FilterPanel extends React.Component {
         });
 
         this.props.onOpenFilter();
+    }
+
+    // TODO rewrite with Flux
+    resetFilter() {
+    	this.refs.timeFilter.resetFilter();
+    	this.refs.locFilter.resetFilter();
+    	this.refs.susFilter.resetFilter();
     }
 
 	render() {
@@ -64,7 +86,7 @@ class FilterPanel extends React.Component {
                             icon={onTimeFilter ? "date-set": "date-unset"}
                             onFilter={onTimeFilter}
                         >
-                            <TimeFilter onSetDateRange={this.handleSetDateRange}/>
+                            <TimeFilter ref="timeFilter" onSetDateRange={this.handleSetDateRange}/>
                         </FilterPortlet>
 
                         <FilterPortlet
@@ -73,9 +95,9 @@ class FilterPanel extends React.Component {
                             isUnfold={isUnfold}
                             onOpenFilter={this.handleOpenFilter}
                             icon={onLocationFilter ? "map-set": "map-unset"}
-                            onFilter={onLocationFilter}
+                            onFilter={onLocationFilter}                            
                         >
-                            <LocationFilter/>
+                            <LocationFilter ref="locFilter" onUpdateLocation={this.handleUpdateLocation}/>
                         </FilterPortlet>
 
                         <FilterPortlet
@@ -85,7 +107,9 @@ class FilterPanel extends React.Component {
                             onOpenFilter={this.handleOpenFilter}
                             icon={onIdNumberFilter ? "id-set": "id-unset"}
                             onFilter={onIdNumberFilter}
-                        />
+                        >
+                        	<SuspectFilter ref="susFilter" onUpdateSuspect={this.handleUpdateSuspect}/>
+                        </FilterPortlet>
                     </ul>
                 </div>
             </div>

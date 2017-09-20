@@ -15,24 +15,25 @@ class GridCandidateList extends React.Component {
 
 	getColumns() {
 		return [
-			// {key: "f_?", name: "本方身份"},
-			{key: "f_number", name: "本方号码"}, 
-			// {key: "f_?", name: "本方身份证号"},
-			{key: "f_district", name: "本方号码归属地"},
-			{key: "f_lang", name: "本方语种"},
-			{key: "f_IMEI", name: "本方IMEI（机型）"},
-			// {key: "f_offservice", name: "续网能力"},
-			// {key: "f_lucky", name: "靓号度"},
-			// {key: "f_freq", name: "案发前后紧密度"},
-			// {key: "f_contact", name: "案发前后联系状况"},
-			// {key: "f_track", name: "案发前后活动轨迹"},
-			// {key: "f_onsite", name: "案发前后是否在场"},
-			// {key: "f_notes?", name: "备注"}
+			{key: 'index', name: "序号"},
+			{key: "type", name: "身份判别"},
+			{key: "number", name: "电话号码"}, 
+			{key: "idNumber", name: "身份证号"},
+			{key: "district", name: "电话号码归属地"},
+			{key: "lang", name: "语种"},
+			{key: "IMEI", name: "电话机型"},
+			{key: "serviceType", name: "续网能力"},
+			{key: "isSpecialNumber", name: "靓号度"},
+			{key: "closeScore", name: "案发前后紧密度"},
+			{key: "connectionStatus", name: "案发前后联系状况"},
+			{key: "isIntersect", name: "案发前后活动轨迹"},
+			{key: "isPresent", name: "案发前后是否在场"},
+			{key: "notes", name: "备注"}
 		];
 	}
 
 	componentDidUpdate() {
-		this.grid.updateMetrics();
+		this.refs.grid.updateMetrics();
 	}
 
 	render() {
@@ -41,7 +42,7 @@ class GridCandidateList extends React.Component {
 			rowGetter={this.rowGetter}
 			rowsCount={this.props.data.length}
 			minHeight={this.props.height}
-			ref={(input) => { this.grid = input; }}
+			ref='grid'
 		/>;
 	}
 }

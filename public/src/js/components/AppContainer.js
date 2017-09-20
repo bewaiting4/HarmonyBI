@@ -1,19 +1,33 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import _ from "lodash";
+import React from "react"
+import ReactDOM from "react-dom"
+import _ from "lodash"
+import Menu from "./Menu"
+import TopNav from "./TopNav"
+import DocumentView from "./DocumentView"
+import TabBar from "./TabBar"
+import ExportDialog from "./ExportDialog"
+import PDFExporter from "./PDFExporter"
+import Model from "../model/Model"
+import DataTransformer from './DataTransformer'
+import DefaultData from '../model/DefaultData'
 
-import Menu from "./Menu";
-import TopNav from "./TopNav";
-
-import DocumentView from "./DocumentView";
-import TabBar from "./TabBar";
-
-import Model from "../model/Model";
-
-import style from "./AppContainer.css";
-
-require('../build/scss/untitled.scss');
+require('../build/scss/untitled.scss')
 //require('../build/scss/custom.scss');
+
+function parseCIData(data) {
+	var dataLen = data.length,
+		hash = {};
+
+	for (var i = 0; i < dataLen; i++) {
+		var fCI = data[i]['f_CI'],
+			tCI = data[i]['t_CI'];
+
+		hash[fCI] = true;
+		hash[tCI] = true;
+	}
+
+	return hash;
+}
 
 class AppContainer extends React.Component {
 	constructor() {
@@ -21,54 +35,33 @@ class AppContainer extends React.Component {
 
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleTabSwitch = this.handleTabSwitch.bind(this);
-		this.handleSetDateRange = this.handleSetDateRange.bind(this);
+		this.handleApplyFilter = this.handleApplyFilter.bind(this);
+
+		this.updateVizDataModel = this.updateVizDataModel.bind(this);
+		this.openExport = this.openExport.bind(this);
+		this.closeExport = this.closeExport.bind(this);
 
 		this.exportPDF = this.exportPDF.bind(this);
+		this.Exporter = PDFExporter();
+
 		this.dataModel = Model();
 
 		this.state = {
+			isLoading: false,
 			docData: null,
 			isUnfold: true,
 			activeTab: 0,
 			width: '0',
-			heigth: '0'
+			heigth: '0',
+            showExport: false
 		};
 
   		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
 	componentDidMount() {
-		this.dataModel.getVizData(
-			function(data) {
-				this.setState({ docData: data });
-			}.bind(this)
-		);
 
-		// this.dataModel.getSuspectData(
-		// 	function(data) {
-		// 		this.suspects = data;
-
-		// 		this.dataModel.addSuspect(
-		// 			{
-		// 				number: '233434',
-		// 				idigit: '11111111111',
-		// 				type: 0
-		// 			},
-		// 			function(data) {
-		// 				console.log(data);
-		// 			}.bind(this)
-		// 		);
-
-		// 		this.dataModel.getSuspect(
-		// 			this.suspects[0]._id,
-		// 			function(data) {
-		// 				console.log(data);
-		// 			}.bind(this)
-		// 		);
-
-
-		// 	}.bind(this)
-		// );
+		this.handleApplyFilter();
 
 		this.updateWindowDimensions();
 	  	window.addEventListener('resize', this.updateWindowDimensions);
@@ -80,6 +73,11 @@ class AppContainer extends React.Component {
 
 	updateWindowDimensions() {
 		this.setState({ width: window.innerWidth, height: window.innerHeight + $(window).scrollTop() });
+	}
+
+	updateVizDataModel(data) {
+ 	 	this.CIData = parseCIData(data.vizData);
+		this.setState({ docData: DataTransformer.transform(data)});
 	}
 
 	handleToggle() {
@@ -94,66 +92,58 @@ class AppContainer extends React.Component {
 		this.setState({activeTab: tabIdx});
 	}
 
-	handleSetDateRange(date1, date2) {
-		this.dataModel.setFilter({
-			'date_from': new Date(date1),
-			'date_to': new Date(date2)
+	handleApplyFilter(filter) {
+		this.dataModel.setFilter(filter);
+
+		this.setState({
+			isLoading: true
 		});
 
-		this.dataModel.getVizData(
-			function(data) {
-				this.setState({ docData: data });
-			}.bind(this)
-		);
+		try{
+			this.dataModel.getVizData(
+				function(data) {
+					this.setState({
+						isLoading: false
+					});
+
+					this.updateVizDataModel(data);
+				}.bind(this)
+			);			
+		} catch(e) {
+			this.setState({
+				isLoading: false
+			});
+		}
 	}
 
+	openExport() {
+    	this.refs.expDlg.setState({
+            showExport: true
+        });
+	}
+
+    handleExport() {
+        this.exportPDF();     
+    }
+
+    closeExport() {
+    	this.refs.expDlg.setState({
+            showExport: false
+        });
+    }
+
 	exportPDF() {
-		var doc = new jsPDF("p", "pt");
-		var chartNd = document.getElementById("chart1");
-		var canvas = chartNd.getElementsByTagName("canvas")[0];
-		var cvsWidth = canvas.width;
-		var cvsHeight = canvas.height;
-		var url = canvas.toDataURL("image/png");
-		var pdfWidth = doc.internal.pageSize.width;
-		var pdfHeight = doc.internal.pageSize.height;
-
-		// add title
-		doc.text("新疆和田地区皮山县2.11特大暴恐案件分析报告", 50, 30);
-
-		// add chart
-		doc.addImage(
-			url,
-			"JPEG",
-			pdfWidth / 4,
-			60,
-			pdfWidth / 2,
-			pdfWidth / 2 * cvsHeight / cvsWidth
-		);
-
-		// add table
-		var columns = ["f_number", "t_number", "call_start", "call_duration"];
-		var rows = [];
-		_.forEach(this.state.docData.vizData, function(row) {
-			var newRow = [];
-			_.forEach(columns, function(prop) {
-				newRow.push(row[prop]);
-			});
-			rows.push(newRow);
-		});
-		doc.autoTable(columns, rows, {
-			margin: { top: 60 + pdfWidth / 2 * cvsHeight / cvsWidth + 50 }
-		});
-
-		// save document
-		//doc.save('报告.pdf');
-		doc.output("dataurlnewwindow");
+		Exporter.export();
 	}
 
 	render() {
-		const myData = this.state.docData;
+		if (window.clientDebug) {
+			console.log('AppContainer render');
+		}
+		const myData = this.state.docData || {vizData: []};
 		const isUnfold = this.state.isUnfold;
 
-		if (this.state.docData) {
+		if (!this.state.isLoading) {
 			return (
 				<div className={isUnfold ? "nav-md" : "nav-sm"}>
 					<div className="container body">
@@ -163,17 +153,21 @@ class AppContainer extends React.Component {
 								isUnfold={isUnfold}
 								onExport={this.exportPDF}
 								dim={{height: this.state.height}}
-								onSetDateRange={this.handleSetDateRange}
+								onApplyFilter={this.handleApplyFilter}
+								CIData={this.CIData}
+								onOpenExport={this.openExport}
 							/>
 							<TopNav />
 							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} isUnfold={this.state.isUnfold}/>
 							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>
+                	
+                	<ExportDialog ref="expDlg" show={this.state.showExport} onClose={this.closeExport} onExport={this.handleExport}/>
 				</div>
 			);
 		} else {
-			return <div>Loading...</div>;
+			return <div className="loading-bg" style={{width: this.state.width, height: this.state.height}}><h1>数据加载中</h1></div>;
 		}
 	}
 }

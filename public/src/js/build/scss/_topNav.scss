@@ -1,0 +1,141 @@
+/* constants */
+$nav-padding-h: 24px;
+$nav-icon-padding: 16px;
+$nav-line-height: 32px;
+$nav-font: 22px/32px #FFFFFF;
+$nav-bgcolor: #5D6370;
+
+
+.main_container .top_nav {
+    display: block;
+    margin-left: $menu-width-md;
+}
+
+.nav-sm {
+    .main_container .top_nav {
+        display: block;
+        margin-left: $menu-width-sm;
+        z-index: 2
+    }
+}
+
+.top_nav {
+
+	.navbar-right {
+	    margin: 0;
+	    width: 70%;
+	    float: right;
+	    margin-right: $nav-padding-h;
+	}
+
+	.navbar-right li {
+	    display: inline-block;
+	    float: right;
+	    position: static
+	}
+
+	.dropdown-menu li {
+	    width: 100%;
+
+		a {
+	    	width: 100%;
+	    	padding: 12px 20px
+		}	    
+	}
+
+	li a i {
+	    font-size: 15px
+	}
+
+}
+
+.nav_menu {
+    height: $top-nav-height;
+    background-color: $nav-bgcolor;
+    float: left;
+    border-bottom: 1px solid #D9DEE4;
+    width: 100%;
+    position: relative;
+
+
+    .menu_title {
+        font-size: 22px;
+        font-weight: normal;
+        color: #FFFFFF;
+        line-height: $nav-line-height;
+        margin: ($top-nav-height - $nav-line-height)/2 0 ($top-nav-height - $nav-line-height)/2 $nav-padding-h;
+    }
+
+
+    .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+        background: none;
+    }
+    .nav.navbar-nav > li > a {
+
+        .fa-stack:hover {
+            .fa-stack-1x {
+                color: #8AB9FB;
+            }
+        }
+
+        .fa-stack-1x {
+            font-size: 14px;
+        }
+    
+        &.user-profile,
+        &.settings  {
+            .fa-circle {
+                color: #424F69 !important
+            }
+
+            color: #FFFFFF !important
+        }
+
+        padding: ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2 ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2;
+    }
+}
+
+a.user-profile {
+    color: #5E6974 !important
+}
+.user-profile img {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    margin-right: 10px
+}
+
+.navbar-nav .open .dropdown-menu {
+    position: absolute;
+    background: #fff;
+    margin-top: 0;
+    border: 1px solid #D9DEE4;
+    -webkit-box-shadow: none;
+    right: 0;
+    left: auto;
+    width: 80px /*220px*/
+}
+.navbar-nav .open .dropdown-menu.msg_list {
+    width: 300px
+}
+
+.navbar-nav>li>a {
+    color: #fff !important
+}
+
+.navbar-nav>li>a {
+    font-weight: 500;
+    color: #ECF0F1 !important;
+    margin-left: 0 !important;
+    line-height: 32px
+}
+.nav.navbar-nav>li>a {
+    color: #515356 !important
+}
+
+
+@media (min-width: 480px) {
+    .top_nav .navbar-right li {
+        position: relative
+    }
+}

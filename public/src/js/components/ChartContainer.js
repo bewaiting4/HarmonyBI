@@ -1,8 +1,13 @@
-import React from 'react';
-import EChartsWrapper from './Viz/EChartsWrapper.js';
-import Grid from './Viz/Grid';
-import GridCallList from './Viz/GridCallList';
-import GridCandidateList from './Viz/GridCandidateList';
+import React from 'react'
+import EChartsWrapper from './Viz/EChartsWrapper.js'
+import Grid from './Viz/Grid'
+import GridCallList from './Viz/GridCallList'
+import GridCandidateList from './Viz/GridCandidateList'
+import GridContactList from './Viz/GridContactList'
+import DefaultData from '../model/DefaultData'
+import DataTransformer from './DataTransformer'
+
+let DEBUG_MODE = false;
 
 class ChartContainer extends React.Component {
 	constructor(props) {
@@ -15,14 +20,14 @@ class ChartContainer extends React.Component {
 
 	componentDidMount() {
 		if (this.props.category === 'echarts' ) {
-			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.subType);
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.config && this.props.config.subType);
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.category === 'echarts' ) {
 			this.wrapper.resizeChart(this.chartInstance);
-			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.subType);
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.config && this.props.config.subType);
 		}
 	}
 
@@ -34,11 +39,11 @@ class ChartContainer extends React.Component {
 		var vizContent;
 
 		if (this.props.type === "tableCallList") {
-			vizContent = <GridCallList data={this.props.data} height={chart_height}/>
+			vizContent = <GridCallList data={DEBUG_MODE ? DataTransformer.transform(DefaultData).vizData : this.props.data} height={chart_height}/>
 		} else if (this.props.type === "tableSuspectList") {
-			vizContent = <GridCandidateList data={this.props.data} height={chart_height}/>
+			vizContent = <GridCandidateList data={DEBUG_MODE ? DataTransformer.transform(DefaultData).suspectTable : this.props.data} height={chart_height}/>
 		} else if (this.props.type === "tableContactList") {
-			vizContent = <GridCandidateList data={this.props.data} height={chart_height}/>
+			vizContent = <GridContactList data={DEBUG_MODE ? DataTransformer.transform(DefaultData).contactTable: this.props.data} height={chart_height}/>
 		} else {
 			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} />;
 		}
@@ -47,7 +52,7 @@ class ChartContainer extends React.Component {
 	}
 
 	render() {
-		const chart_height_regular = Math.min((this.props.viewDim.width - 112) / 2, this.props.viewDim.height - 90); //this.props.isUnfold ? 190 : 320;
+		const chart_height_regular = Math.max(/*((this.props.viewDim.width - 112) / 2) * 0.75*/150, (this.props.viewDim.height - 162)/2); //this.props.isUnfold ? 190 : 320;
 		const chart_height_full = Math.min(this.props.viewDim.width - 112, this.props.viewDim.height - 90);
 		const chart_height = this.props.size===12 ?  chart_height_full : chart_height_regular;
 		const myId = this.props.id || "mainb";

@@ -1,0 +1,32 @@
+.nav-sm {
+    .main_container .footer {
+        margin-left: $menu-width-sm;
+    }
+}
+
+@media (min-width: 992px) {
+    .main_container .footer {
+        margin-left: $menu-width-md;
+    }
+}
+
+.footer {
+    background-color: #2A3F54;
+
+    li {
+        padding: 0px 10px 0px 10px;
+        margin: 6px 0;
+        border-right: 1px solid rgba(255,255,255, 0.45);
+
+        a {
+            padding: 0px 20px 0px 20px;
+            line-height: 32px;
+        }
+    }
+
+    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        background-color: #0D89FF;
+    }    
+}
+
+

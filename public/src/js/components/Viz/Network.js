@@ -61,7 +61,7 @@ function getNetworkOption(data) {
 			text: ''
 		},
 		tooltip: {},
-		animationDurationUpdate: 1500,
+		animationDurationUpdate: 50,
 		animationEasingUpdate: 'quinticInOut',
 		label: {
 			normal: {
@@ -94,7 +94,7 @@ function getNetworkOption(data) {
 
 			{
 				type: 'graph',
-				layout: 'circular',
+				layout: traces.data.length < 10 ? 'force' : 'circular',
 				symbolSize: 15,
 				focusNodeAdjacency: true,
 				roam: true,

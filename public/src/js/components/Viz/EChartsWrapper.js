@@ -20,19 +20,19 @@ class EChartsWrapper {
 		this.theme = themeCfg;
 	}
 
-	renderChart(id, type, chartInstance, data, subType) {
+	renderChart(id, type, chartInstance, data, config) {
 		this.init_echarts();
 
 		if (type === "table") {
 			Table.renderTable(id);
 		} else if (type === "map") {
-			Map.renderMap(id, data);
+			Map.renderMap(id, data, config);
 		} else {
 			if (!chartInstance) {
 				chartInstance = echarts.init(document.getElementById(id), this.theme);	
 			}
 			
-			chartInstance.setOption(this.getChartOption(type, data, subType));;
+			chartInstance.setOption(this.getChartOption(type, data, config && config.subType));
 		}
 
 		return chartInstance;

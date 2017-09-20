@@ -15,14 +15,15 @@ class GridCallList extends React.Component {
 
 	getColumns() {
 		return [
-			{key: "f_number", name: "本方号码", resizable: true}, 
-			// {key: "f_?", name: "本方身份"},
-			// {key: "f_?", name: "本方身份证号"},
-			{key: "f_lang", name: "本方语种", resizable: true},
-			{key: "f_IMEI", name: "本方IMEI（机型）", resizable: true},
-			{key: "f_district", name: "本方号码归属地", resizable: true},
-			// {key: "f_?", name: "本方运营商"},
-			// {key: "f_?", name: "本方LAC"},
+			{key: "index", name: "序号", resizable: true},
+			{key: "f_number", name: "本方电话号码", resizable: true}, 
+			{key: "f_type", name: "本方身份判别"},
+			{key: "f_idNumber", name: "本方身份证号"},
+			{key: "f_lang", name: "本方语种"},
+			{key: "f_IMEI", name: "本方IMEI（机型）", resizable: true},			
+			{key: "f_district", name: "本方号码归属地", resizable: true},			
+			{key: "f_host", name: "本方运营商"},
+			{key: "f_LAC", name: "本方LAC"},
 			{key: "f_CI", name: "本方CI", resizable: true},
 			{key: "f_addr", name: "本方地址", resizable: true},
 			{key: "f_long", name: "本方经度", resizable: true},
@@ -30,18 +31,18 @@ class GridCallList extends React.Component {
 			{key: "call_start", name: "通讯时间", resizable: true},
 			{key: "call_duration", name: "通讯时长", resizable: true},
 			{key: "t_number", name: "对方号码", resizable: true}, 
-			// {key: "t_?", name: "对方身份"},
-			// {key: "t_?", name: "对方身份证号"},
+			{key: "t_type", name: "对方身份"},
+			{key: "t_idNumber", name: "对方身份证号"},
 			{key: "t_lang", name: "对方语种", resizable: true},
 			{key: "t_IMEI", name: "对方IMEI（机型）", resizable: true},
 			{key: "t_district", name: "对方号码归属地", resizable: true},
-			// {key: "t_?", name: "对方运营商"},
-			// {key: "t_?", name: "对方LAC"},
+			{key: "t_host", name: "对方运营商"},
+			{key: "t_LAC", name: "对方LAC"},
 			{key: "t_CI", name: "对方CI", resizable: true},
 			{key: "t_addr", name: "对方地址", resizable: true},
 			{key: "t_long", name: "对方经度", resizable: true},
 			{key: "t_lat", name: "对方纬度", resizable: true},
-			// {key: "t_?", name: "对方原始号码"}
+			{key: "t_origNumber", name: "对方原始号码"}
 		];
 	}
 

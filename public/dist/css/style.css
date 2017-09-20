@@ -2,3 +2,18 @@
     font-family: "FZLTXHK--GBK1-0";
     src: url("../fonts/FZLTXHK--GBK1-0.ttf") format("ttf");
 }
+
+.loading-bg {
+	background: url("../images/loading2.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.loading-bg h1{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center    
+}

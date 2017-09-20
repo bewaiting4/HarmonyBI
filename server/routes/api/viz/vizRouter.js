@@ -23,7 +23,7 @@ router.route('/')
 
             res.json({
                 vizData: [],
-                numbsers: [],
+                numbers: [],
                 services: []
             });
 
