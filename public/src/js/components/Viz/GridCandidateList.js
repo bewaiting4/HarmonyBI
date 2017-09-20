@@ -15,10 +15,10 @@ class GridCandidateList extends React.Component {
 
 	getColumns() {
 		return [
-			{key: 'index', name: ""},
+			{key: 'index', name: "序号"},
 			{key: "type", name: "身份判别"},
 			{key: "number", name: "电话号码"}, 
-			{key: "id", name: "身份证号"},
+			{key: "idNumber", name: "身份证号"},
 			{key: "district", name: "电话号码归属地"},
 			{key: "lang", name: "语种"},
 			{key: "IMEI", name: "电话机型"},

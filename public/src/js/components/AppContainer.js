@@ -8,6 +8,8 @@ import TabBar from "./TabBar"
 import ExportDialog from "./ExportDialog"
 import PDFExporter from "./PDFExporter"
 import Model from "../model/Model"
+import DataTransformer from './DataTransformer'
+import DefaultData from '../model/DefaultData'
 
 require('../build/scss/untitled.scss')
 //require('../build/scss/custom.scss');
@@ -45,6 +47,7 @@ class AppContainer extends React.Component {
 		this.dataModel = Model();
 
 		this.state = {
+			isLoading: false,
 			docData: null,
 			isUnfold: true,
 			activeTab: 0,
@@ -57,37 +60,8 @@ class AppContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		this.dataModel.getVizData(
-			function(data) {
-				this.updateVizDataModel(data);
-			}.bind(this)
-		);
 
-		// this.dataModel.getSuspectData(
-		// 	function(data) {
-		// 		this.suspects = data;
-
-		// 		this.dataModel.addSuspect(
-		// 			{
-		// 				number: '233434',
-		// 				idigit: '11111111111',
-		// 				type: 0
-		// 			},
-		// 			function(data) {
-		// 				console.log(data);
-		// 			}.bind(this)
-		// 		);
-
-		// 		this.dataModel.getSuspect(
-		// 			this.suspects[0]._id,
-		// 			function(data) {
-		// 				console.log(data);
-		// 			}.bind(this)
-		// 		);
-
-
-		// 	}.bind(this)
-		// );
+		this.handleApplyFilter();
 
 		this.updateWindowDimensions();
 	  	window.addEventListener('resize', this.updateWindowDimensions);
@@ -103,7 +77,7 @@ class AppContainer extends React.Component {
 
 	updateVizDataModel(data) {
  	 	this.CIData = parseCIData(data.vizData);
-		this.setState({ docData: data });
+		this.setState({ docData: DataTransformer.transform(data)});
 	}
 
 	handleToggle() {
@@ -118,27 +92,28 @@ class AppContainer extends React.Component {
 		this.setState({activeTab: tabIdx});
 	}
 
-	// handleSetDateRange(date1, date2) {
-	// 	this.dataModel.setFilter({
-	// 		'date_from': new Date(date1),
-	// 		'date_to': new Date(date2)
-	// 	});
-
-	// 	this.dataModel.getVizData(
-	// 		function(data) {
-	// 			this.updateVizDataModel(data);
-	// 		}.bind(this)
-	// 	);
-	// }
-
 	handleApplyFilter(filter) {
 		this.dataModel.setFilter(filter);
 
-		this.dataModel.getVizData(
-			function(data) {
-				this.updateVizDataModel(data);
-			}.bind(this)
-		);
+		this.setState({
+			isLoading: true
+		});
+
+		try{
+			this.dataModel.getVizData(
+				function(data) {
+					this.setState({
+						isLoading: false
+					});
+
+					this.updateVizDataModel(data);
+				}.bind(this)
+			);			
+		} catch(e) {
+			this.setState({
+				isLoading: false
+			});
+		}
 	}
 
 	openExport() {
@@ -168,7 +143,7 @@ class AppContainer extends React.Component {
 		const myData = this.state.docData || {vizData: []};
 		const isUnfold = this.state.isUnfold;
 
-		if (myData) {
+		if (!this.state.isLoading) {
 			return (
 				<div className={isUnfold ? "nav-md" : "nav-sm"}>
 					<div className="container body">
@@ -192,7 +167,7 @@ class AppContainer extends React.Component {
 				</div>
 			);
 		} else {
-			return <div className="loading-bg" style={{width: this.state.width, height: this.state.height}}>Loading...</div>;
+			return <div className="loading-bg" style={{width: this.state.width, height: this.state.height}}><h1>数据加载中</h1></div>;
 		}
 	}
 }

@@ -15,7 +15,7 @@ class GridContactList extends React.Component {
 
 	getColumns() {
 		return [
-			{key: 'index', name: ""},
+			{key: 'index', name: "序号"},
 			{key: "type", name: "身份判别"},
 			{key: "number", name: "电话号码"}, 
 			{key: "id", name: "身份证号"},

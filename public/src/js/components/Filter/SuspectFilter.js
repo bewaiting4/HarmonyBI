@@ -1,50 +1,27 @@
 import React from 'react'
 import Select from 'react-select'
 import DefaultFilter from '../../model/DefaultFilter'
-
-var ENUM_CATEGORY = {
-        SUSPECT: "嫌疑人",
-        VICTIM: "受害人",
-        UNKNOWN: "未知"
-    },
-    ENUM_CATEGORY_VALUE = {
-        SUSPECT: 1,
-        VICTIM: 2,
-        UNKNOWN: 0
-    },
-    ENUM_ONLINE = {
-        SHORT: "6个月内",
-        TEMP: "2年以内",
-        LONG: "2年以上",
-        UNKNOWN: "未知"
-    },
-    ENUM_ONLINE_VALUE = {
-        LONG: 0,
-        UNKNOWN: 1,
-        SHORT: 1,
-        TEMP: 2
-    };
-
+import ENUM from './../Enums'
 
 var optionsCategory = [{
-    label: ENUM_CATEGORY.SUSPECT,
-    value: ENUM_CATEGORY_VALUE.SUSPECT
+    label: ENUM.CATEGORY.SUSPECT,
+    value: ENUM.CATEGORY_VALUE.SUSPECT
 }, {
-    label: ENUM_CATEGORY.VICTIM,
-    value: ENUM_CATEGORY_VALUE.VICTIM
+    label: ENUM.CATEGORY.VICTIM,
+    value: ENUM.CATEGORY_VALUE.VICTIM
 }, {
-    label: ENUM_CATEGORY.UNKNOWN,
-    value: ENUM_CATEGORY_VALUE.UNKNOWN
+    label: ENUM.CATEGORY.UNKNOWN,
+    value: ENUM.CATEGORY_VALUE.UNKNOWN
 }];
 var optionsOnline = [{
-    label: ENUM_ONLINE.SHORT,
-    value: ENUM_ONLINE_VALUE.SHORT
+    label: ENUM.ONLINE.SHORT,
+    value: ENUM.ONLINE_VALUE.SHORT
 }, {
-    label: ENUM_ONLINE.TEMP,
-    value: ENUM_ONLINE_VALUE.TEMP
+    label: ENUM.ONLINE.TEMP,
+    value: ENUM.ONLINE_VALUE.TEMP
 }, {
-    label: ENUM_ONLINE.LONG,
-    value: ENUM_ONLINE_VALUE.LONG
+    label: ENUM.ONLINE.LONG,
+    value: ENUM.ONLINE_VALUE.LONG
 }];
 
 class SuspectFilter extends React.Component {
@@ -64,8 +41,8 @@ class SuspectFilter extends React.Component {
         });
 
         this.dftState = {
-            category: ENUM_CATEGORY_VALUE.UNKNOWN,
-            online: ENUM_ONLINE_VALUE.TEMP,
+            category: ENUM.CATEGORY_VALUE.UNKNOWN,
+            online: ENUM.ONLINE_VALUE.TEMP,
         };
 
         this.state = _.assign({cnt: this.suspectList.length}, this.dftState);
