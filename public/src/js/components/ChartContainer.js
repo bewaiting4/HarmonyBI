@@ -20,14 +20,14 @@ class ChartContainer extends React.Component {
 
 	componentDidMount() {
 		if (this.props.category === 'echarts' ) {
-			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.config && this.props.config.subType);
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.config, this.props.data2)
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.category === 'echarts' ) {
 			this.wrapper.resizeChart(this.chartInstance);
-			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.config && this.props.config.subType);
+			this.chartInstance = this.wrapper.renderChart(this.props.id, this.props.type || "bar", this.chartInstance, this.props.data, this.props.config, this.props.data2);
 		}
 	}
 

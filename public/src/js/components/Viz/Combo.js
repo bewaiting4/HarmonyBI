@@ -5,7 +5,7 @@ function getBarInitialOption(number, subType) {
 	return {
 		name: number,
 		type: 'bar',
-		stack: subType === 2 ? "时长" : null, 
+		stack: subType === 2 ? "时长" : null,
 		data: []
 	};
 }
@@ -27,9 +27,10 @@ function getLegend2Data() {
 	return [];
 }
 
-function parseData(data, subType) {
+function parseData(data, subType, filter) {
 	var res = {},
-		hashNumber = {};
+		hashNumber = {},
+		dateRange = {};
 
 	function hashData(date, number, duration) {
 		hashNumber[number] = true;
@@ -45,20 +46,18 @@ function parseData(data, subType) {
 
 	for (var i = 0; i < data.length; i++) {
 		var datum = data[i],
-			date = datum['call_start'].split(' ')[0],
-			time = datum['call_start'].split(' ')[1],
-			duration = parseInt(datum['call_duration']),
-			from = datum['f_number'],
+		from = datum['f_number'],
 			to = datum['t_number'];
 
+		if (filter && (!filter[from] || !filter[to])) {
+			continue;
+		}
+
+		var date = datum['call_start'].split(' ')[0],
+			time = datum['call_start'].split(' ')[1],
+			duration = parseInt(datum['call_duration']);
+
 		res[date] = res[date] || {};
-
-		// if ((from === "15199289734" || to === "15199289734")) {
-		// 	console.log(date + ' ' + duration);
-		// 	// continue;
-		// }
-
-
 
 		if (from) {
 			hashData(date, from, duration);
@@ -66,6 +65,14 @@ function parseData(data, subType) {
 
 		if (!!to && from !== to) {
 			hashData(date, to, duration);
+		}
+
+		var dateObj = new Date(date);
+		if (dateRange.min === undefined ||  dateObj < dateRange.min) {
+			dateRange.min = dateObj;
+		}
+		if (dateRange.max === undefined || dateObj > dateRange.max) {
+			dateRange.max = dateObj;
 		}
 	}
 
@@ -99,23 +106,47 @@ function parseData(data, subType) {
 	//			return _.values(durationSeries);
 	}
 
+
+	var rangeStart = 100 - 86400000 * 100 /(dateRange.max - dateRange.min + 86400000);
+	if (rangeStart >= 100) {
+		rangeStart = 90;
+	}
 	return {
 		axis: _.keys(res),
 		legend: _.keys(hashNumber),
-		series: generateSeries(res)
+		series: generateSeries(res),
+		zoomRange: {
+			start: rangeStart,
+			end: 100
+		}
 	}
 }
 
-function getComboOption(data, subType) {
-	var traces = parseData(data, subType);
+function getComboOption(data, subType, filter) {
+	var traces = parseData(data, subType, filter);
 
 	return _.defaultsDeep({
-		legend: {
+		legend:[{
+			show: true,
+			top: 'top',
+			left: 'left',
 			data: traces.legend
-		},
+		}, {
+			show: true,
+			bottom: 'top',
+			left: 'center',
+			data: getLegend1Data()
+		}],
 		xAxis: [{
 			data: traces.axis
 		}],
+		// dataZoom: [
+		// 	{
+		// 		start: traces.zoomRange.start, 
+		// 		end: traces.zoomRange.end,
+		// 		handleSize: 20
+		// 	}
+		// ],
 		series: traces.series
 	}, DefaultSetting.getDefaultSettings());
 }

@@ -10,9 +10,11 @@ import PDFExporter from "./PDFExporter"
 import Model from "../model/Model"
 import DataTransformer from './DataTransformer'
 import DefaultData from '../model/DefaultData'
+import DefaultFilter from '../model/DefaultFilter'
 
 require('../build/scss/untitled.scss')
-//require('../build/scss/custom.scss');
+
+const DEBUG_MODE = false;
 
 function parseCIData(data) {
 	var dataLen = data.length,
@@ -47,8 +49,8 @@ class AppContainer extends React.Component {
 		this.dataModel = Model();
 
 		this.state = {
-			isLoading: false,
-			docData: null,
+			isLoading: true,
+			docData: DEBUG_MODE ? DefaultData : null,
 			isUnfold: true,
 			activeTab: 0,
 			width: '0',
@@ -60,9 +62,10 @@ class AppContainer extends React.Component {
 	}
 
 	componentDidMount() {
-
-		this.handleApplyFilter();
-
+		if (!DEBUG_MODE) {
+			this.handleApplyFilter();
+		}
+		
 		this.updateWindowDimensions();
 	  	window.addEventListener('resize', this.updateWindowDimensions);
 	}
@@ -77,7 +80,10 @@ class AppContainer extends React.Component {
 
 	updateVizDataModel(data) {
  	 	this.CIData = parseCIData(data.vizData);
-		this.setState({ docData: DataTransformer.transform(data)});
+		this.setState({
+			docData: DataTransformer.transform(data),
+			isLoading: false
+		});
 	}
 
 	handleToggle() {
@@ -102,10 +108,6 @@ class AppContainer extends React.Component {
 		try{
 			this.dataModel.getVizData(
 				function(data) {
-					this.setState({
-						isLoading: false
-					});
-
 					this.updateVizDataModel(data);
 				}.bind(this)
 			);			
@@ -140,10 +142,19 @@ class AppContainer extends React.Component {
 		if (window.clientDebug) {
 			console.log('AppContainer render');
 		}
-		const myData = this.state.docData || {vizData: []};
+		const myData = this.state.docData || {vizData: [], suspectTable: [], contactTable: [], threeMonthCalls: []};
 		const isUnfold = this.state.isUnfold;
+		let suspects = {};
 
-		if (!this.state.isLoading) {
+		if (this.dataModel.condition) {
+			suspects = _.keyBy(JSON.parse(this.dataModel.condition.numbers), 'number') || {};
+		} else if (DefaultFilter) {
+			suspects = _.keyBy(JSON.parse(DefaultFilter.numbers), 'number') || {}
+		} else {
+			suspects = {};
+		}
+
+		if (!this.state.isLoading || DEBUG_MODE) {
 			return (
 				<div className={isUnfold ? "nav-md" : "nav-sm"}>
 					<div className="container body">
@@ -158,7 +169,14 @@ class AppContainer extends React.Component {
 								onOpenExport={this.openExport}
 							/>
 							<TopNav />
-							<DocumentView data={myData} tab={this.state.activeTab} dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} isUnfold={this.state.isUnfold}/>
+							<DocumentView 
+								data={myData}
+								tab={this.state.activeTab} 
+								dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} 
+								isUnfold={this.state.isUnfold}
+								suspects={suspects}
+								conditin={this.dataModel.condition}
+							/>
 							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 						</div>
 					</div>
