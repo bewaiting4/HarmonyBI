@@ -5,26 +5,20 @@ module.exports = {
 				trigger: 'item'
 			},
 			grid: {
-				top: '10',
+				top: '50',
 				left: '80',
 				right: '40',
 				bottom: '60'
 			},
-			dataZoom: [
-				{
-					type: 'slider',
-					show: true,
-					start: 0, 
-					end: 10,
-					handleSize: 10
-				}
-			],
-			legend: {
-				show: false,
-				top: 'top',
-				left: 'left',
-				data: []
-			},
+			// dataZoom: [
+			// 	{
+			// 		type: 'slider',
+			// 		show: true,
+			// 		start: 0, 
+			// 		end: 100,
+			// 		handleSize: 20
+			// 	}
+			// ],
 			calculable: true,
 			xAxis: [{
 				type: 'category',
@@ -32,9 +26,15 @@ module.exports = {
 				data: []
 			}],
 			yAxis: [{
-				type: 'value'
+				type: 'value',
+				axisLabel: {
+					formatter: '{value}秒'
+				}
 			}, {
-				type: 'value'
+				type: 'value',
+				axisLabel: {
+					formatter: '{value}次'
+				}				
 			}],
 			series: []
 		};

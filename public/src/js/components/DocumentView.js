@@ -11,49 +11,63 @@ class DocumentView extends React.Component {
 			id: "chart1",
 			type: "network",
 			category: "echarts",
-			title: "嫌疑人社会关系(平时)",
-			data: 'threeMonthCalls'
+			title: "嫌疑人社会关系(案发前后)"			
 		}, {
 			id: "chart1-2",
 			type: "network",
-			category: "echarts",
-			title: "嫌疑人社会关系(案发)"
+			category: "echarts",			
+			title: "嫌疑人社会关系(平时)",
+			data: 'threeMonthCalls'			
 		}, {
 			id: "chart3",
 			type: "map",
-			category: "echarts",			
-			title: "嫌疑人社会关系地理分布(平时)",
-			data: 'threeMonthCalls'
+			category: "echarts",
+			title: "嫌疑人社会关系地理分布(案发前后)",
+			data2: 'suspectTable',
+			config: {
+				subtype: 2
+			}	
 		}, {
 			id: "chart3-2",
 			type: "map",
-			category: "echarts",			
-			title: "嫌疑人社会关系地理分布(案发)"
+			category: "echarts",
+			title: "嫌疑人社会关系地理分布(平时)",
+			data: 'threeMonthCalls',
+			data2: 'suspectTable',
+			config: {
+				subtype: 2
+			}			
 		}, {
 			id: "chart2",
 			type: "map",
-			category: "echarts",			
-			title: "嫌疑人轨迹(平时)",
-			data: 'threeMonthCalls'
+			category: "echarts",
+			title: "嫌疑人轨迹(案发前后)",
+			data2: 'suspectTable',
+			config: {
+				subtype: 1
+			}			
 		}, {
 			id: "chart2-2",
 			type: "map",
-			category: "echarts",			
-			title: "嫌疑人轨迹(案发)"
+			category: "echarts",
+			title: "嫌疑人轨迹(平时)",
+			data: 'threeMonthCalls',
+			data2: 'suspectTable',
+			config: {
+				subtype: 1
+			}			
 		}, {
 			id: "chart4",
 			type: "combo",
-			category: "echarts",			
-			title: "嫌疑人通话时长和次数趋势(平时)",
-			data: 'threeMonthCalls'
+			category: "echarts",
+			title: "嫌疑人通话时长和次数趋势(案发前后)"
 		}, {
 			id: "chart4-2",
 			type: "combo",
-			category: "echarts",
-			title: "嫌疑人通话时长和次数趋势(案发)",
-			config: {
-				subType: 2
-			}
+			category: "echarts",				
+			title: "嫌疑人通话时长和次数趋势(平时)",
+			data: 'threeMonthCalls'
+
 		}, {
 			id: "chart5",
 			category: "echarts",
@@ -63,7 +77,8 @@ class DocumentView extends React.Component {
 			id: "chart7",
 			type: "tcomm",
 			category: "echarts",
-			title: "嫌疑犯通话记录"
+			title: "嫌疑犯通讯特征",
+			data2: 'suspectTable'
 		}, {
 			id: "chart6",
 			type: "tableContactList",
@@ -124,11 +139,12 @@ class DocumentView extends React.Component {
 				id={chart.id}
 				type={chart.type}
 				isUnfold={this.props.isUnfold}
-				{...chart.config && {config: chart.config}}
+				config = {_.assign({filter: this.props.suspects, condition: this.props.condition}, chart.config)}
 				{...chart.title && {title: chart.title}}
 				{...chart.size && {size: chart.size}}
 				{...chart.category && {category: chart.category}}
 				data={me.props.data[chart.data] || me.props.data.vizData}
+				{...chart.data2 && {data2: me.props.data[chart.data2]}}
 				{...{viewDim: this.props.dim}}
 				onExpandCollapse={this.handleExpandCollapse}
 			/>);

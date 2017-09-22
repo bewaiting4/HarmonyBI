@@ -1,4 +1,63 @@
-function renderMap(id, data, config) {
+import Theme from './EChartsThemeConfig'
+
+function addArrow(map, polyline, length, angleValue, color) { //绘制箭头的函数  
+	var linePoint = polyline.getPath(); //线的坐标串  
+	var arrowCount = linePoint.length;
+	for (var i = 1; i < arrowCount; i++) { //在拐点处绘制箭头  
+		var pixelStart = map.pointToPixel(linePoint[i - 1]);
+		var pixelEnd = map.pointToPixel(linePoint[i]);
+		var angle = angleValue; //箭头和主线的夹角  
+		var r = length; // r/Math.sin(angle)代表箭头长度  
+		var delta = 0; //主线斜率，垂直时无斜率  
+		var param = 0; //代码简洁考虑  
+		var pixelTemX, pixelTemY; //临时点坐标  
+		var pixelX, pixelY, pixelX1, pixelY1; //箭头两个点  
+		if (pixelEnd.x - pixelStart.x == 0) { //斜率不存在是时  
+			pixelTemX = pixelEnd.x;
+			if (pixelEnd.y > pixelStart.y) {
+				pixelTemY = pixelEnd.y - r;
+			} else {
+				pixelTemY = pixelEnd.y + r;
+			}
+			//已知直角三角形两个点坐标及其中一个角，求另外一个点坐标算法  
+			pixelX = pixelTemX - r * Math.tan(angle);
+			pixelX1 = pixelTemX + r * Math.tan(angle);
+			pixelY = pixelY1 = pixelTemY;
+		} else //斜率存在时  
+		{
+			delta = (pixelEnd.y - pixelStart.y) / (pixelEnd.x - pixelStart.x);
+			param = Math.sqrt(delta * delta + 1);
+			if ((pixelEnd.x - pixelStart.x) < 0) //第二、三象限  
+			{
+				pixelTemX = pixelEnd.x + r / param;
+				pixelTemY = pixelEnd.y + delta * r / param;
+			} else //第一、四象限  
+			{
+				pixelTemX = pixelEnd.x - r / param;
+				pixelTemY = pixelEnd.y - delta * r / param;
+			}
+			//已知直角三角形两个点坐标及其中一个角，求另外一个点坐标算法  
+			pixelX = pixelTemX + Math.tan(angle) * r * delta / param;
+			pixelY = pixelTemY - Math.tan(angle) * r / param;
+			pixelX1 = pixelTemX - Math.tan(angle) * r * delta / param;
+			pixelY1 = pixelTemY + Math.tan(angle) * r / param;
+		}
+		var pointArrow = map.pixelToPoint(new BMap.Pixel(pixelX, pixelY));
+		var pointArrow1 = map.pixelToPoint(new BMap.Pixel(pixelX1, pixelY1));
+		var Arrow = new BMap.Polyline([
+			pointArrow,
+			linePoint[i],
+			pointArrow1
+		], {
+			strokeColor: color,
+			strokeWeight: 3,
+			strokeOpacity: 0.5
+		});
+		map.addOverlay(Arrow);
+	}
+}
+
+function renderMap(id, data, config, data2) {
 
 	var intervalId,
 		myMap;
@@ -16,16 +75,49 @@ function renderMap(id, data, config) {
 
 	function createMap() {
 		var map = new BMap.Map(id); 
+		var zLv = 15;
 		var point;
-		if (config && (config.lat !== undefined && config.long !== undefined)) {
-			point = new BMap.Point(config.lat-0.003, config.long+0.002);
+		if (config && config.mapCenter) {
+			point = new BMap.Point(config.mapCenter.lat, config.mapCenter.long);
+			map.centerAndZoom(point,17);
 		} else {
 			point = new BMap.Point("乌鲁木齐");
+			map.centerAndZoom(point,17);                     // 初始化地图,设置中心点坐标和地图级别。 
 		}
 
-		map.centerAndZoom(point, 17);
+		// if (config.subtype === 3) {
+		// 	zLv = 11;
+		// }
 
-		if (config && config.markCenter) {
+		// BMap.Convertor.translate(point, 0, function(point){ 
+		//   var marker = new BMap.Marker (point);
+		//   marker.setTitle ("This is a marker"); 
+		//   map.addOverlay (marker); 
+
+		//   map.enableScrollWheelZoom();                            //启用滚轮放大缩小 
+
+		//   map.addEventListener('click', function(e){ 
+		//     console.log(e.point);})
+		// }); 
+		//map.setViewport({center: point, zoom: 17});
+		if (config.subtype === 3) {
+			var lastCenter = point;
+			var resetCnt = 0;
+			var zoomHandler = setInterval(function() {
+				var center = map.getCenter();
+				if (!center.equals(lastCenter) || resetCnt > 15) {
+					clearInterval(zoomHandler);
+				}
+				map.centerAndZoom(point,14);
+				resetCnt++;
+			}, 1000);			
+		}
+
+
+
+		//map.setViewport([point]);
+
+		if (config && config.lat !== undefined && config.long !== undefined) {
 			var marker = new BMap.Marker(new BMap.Point(config.lat, config.long));
 			map.addOverlay(marker);
 		}
@@ -39,7 +131,6 @@ function renderMap(id, data, config) {
 		}
 
 		var bounds = null;
-		var hashPTs = {};
 		var points = [];
 
 		function addClickHandler(content,marker){
@@ -49,40 +140,82 @@ function renderMap(id, data, config) {
 		}
 
 		function openInfo(content,e){
-			var p = e.target;
-			var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
 			var infoWindow = new BMap.InfoWindow(content); 
-			myMap.openInfoWindow(infoWindow,point);
+			myMap.openInfoWindow(infoWindow,e.point);
 		}
 
+		var hashPTs = {};
+		var tracks = {};
+		var clrIdx = 0;
 
-		for (var i = 0; i < data.length; i++) {
-			var datum = data[i];
-			if (datum['f_long'] && datum['f_lat']) {
-				var hkey = datum['f_long'] + ':' + datum['f_lat'];
-				if (hashPTs[hkey]) {
-					continue; 
+		function generateObjects(datum, PREFIX) {
+			if (datum[PREFIX + '_long'] && datum[PREFIX + '_lat'] && datum[PREFIX + '_long'] !== "0" && datum[PREFIX + '_lat'] !== "0") {
+				var number = datum[PREFIX + '_number'];
+
+				if (config.subtype === 1 && !config.filter[number]) {
+					return ;
 				}
 
+				tracks[number] = tracks[number] || [];
+
+				var hkey = datum[PREFIX + '_long'] + ':' + datum[PREFIX + '_lat'];
+
 				var pt = new BMap.Point(
-						datum['f_long'],
-						datum['f_lat']
+						datum[PREFIX + '_long'],
+						datum[PREFIX + '_lat']
 					);
-				var marker = new BMap.Marker(pt);
 
-				var scontent = "<p>主叫: " + datum['f_number'] + "</p>"
-						+ "<p>被叫: " + datum['t_number'] + "</p>"
-						+ "<p>时长: " + datum['call_duration'] + "</p>";
+				if (tracks[number].length === 0 || !pt.equals(tracks[number][tracks[number].length-1])) {
+					tracks[number].push(pt);
+				}
 
-				addClickHandler(scontent, marker);
+				if (hashPTs[hkey]) {
+					return ; 
+				}
 
-				myMap.addOverlay(marker);
+				var clr,
+					r,
+					scontent;
+				if (config.subtype === 2 && !config.filter[number]) {
+					clr = 'grey';
+					r = 10;
+					scontent = "<h3>" + datum['f_number'] + "</h3>";
+				} else {
+					clr = Theme.color[clrIdx++ % Theme.color.length];
+					r = 25;
+				    scontent = "<h3>" + datum['f_number'] + "</h3>"
+						+ "<p>经过此地时间: " + datum['call_start'] + "</p>"
+						+ "<p>身份证: " + datum['idNumber'] + "</p>";
+				}
+				var circle = new BMap.Circle(pt, r, {strokeColor: clr, fillColor: clr, strokeWeight:1, strokeOpacity:0.5});
+
+				addClickHandler(scontent, circle);
+
+				myMap.addOverlay(circle);
 
 				points.push(pt);
 
 				hashPTs[hkey] = true;
-			}
+			}			
 		}
+
+		for (var i = 0; i < data.length; i++) {
+			var datum = data[i];
+			generateObjects(datum, 'f');
+			generateObjects(datum, 't');
+		}
+
+		
+		_.forEach(tracks, function(value, key) {
+			if (value.length > 1) {
+				var clr = Theme.color[clrIdx++ % Theme.color.length];				
+				var polyline = new BMap.Polyline(value, {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
+				myMap.addOverlay(polyline);
+				if (config.subtype === 1) {
+					addArrow(myMap, polyline, 15, Math.PI / 7, clr);
+				}
+			}
+		});
 
 		myMap.setViewport(points);
 	}
@@ -105,12 +238,53 @@ function renderMap(id, data, config) {
 		       //向地图中添加比例尺控件
 		var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
 		myMap.addControl(ctrl_sca);
-	}
 
+	    var overlays = [];
+		var overlaycomplete = function(e){
+			if (config.subtype === 3) {
+				config.callback(
+					e.overlay.point.lat, 
+					e.overlay.point.lng, 
+					Math.abs(e.overlay._bounds._neLat - e.overlay._bounds._swLat)/2
+				);
+			}
+	        overlays.push(e.overlay);
+	    };
+	    var styleOptions = {
+	        strokeColor:"red",    //边线颜色。
+	        //fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+	        strokeWeight: 1,       //边线的宽度，以像素为单位。
+	        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+	        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+	        strokeStyle: 'solid' //边线的样式，solid或dashed。
+	    }
+	    //实例化鼠标绘制工具
+	    var drawingManager = new BMapLib.DrawingManager(myMap, {
+	        isOpen: false, //是否开启绘制模式
+	        enableDrawingTool: true, //是否显示工具栏
+	        enableCalculate: true,
+	        drawingToolOptions: {
+	        	scale: 0.5,
+	            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+	            offset: new BMap.Size(5, 5), //偏离值
+		        drawingModes : [
+		            BMAP_DRAWING_CIRCLE
+		        ]
+	        },
+	        circleOptions: styleOptions, //圆的样式
+	        closeCallback: function() {
+				for(var i = 0; i < overlays.length; i++){
+		            myMap.removeOverlay(overlays[i]);
+		        }
+		        overlays.length = 0   
+	        }
+	    });  
+		 //添加鼠标绘制工具监听事件，用于获取绘制结果
+	    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+    }
 
 	intervalId = setInterval(initMap, 1000); //创建和初始化地图
 }
-
 
 module.exports = {
 	renderMap: renderMap	

@@ -20,19 +20,21 @@ class EChartsWrapper {
 		this.theme = themeCfg;
 	}
 
-	renderChart(id, type, chartInstance, data, config) {
+	renderChart(id, type, chartInstance, data, config, data2) {
 		this.init_echarts();
+
+		config = config || {};
 
 		if (type === "table") {
 			Table.renderTable(id);
 		} else if (type === "map") {
-			Map.renderMap(id, data, config);
+			Map.renderMap(id, data, config, data2);
 		} else {
 			if (!chartInstance) {
 				chartInstance = echarts.init(document.getElementById(id), this.theme);	
 			}
 			
-			chartInstance.setOption(this.getChartOption(type, data, config && config.subType));
+			chartInstance.setOption(this.getChartOption(type, data, config.subType, config.filter, data2));
 		}
 
 		return chartInstance;
@@ -47,8 +49,8 @@ class EChartsWrapper {
 		}[type];
 	}
 
-	getChartOption(type, data, subType) {
-		return this.getChart(type).getChartOption(data, subType);
+	getChartOption(type, data, subType, filter, data2) {
+		return this.getChart(type).getChartOption(data, subType, filter, data2);
 	}
 
 	resizeChart(chartInstance) {

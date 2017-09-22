@@ -51,13 +51,13 @@ module.exports = {
 			return _.map(list, function(p, idx) {
 				var info = pplInfo[p.number];
 
-				return _.assign({}, getProps(p), {
+				return _.assign({}, p, getProps(p), {
 					index: idx + 1,
 					type: ENUM.CATEGORY_MAP[p.type],
 					district: info && info.district,
 					lang: info && info.lang,
 					IMEI: info && info.IMEI
-				})
+				});
 			});
 		}
 
@@ -87,7 +87,7 @@ module.exports = {
 			return _.assign(item, {
 				index: idx + 1,
 				f_type: pplInfo[item.f_number] && pplInfo[item.f_number].type,
-				t_type: pplInfo[item.f_number] && pplInfo[item.t_number].type
+				t_type: pplInfo[item.t_number] && pplInfo[item.t_number].type
 			});
 		});
 
@@ -95,7 +95,7 @@ module.exports = {
 			return _.assign(item, {
 				index: idx + 1,
 				f_type: pplInfo[item.f_number] && pplInfo[item.f_number].type,
-				t_type: pplInfo[item.f_number] && pplInfo[item.t_number].type
+				t_type: pplInfo[item.t_number] && pplInfo[item.t_number].type
 			});
 		});
 

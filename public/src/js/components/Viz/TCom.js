@@ -1,4 +1,4 @@
-function getTCommOption(data) {
+function getTCommOption(data, subtype, filter, data2) {
 
 	function renderItem(params, api) {
 	    var start = api.coord([api.value(0), api.value(3)]);
@@ -60,32 +60,57 @@ function getTCommOption(data) {
 		hashTimeStamp[t] = idx;
 	});
 
+	var h1 = _.mapValues(hashNumber, function(o) {return true});
+	var yTicks = [];
+
+	for (var j = 0; j < data2.length; j++) {
+		var nb = data2[j].number;
+		if (h1[nb]) {
+			yTicks.push(nb);
+			h1[nb] = false;
+		}
+	}
+
+	_.forEach(h1, function(value, key) {
+		if (value) {
+			yTicks.push(key);
+			h1[key] = false;
+		}
+	});
+
 	return {
 	    tooltip: {
 	    },
 	    xAxis: {
 	        type: 'time',
 	        data: _.keys(hashTimeStamp),
-	        axisline: {
-	        	show: true
+	        splitLine: {
+	        	show: false
 	        }
 	    },
 	    yAxis: {
 	    	type: 'category',
-	    	data: _.keys(hashNumber),
-	    	axisline: {
-	        	show: false
-	        }
+	    	data: yTicks,
+	    	splitLine: {
+	        	show: true
+	        },
+	        boundaryGap: false
 	    },
 		dataZoom: [
 			{
 				type: 'slider',
 				show: true,
-				start: 0, 
+				start: 0,
 				end: 6,
-				handleSize: 8
+				handleSize: 20
 			}
-		],	    
+		],
+		grid: {
+			top: '20',
+			left: '80',
+			right: '20',
+			bottom: '80'
+		},
 	    series: [{
 	        type: 'custom',
 	        renderItem: renderItem,

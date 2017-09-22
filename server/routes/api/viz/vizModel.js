@@ -267,8 +267,8 @@ function getVizData(filter) {
         // STEP 7: Get 3 months call records for suspect numbers.
         .then(function (modelData) {
             let callPromises = [modelData],
-                dateFrom = filter.date_from,
-                dateTo = new Date(dateFrom.toGMTString).setDate(dateFrom.getDate() - 90);
+                dateTo = filter.date_to,
+                dateFrom = new Date(dateTo.toGMTString).setDate(dateTo.getDate() - 90);
 
             logger.log('Getting three month call data.');
 
