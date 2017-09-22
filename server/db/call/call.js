@@ -53,8 +53,8 @@ function filterData(data, filter) {
 
         // 案发地点 - 地图画圈
         if (filter.lat && filter.long && filter.radius &&
-            ((filter.lat - row.f_lat) * (filter.lat - row.f_lat) +
-                (filter.long - row.f_long) * (filter.long - row.f_long) -
+            ((filter.lat - row.lat) * (filter.lat - row.lat) +
+                (filter.long - row.long) * (filter.long - row.long) -
                 filter.radius * filter.radius > 0)) {
             return false;
         }
