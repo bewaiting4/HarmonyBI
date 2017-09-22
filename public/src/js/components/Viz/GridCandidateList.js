@@ -15,20 +15,20 @@ class GridCandidateList extends React.Component {
 
 	getColumns() {
 		return [
-			{key: 'index', name: "序号"},
-			{key: "type", name: "身份判别"},
-			{key: "number", name: "电话号码"}, 
-			{key: "idNumber", name: "身份证号"},
-			{key: "district", name: "电话号码归属地"},
-			{key: "lang", name: "语种"},
-			{key: "IMEI", name: "电话机型"},
-			{key: "serviceType", name: "续网能力"},
-			{key: "isSpecialNumber", name: "靓号度"},
-			{key: "closeScore", name: "案发前后紧密度"},
-			{key: "connectionStatus", name: "案发前后联系状况"},
-			{key: "isIntersect", name: "案发前后活动轨迹"},
-			{key: "isPresent", name: "案发前后是否在场"},
-			{key: "notes", name: "备注"}
+			{key: 'index', name: "序号", resizable: true},
+			{key: "type", name: "身份判别", resizable: true},
+			{key: "number", name: "电话号码", width: 100, resizable: true}, 
+			{key: "idNumber", name: "身份证号", resizable: true},
+			{key: "district", name: "电话号码归属地", resizable: true},
+			{key: "lang", name: "语种", resizable: true},
+			{key: "IMEI", name: "电话机型", resizable: true},
+			{key: "serviceType", name: "续网能力", resizable: true},
+			{key: "isSpecialNumber", name: "靓号度", resizable: true},
+			{key: "closeScore", name: "案发前后紧密度", resizable: true},
+			{key: "connectionStatus", name: "案发前后联系状况", resizable: true},
+			{key: "isIntersect", name: "案发前后活动轨迹", resizable: true},
+			{key: "isPresent", name: "案发前后是否在场", resizable: true},
+			{key: "notes", name: "备注", resizable: true}
 		];
 	}
 
