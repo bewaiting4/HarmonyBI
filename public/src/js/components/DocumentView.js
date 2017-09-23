@@ -115,10 +115,13 @@ class DocumentView extends React.Component {
 	* flag: true for expand, false for collapse
 	*/
 	handleExpandCollapse(id, flag) {
-		this.hashCharts[id].size = flag ? 12 : 6;
-		this.setState({
-			fullScreen: flag ? id : ""
-		})		
+		if (this.hashCharts[id]) {
+			this.hashCharts[id].size = flag ? 12 : 6;
+
+			this.setState({
+				fullScreen: flag ? id : ""
+			});
+		}		
 	}
 
 	getChartsInPage(tab) {

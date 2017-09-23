@@ -1,9 +1,9 @@
 module.exports = {
     CLOSE: {
         LITTLE: 0,
-        UNKNOWN: 1,
         OFTEN: 1,
-        CLOSE: 2
+        CLOSE: 2,
+        UNKNOWN: 3 
     },
 
     CONNECTION: {

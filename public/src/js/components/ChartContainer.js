@@ -1,6 +1,5 @@
 import React from 'react'
 import EChartsWrapper from './Viz/EChartsWrapper.js'
-import Grid from './Viz/Grid'
 import GridCallList from './Viz/GridCallList'
 import GridCandidateList from './Viz/GridCandidateList'
 import GridContactList from './Viz/GridContactList'

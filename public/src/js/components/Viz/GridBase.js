@@ -7,7 +7,7 @@ import SuspectTypeFormatter from './SuspectTypeFormatter'
 import HighlightFormatter from './HighlightFormatter'
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 
-class GridContactList extends React.Component {
+class GridBase extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -22,34 +22,12 @@ class GridContactList extends React.Component {
   	}
 
 	getColumns() {
-		return [
-			{key: 'index', name: "序号", resizable: true},
-			{
-				key: "type",
-				name: "身份判别",
-				resizable: true,
-				formatter: SuspectTypeFormatter,
-				editor: <DropDownEditor options={_.values(ENUM.CATEGORY_MAP)}/>
-			},
-			{key: "number", name: "电话号码", width: 100, resizable: true}, 
-			{key: "id", name: "身份证号", resizable: true},
-			{key: "district", name: "电话号码归属地", resizable: true},
-			{key: "lang", name: "语种", resizable: true},
-			{key: "IMEI", name: "电话机型", resizable: true},
-			{key: "callCount", name: "通话次数", resizable: true},
-			{key: "callTime", name: "通话时长", resizable: true},
-			{key: "closeScore", name: "紧密度", resizable: true, formatter: <HighlightFormatter lvlMapping={ENUM.CLOSE_SCORE_MAP} titleMapping={ENUM.CLOSE_MAP}/>},
-			{key: "notes", name: "备注", resizable: true, editable: true}
-		];
+		return this.props.columns;
 	}
-
+	
 	componentDidMount() {
 		this.setState({
-			rows: _.map(this.props.data, function(o) {
-				return _.assign(o, {
-					type: ENUM.CATEGORY_MAP[o.type]
-				});
-			})
+			rows: _.map(this.props.data, this.props.fnCusmizeRows)
 		})
 	}
 
@@ -82,5 +60,5 @@ class GridContactList extends React.Component {
 	}
 }
 
-module.exports = GridContactList;
+module.exports = GridBase;
 
