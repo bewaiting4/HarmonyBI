@@ -1,12 +1,11 @@
+
+.main_container .footer {
+    margin-left: $menu-width-md;
+}
+
 .nav-sm {
     .main_container .footer {
         margin-left: $menu-width-sm;
-    }
-}
-
-@media (min-width: 992px) {
-    .main_container .footer {
-        margin-left: $menu-width-md;
     }
 }
 

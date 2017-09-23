@@ -25,10 +25,10 @@ class NavSetting extends React.Component {
                     onClick={this.expandMenu}
                 >
 
-                  <span className='fa-stack fa-lg'>
-                    <FontAwesome name='circle' stack='2x'/>
-                    <FontAwesome name={this.props.icon} stack='1x'/>
-                  </span>
+                    <span className='fa-stack fa-lg'>
+                        <FontAwesome name='circle' stack='2x'/>
+                        <FontAwesome name={this.props.icon} stack='1x'/>
+                    </span>
                     
                 </a>
 
@@ -39,7 +39,7 @@ class NavSetting extends React.Component {
                         </a>
                     </li>
                 </ul>
-          </li>
+            </li>
         );
     }
 }
