@@ -33,6 +33,7 @@
         "react": "^15.6.1",
         "react-bootstrap": "^0.31.2",
         "react-data-grid": "^2.0.55",
+        "react-data-grid-addons": "^2.0.60",
         "react-datetime": "^2.8.10",
         "react-datetime-range-picker": "^1.0.2",
         "react-dom": "^15.6.1",

@@ -4,24 +4,24 @@ import DefaultFilter from '../../model/DefaultFilter'
 import ENUM from './../Enums'
 
 var optionsCategory = [{
-    label: ENUM.CATEGORY.SUSPECT,
-    value: ENUM.CATEGORY_VALUE.SUSPECT
+    label: ENUM.CATEGORY_MAP[ENUM.CATEGORY_KEY.SUSPECT],
+    value: ENUM.CATEGORY_KEY.SUSPECT
 }, {
-    label: ENUM.CATEGORY.VICTIM,
-    value: ENUM.CATEGORY_VALUE.VICTIM
+    label: ENUM.CATEGORY_MAP[ENUM.CATEGORY_KEY.VICTIM],
+    value: ENUM.CATEGORY_KEY.VICTIM
 }, {
-    label: ENUM.CATEGORY.UNKNOWN,
-    value: ENUM.CATEGORY_VALUE.UNKNOWN
+    label: ENUM.CATEGORY_MAP[ENUM.CATEGORY_KEY.UNKNOWN],
+    value: ENUM.CATEGORY_KEY.UNKNOWN
 }];
 var optionsOnline = [{
-    label: ENUM.ONLINE.SHORT,
-    value: ENUM.ONLINE_VALUE.SHORT
+    label: ENUM.ONLINE_MAP[ENUM.ONLINE_KEY.SHORT],
+    value: ENUM.ONLINE_KEY.SHORT
 }, {
-    label: ENUM.ONLINE.TEMP,
-    value: ENUM.ONLINE_VALUE.TEMP
+    label: ENUM.ONLINE_MAP[ENUM.ONLINE_KEY.TEMP],
+    value: ENUM.ONLINE_KEY.TEMP
 }, {
-    label: ENUM.ONLINE.LONG,
-    value: ENUM.ONLINE_VALUE.LONG
+    label: ENUM.ONLINE_MAP[ENUM.ONLINE_KEY.LONG],
+    value: ENUM.ONLINE_KEY.LONG
 }];
 
 class SuspectFilter extends React.Component {
@@ -41,8 +41,8 @@ class SuspectFilter extends React.Component {
         });
 
         this.dftState = {
-            category: ENUM.CATEGORY_VALUE.UNKNOWN,
-            online: ENUM.ONLINE_VALUE.TEMP,
+            category: ENUM.CATEGORY_KEY.UNKNOWN,
+            online: ENUM.ONLINE_KEY.TEMP,
         };
 
         this.state = _.assign({cnt: this.suspectList.length}, this.dftState);

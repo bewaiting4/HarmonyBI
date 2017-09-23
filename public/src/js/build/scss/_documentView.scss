@@ -70,6 +70,33 @@ $doc-padding-h: 24px;
 	}
 }
 
+.react-grid-Cell {
+    .tag {
+        background-color: #E6E6E6;
+        color: #FFFFFF;
+        font-size: 11px;
+        line-height: 26px;
+        height: 26px;
+        text-align: center;
+        width: 64px;
+        border-radius: 4px;    
+
+        &.lv_one {
+            background-color: #FF5959;
+        }
+
+        &.lv_two {
+            background-color: #FFACAC
+        }
+
+        &.lv_three {
+            background-color: #E3E3E3;
+            color: #8494A5
+        }
+    }
+    
+}
+
 .container.body .right_col {
     padding: $doc-padding-v/2 $doc-padding-h/2 0;
     color: #73879C;

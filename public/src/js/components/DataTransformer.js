@@ -43,7 +43,7 @@ module.exports = {
 		_.forEach(suspects, function(p) {
 			var info = pplInfo[p.number];
 			if (info && info.type === undefined) {
-				info.type = ENUM.CATEGORY_MAP[p.type];
+				info.type = p.type;
 			}
 		})
 
@@ -53,7 +53,7 @@ module.exports = {
 
 				return _.assign({}, p, getProps(p), {
 					index: idx + 1,
-					type: ENUM.CATEGORY_MAP[p.type],
+					type: p.type,
 					district: info && info.district,
 					lang: info && info.lang,
 					IMEI: info && info.IMEI
@@ -64,19 +64,19 @@ module.exports = {
 		function getSuspectProps(p) {
 			return {
 				number: p.number,
-				closeScore: ENUM.CLOSE_SCORE_MAP[p.closeScore],
-				serviceType: ENUM.SERVICE_TYPE_MAP[p.serviceType],
-				isSpecialNumber: ENUM.SPECIAL_NUMBER_MAP[p.isSpecialNumber],
-				connectionStatus: ENUM.CONNECTION_MAP[p.connectionStatus],
-				isIntersect: ENUM.INTERSECT_MAP[p.isIntersect],
-				isPresent: ENUM.PRESENT_MAP[p.isPresent]
+				closeScore: p.closeScore,
+				serviceType: p.serviceType,
+				isSpecialNumber: (p.isSpecialNumber === ENUM.SPECIAL_NUMBER_KEY.NOT) ? ENUM.SPECIAL_NUMBER_KEY.NOT : ENUM.SPECIAL_NUMBER_KEY.YES,
+				connectionStatus: p.connectionStatus,
+				isIntersect: p.isIntersect,
+				isPresent: p.isPresent
 			};
 		}
 
 		function getContactProps(p) {
 			return {
 				number: p.number,
-				closeScore: ENUM.CLOSE_SCORE_MAP[p.closeScore]
+				closeScore: p.closeScore
 			}
 		}
 
