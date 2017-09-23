@@ -3,12 +3,15 @@ const call = require('../../../db/call/call');
 const service = require('../../../db/service/service');
 
 const enumSuspectType = require('../../../db/suspect/enumSuspectType');
+const mapServiceTypeScore = require('../../../db/service/mapServiceTypeScore');
 
 const enumVizMetrics = require('./enumVizMetrics'),
     enumClose = enumVizMetrics.CLOSE,
     enumConnection = enumVizMetrics.CONNECTION,
     enumLocation = enumVizMetrics.LOCATION,
     enumPresent = enumVizMetrics.PRESENT;
+
+const mapVizMetricsScore = require('./mapVizMetricsScore');    
 
 function getVizData(filter) {
 
@@ -111,9 +114,9 @@ function getVizData(filter) {
                 }
 
                 return rate +
-                    numberObj.serviceType +
+                    mapServiceTypeScore[numberObj.serviceType] +
                     (numberObj.isSpecialNumber ? 1 : 0) +
-                    numberObj.closeScore +
+                    mapVizMetricsScore.CLOSE[numberObj.closeScore] +
                     numberObj.connectionStatus +
                     numberObj.isIntersect +
                     numberObj.isPresent;
