@@ -158,6 +158,7 @@ class AppContainer extends React.Component {
 					<div className="container body">
 						<div className="main_container">
 							<Menu
+								suspects={suspects}
 								onToggleChange={this.handleToggle}
 								isUnfold={isUnfold}
 								onExport={this.exportPDF}

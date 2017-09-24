@@ -136,6 +136,7 @@ class Menu extends React.Component {
 
                     <FilterPanel 
                         ref="fp"
+                        suspects={this.props.suspects}
                         isUnfold={isUnfold} 
                         onOpenFilter={this.handleOpenFilter} 
                         onSetDateRange={this.handleSetDateRange} 

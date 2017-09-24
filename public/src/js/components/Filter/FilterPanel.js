@@ -108,7 +108,7 @@ class FilterPanel extends React.Component {
                             icon={onIdNumberFilter ? "id-set": "id-unset"}
                             onFilter={onIdNumberFilter}
                         >
-                        	<SuspectFilter ref="susFilter" onUpdateSuspect={this.handleUpdateSuspect}/>
+                        	<SuspectFilter ref="susFilter" suspects={this.props.suspects} onUpdateSuspect={this.handleUpdateSuspect}/>
                         </FilterPortlet>
                     </ul>
                 </div>
