@@ -1,12 +1,12 @@
-var csv = require('csv-array');
-var logger = require('../../util/logger');
-var EnumCallType = require('./enumCallType');
-var fs = require('fs');
+const csv = require('csv-array');
+const logger = require('../../util/logger');
+const EnumCallType = require('./enumCallType');
+const fs = require('fs');
 
-var LOGGER_CLASS = 'Data Transforming: ';
+const LOGGER_CLASS = 'Data Transforming: ';
 
 function copyIfNone(from, to) {
-    for (var n in from) {
+    for (let n in from) {
         if ((to[n] === null || to[n] === undefined) &&
             (from[n] !== null && from[n] !== undefined)) {
             to[n] = from[n];
@@ -15,7 +15,7 @@ function copyIfNone(from, to) {
 }
 
 function transform(data) {
-    var callMap = {},
+    let callMap = {},
         resolvedCalls = [],
         numbers = {},
         i,
@@ -35,10 +35,6 @@ function transform(data) {
 
         row = data[i];
 
-        // Collect all involved numbers in a list.
-        numbers[row.f_number] = {};
-        numbers[row.t_number] = {};
-
         switch (parseInt(row.type_code)) {
             // 主叫
             case EnumCallType.CALLER.t:
@@ -49,6 +45,10 @@ function transform(data) {
                     // Invalid state order => not same call.
                     if (call._state !== EnumCallType.CALLER_START.t && row.call_start !== call.call_start) {
                         resolvedCalls.push(call);
+
+                        // Collect all involved numbers in a list.
+                        numbers[call.f_number] = {};
+                        numbers[call.t_number] = {};
                     }
                 }
 
@@ -91,6 +91,10 @@ function transform(data) {
                     // Invalid state order => not same call.
                     if (call._state !== EnumCallType.CALLER.t) {
                         resolvedCalls.push(call);
+
+                        // Collect all involved numbers in a list.
+                        numbers[call.f_number] = {};
+                        numbers[call.t_number] = {};
                     }
                 } else {
                     call = callMap[key] = {};
@@ -137,6 +141,10 @@ function transform(data) {
                         call._state !== EnumCallType.CALLER_START.t &&
                         call._state !== EnumCallType.CALLEE_START.t) {
                         resolvedCalls.push(call);
+
+                        // Collect all involved numbers in a list.
+                        numbers[call.f_number] = {};
+                        numbers[call.t_number] = {};
                     }
                 } else {
                     call = callMap[key] = {};
@@ -183,6 +191,10 @@ function transform(data) {
                         call._state !== EnumCallType.CALLER_START.t &&
                         call._state !== EnumCallType.CALLEE.t) {
                         resolvedCalls.push(call);
+
+                        // Collect all involved numbers in a list.
+                        numbers[call.f_number] = {};
+                        numbers[call.t_number] = {};
                     }
                 } else {
                     call = callMap[key] = {};
@@ -237,6 +249,10 @@ function transform(data) {
 
                     resolvedCalls.push(call);
 
+                    // Collect all involved numbers in a list.
+                    numbers[call.f_number] = {};
+                    numbers[call.t_number] = {};
+
                     callMap[key] = null;
                 }
 
@@ -248,6 +264,10 @@ function transform(data) {
                 if (call) {
                     if (new Date(row.date_time) - new Date(call.call_start) > 12000) {
                         resolvedCalls.push(call);
+
+                        // Collect all involved numbers in a list.
+                        numbers[call.f_number] = {};
+                        numbers[call.t_number] = {};
                     } else {
                         call.call_start = call.call_end = row.date_time;
 
@@ -297,11 +317,11 @@ function transform(data) {
         row = callMap[key];
 
         if (row && row.f_number && row.t_number) {
+            resolvedCalls.push(row);
+
             // Collect all involved numbers in a list.
             numbers[row.f_number] = {};
             numbers[row.t_number] = {};
-
-            resolvedCalls.push(row);
         }
     }
 
@@ -318,7 +338,7 @@ function transform(data) {
 
 function writeToFile(resolvedCalls) {
     // Write to file.
-    var stream = fs.createWriteStream('../../routes/api/viz/vizData.json');
+    let stream = fs.createWriteStream('../../routes/api/viz/vizData.json');
     stream.once('open', function (fd) {
         stream.write('[\n');
 
@@ -338,7 +358,7 @@ function parseCSV() {
     // Read and parse csv data.
     csv.parseCSV("calldata.csv", function (data) {
 
-        var modelData = transform(data);
+        let modelData = transform(data);
 
         //writeToFile(modelData.vizData);
     }, true);

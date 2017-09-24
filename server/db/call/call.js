@@ -1,9 +1,9 @@
-var logger = require('../../util/logger');
-var config = require('../../config/config');
-var mssql = require('mssql');
-var csv = require('csv-array');
-var dataTransform = require('./dataTransform');
-var enumSuspectType = require('../suspect/enumSuspectType');
+const logger = require('../../util/logger');
+const config = require('../../config/config');
+const mssql = require('mssql');
+const csv = require('csv-array');
+const dataTransform = require('./dataTransform');
+const enumSuspectType = require('../suspect/enumSuspectType');
 
 /* Call data format sample:
 {
@@ -71,7 +71,7 @@ function filterData(data, filter) {
         }
 
         // 案发相关人员
-        var hasSuspects = filter.suspects.filter(function (suspect) {
+        let hasSuspects = filter.suspects.filter(function (suspect) {
                 return suspect.number === row.f_number || suspect.number === row.t_number;
             }).length > 0,
             hasUnknowns = filter.unknowns.filter(function (unknown) {
@@ -108,20 +108,61 @@ function getDataFrmoSQL(filter) {
 
 }
 
+// Cache csv file.
+let csvCache = {};
+const LOADING = 'loading';
+
 function getDataFromCVS(filter) {
 
+    let csvFileName = '/calldata.csv';
+
+    // Function to process data.
+    let processData = function (data, filter, resolve) {
+
+        data = filterData(data, filter);
+
+        let transformedData = dataTransform.transform(data);
+
+        transformedData.filter = filter;
+
+        resolve(transformedData);
+    };
+
     return new Promise(function (resolve, reject) {
-        // Read and parse csv data.
-        csv.parseCSV(__dirname + '/calldata.csv', function (data) {
-            data = filterData(data, filter);
 
-            var transformedData = dataTransform.transform(data);
+        if (!csvCache[csvFileName]) {
+            // Mark this csv as loading.
+            csvCache[csvFileName] = LOADING;
 
-            transformedData.filter = filter;
+            // Read and parse csv data.
+            csv.parseCSV(__dirname + csvFileName, function (data) {
+                // Cache csv file.
+                csvCache[csvFileName] = data;
 
-            resolve(transformedData);
+                // Clear cache in 10min to release memory and update data.
+                setTimeout(function () {
+                    csvCache[csvFileName] = undefined;
+                }, 600000);
 
-        }, true);
+                processData(data, filter, resolve);
+            }, true);
+        } else if (csvCache[csvFileName] === LOADING) {
+            // Check wheher the data is ready per 10ms.
+            let interval = setInterval(function () {
+                if (csvCache[csvFileName] !== LOADING) {
+                    clearInterval(interval);
+
+                    processData(csvCache[csvFileName], filter, resolve);
+                }
+            }, 10);
+
+            // Clear interval in 10s in case of memory leak.
+            setTimeout(function () {
+                clearInterval(interval);
+            }, 10000);
+        } else {
+            processData(csvCache[csvFileName], filter, resolve);
+        }
     });
 
 }
