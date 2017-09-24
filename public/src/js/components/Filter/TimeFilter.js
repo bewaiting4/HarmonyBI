@@ -10,6 +10,7 @@ class TimeFilter extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this._calcDateRange = this._calcDateRange.bind(this);
 		this.onPreHoursChange = this.onPreHoursChange.bind(this);
 		this.onPostHoursChange = this.onPostHoursChange.bind(this);
 		this.onCaseDateChange = this.onCaseDateChange.bind(this);
@@ -45,12 +46,16 @@ class TimeFilter extends React.Component {
 		//$('#picker6').data('dateRangePicker').setDateRange('2016-11-15','2016-11-25');
 	}
 
+	_calcDateRange(caseDate, preHours, postHours) {
+		return [(new moment(caseDate)).subtract(preHours, 'hours').toDate(), (new moment(caseDate)).add(postHours, 'hours').toDate()]
+	}
+
 	onPreHoursChange(event) {
 		this.setState({
 			preHours: event.target.value
 		});
 
-		this.updateDateRange();
+		this.updateDateRange(this._calcDateRange(this.state.caseDate, event.target.value, this.state.postHours));
 	}
 
 	onPostHoursChange(event) {
@@ -58,7 +63,7 @@ class TimeFilter extends React.Component {
 			postHours: event.target.value
 		});
 
-		this.updateDateRange();
+		this.updateDateRange(this._calcDateRange(this.state.caseDate, this.state.preHours, event.target.value));
 	}
 
 	onCaseDateChange(date) {
@@ -66,17 +71,19 @@ class TimeFilter extends React.Component {
 			caseDate: date
 		});
 
-		this.updateDateRange();
+		this.updateDateRange(this._calcDateRange(date, this.state.preHours, this.state.postHours));
 	}
 
-	updateDateRange() {
-		this.props.onSetDateRange((new moment(this.state.caseDate)).subtract(this.state.preHours, 'hours').toDate(), (new moment(this.state.caseDate)).add(this.state.postHours, 'hours').toDate());
+	updateDateRange(range) {
+		this.props.onSetDateRange(range[0], range[1]);
 	}
 
 	resetFilter() {
 		$('#picker6').data('dateRangePicker').resetMonthsView();
 
 		this.setState(this.dftState);
+
+		this.updateDateRange(this._calcDateRange(this.dftState.caseDate, this.dftState.preHours, this.dftState.postHours));
 	}
 
 	render() {
