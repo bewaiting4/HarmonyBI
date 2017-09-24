@@ -107,6 +107,29 @@ class SuspectFilter extends React.Component {
         });
     }
 
+    onItemCatChange(suspect) {
+        return this._onItemChange(suspect, 'category');
+    }
+
+    _onItemChange(suspect, prop) {
+        var me = this;
+        return function(val) {
+            var list = me.state.suspectList.slice();
+            _.forEach(list, function(o) {
+                if (o.phone === suspect.phone) {
+                    o[prop] = val;
+                }
+            });
+            me.setState(list);
+
+            me.props.onUpdateSuspect(me._transform(list));
+        };        
+    } 
+
+    onItemOnlineChange(suspect) {
+        return this._onItemChange(suspect, 'online');
+    }    
+
     resetFilter() {
         this.setState(_.assign({}, this.dftState));
 
@@ -118,8 +141,8 @@ class SuspectFilter extends React.Component {
             suspectList = _.map(this.state.suspectList, function(suspect) {
                 return <ul key={suspect.phone} className="list">
                     <span className="phone_search">{suspect.phone}</span>			 
-                	<Select simpleValue options={optionsCategory} placeholder="身份" value={suspect.category} className="category"/>
-                    <Select simpleValue options={optionsOnline} placeholder="续网" value={suspect.online} className="online"/>
+                	<Select simpleValue options={optionsCategory} placeholder="身份" value={suspect.category} className="category" onChange={me.onItemCatChange(suspect)}/>
+                    <Select simpleValue options={optionsOnline} placeholder="续网" value={suspect.online} className="online" onChange={me.onItemOnlineChange(suspect)}/>
                     <div className="upload_img">
                         <img/> 
                     </div>			 
