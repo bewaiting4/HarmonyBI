@@ -1,24 +1,16 @@
 import React from 'react'
 import ReactDataGrid from 'react-data-grid'
+import GridBase from './GridBase'
 import ENUM from '../Enums'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
-import { Editors, Toolbar, Formatters } from 'react-data-grid-addons'
-const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
+import {Editors, Toolbar, Formatters} from 'react-data-grid-addons'
+const {DropDownEditor} = Editors;
 
 
 class GridCallList extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.rowGetter = this.rowGetter.bind(this);
-		this.getColumns = this.getColumns.bind(this);
-
-		this.state = {rows: []};
 	}
-
-  	rowGetter(i) {
-    	return this.state.rows[i];
-  	}
 
 	getColumns() {
 		return [
@@ -65,43 +57,20 @@ class GridCallList extends React.Component {
 		];
 	}
 
-	componentDidMount() {
-		this.setState({
-			rows: _.map(this.props.data, function(o) {
-				return _.assign(o, {
-					f_type: ENUM.CATEGORY_MAP[o.f_type],
-					t_type: ENUM.CATEGORY_MAP[o.t_type]
-				});
-			})
-		})
+	adjustRow(o) {
+		return _.assign({}, o, {
+			f_type: ENUM.CATEGORY_MAP[o.f_type],
+			t_type: ENUM.CATEGORY_MAP[o.t_type]
+		});
 	}
 
-	componentDidUpdate() {
-		this.refs.grid.updateMetrics();
-	}	
-
-	handleGridRowsUpdated({ fromRow, toRow, updated }) {
-		let rows = this.state.rows.slice();
-
-		for (let i = fromRow; i <= toRow; i++) {
-			let rowToUpdate = rows[i];
-			let updatedRow = _.merge(rowToUpdate, updated);
-			rows[i] = updatedRow;
-		}
-
-		this.setState({rows});
-	}	
-
 	render() {
-		return <ReactDataGrid
-			ref='grid'
-			enableCellSelect={true}
-			columns={this.getColumns()}
-			rowGetter={this.rowGetter}
-			rowsCount={this.state.rows.length}
-			minHeight={this.props.height || 200}
-			onGridRowsUpdated={this.handleGridRowsUpdated}
-		/>;
+		return <GridBase 
+			data={this.props.data} 
+			columns={this.getColumns()} 
+			fnCusmizeRows={this.adjustRow}
+			height={this.props.height}
+		/>
 	}
 }
 

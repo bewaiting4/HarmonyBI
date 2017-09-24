@@ -146,10 +146,8 @@ class AppContainer extends React.Component {
 		const isUnfold = this.state.isUnfold;
 		let suspects = {};
 
-		if (this.dataModel.condition) {
-			suspects = _.keyBy(JSON.parse(this.dataModel.condition.numbers), 'number') || {};
-		} else if (DefaultFilter) {
-			suspects = _.keyBy(JSON.parse(DefaultFilter.numbers), 'number') || {}
+		if (this.dataModel.getFilter()) {
+			suspects = _.keyBy(JSON.parse(this.dataModel.getFilter().numbers), 'number') || {};
 		} else {
 			suspects = {};
 		}
