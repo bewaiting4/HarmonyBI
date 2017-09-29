@@ -14,8 +14,8 @@ class GridCandidateList extends React.Component {
 
 	getColumns() {
 		let lvlMapping_sn = {}
-		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.YES] = 2;
-		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.NOT] = 1;
+		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.YES] = 1;
+		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.NOT] = 2;
 
 		return [
 			{key: 'index', name: "序号", resizable: true},

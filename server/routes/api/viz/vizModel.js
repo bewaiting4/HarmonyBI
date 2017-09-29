@@ -115,7 +115,7 @@ function getVizData(filter) {
 
                 return rate +
                     mapServiceTypeScore[numberObj.serviceType] +
-                    (numberObj.isSpecialNumber ? 1 : 0) +
+                    (numberObj.isSpecialNumber ? 0 : 1) +
                     mapVizMetricsScore.CLOSE[numberObj.closeScore] +
                     numberObj.connectionStatus +
                     numberObj.isIntersect +
