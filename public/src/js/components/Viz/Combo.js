@@ -27,7 +27,7 @@ function getLegend2Data() {
 	return [];
 }
 
-function parseData(data, subType, filter) {
+function parseData(data, subType, filter, data2) {
 	var res = {},
 		hashNumber = {},
 		dateRange = {};
@@ -49,7 +49,7 @@ function parseData(data, subType, filter) {
 		from = datum['f_number'],
 			to = datum['t_number'];
 
-		if (filter && (!filter[from] || !filter[to])) {
+		if (filter && (!filter[from] && !filter[to])) {
 			continue;
 		}
 
@@ -59,11 +59,11 @@ function parseData(data, subType, filter) {
 
 		res[date] = res[date] || {};
 
-		if (from) {
+		if (from && filter[from]) {
 			hashData(date, from, duration);
 		}
 
-		if (!!to && from !== to) {
+		if (to && from !== to && filter[to]) {
 			hashData(date, to, duration);
 		}
 
@@ -116,7 +116,7 @@ function parseData(data, subType, filter) {
 		legend: _.keys(hashNumber),
 		series: generateSeries(res),
 		zoomRange: {
-			start: rangeStart,
+			start: 0,//rangeStart,
 			end: 100
 		}
 	}
@@ -140,13 +140,13 @@ function getComboOption(data, subType, filter) {
 		xAxis: [{
 			data: traces.axis
 		}],
-		// dataZoom: [
-		// 	{
-		// 		start: traces.zoomRange.start, 
-		// 		end: traces.zoomRange.end,
-		// 		handleSize: 20
-		// 	}
-		// ],
+		dataZoom: [
+			{
+				start: traces.zoomRange.start, 
+				end: traces.zoomRange.end,
+				handleSize: 20
+			}
+		],
 		series: traces.series
 	}, DefaultSetting.getDefaultSettings());
 }

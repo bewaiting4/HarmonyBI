@@ -72,12 +72,14 @@ class DocumentView extends React.Component {
 			id: "chart5",
 			category: "echarts",
 			type: "pie",
+			data: 'suspectTable',
 			title: "嫌疑人手机型号"
 		}, {
 			id: "chart7",
 			type: "tcomm",
 			category: "echarts",
 			title: "嫌疑犯通讯特征",
+			data: 'threeMonthCalls',
 			data2: 'suspectTable'
 		}, {
 			id: "chart6",

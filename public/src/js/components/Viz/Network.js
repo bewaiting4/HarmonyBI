@@ -44,7 +44,7 @@ function getNetworkOption(data) {
 				nodes[from].value += mapping[from][to].duration;
 				nodes[to].value += mapping[from][to].duration;
 
-				links.push({source: from, target: to, value: mapping[from][to].count});
+				links.push({source: from, target: to, value: mapping[from][to].count, fixed: true});
 			}
 		}
 
@@ -75,15 +75,17 @@ function getNetworkOption(data) {
 	        outOfBrush: {
 	            color: '#abc'
 	        },
+	        inBrush: {
+	        	color: 'blue'
+	        },
 	        brushStyle: {
 	            borderWidth: 2,
 	            color: 'rgba(0,0,0,0.2)',
 	            borderColor: 'rgba(0,0,0,0.5)',
 	        },
-	        seriesIndex: [0, 1],
+	        seriesIndex: [0],
 	        throttleType: 'debounce',
-	        throttleDelay: 300,
-	        geoIndex: 0
+	        throttleDelay: 1000,
     	},
 		// legend: {
 		// 	x: "center",
@@ -97,6 +99,7 @@ function getNetworkOption(data) {
 				layout: 'force',//traces.data.length < 10 ? 'force' : 'circular',
 				symbolSize: 15,
 				focusNodeAdjacency: true,
+				layoutAnimation: true,
 				roam: true,
 				edgeLength: [5, 30],
 				// categories: [{
@@ -130,7 +133,8 @@ function getNetworkOption(data) {
 					}
 				},
 				force: {
-					repulsion: 500
+					repulsion: 500,
+					layoutAnimation: true
 				},
 				edgeSymbolSize: [4, 50],
 				edgeLabel: {
