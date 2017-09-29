@@ -30,8 +30,9 @@ function getPieOption(data) {
 		for (var i = 0; i < data.length; i++) {
 			var datum = data[i];
 
-			calc(datum['f_IMEI'], res);
-			calc(datum['t_IMEI'], res);
+			if (datum.type === 1) {
+				calc(datum['IMEI'], res);
+			}
 		}
 
 		return res;

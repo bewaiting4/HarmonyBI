@@ -28,7 +28,8 @@ class LocationFilter extends React.Component {
 		this.optionsCI = _.map(CIList, function(o) {return {value: o, label: o}});
 
 		this.state = {
-			fromCI: DefaultFilter.ci_from
+			fromCI: DefaultFilter.ci_from,
+			toCI: DefaultFilter.ci_to
 		};
 
 		this.district1 = {};
@@ -52,24 +53,26 @@ class LocationFilter extends React.Component {
 
 	onFromCIChange(val) {
 		this.setState({
-			fromCI: val
+			fromCI: val,
+			toCI: val
 		});
 
-		this.handleSetCIs(val, this.state.toCI);
+		this.handleSetCIs(val, val);
 	}
 
 	onToCIChange(val) {
 		this.setState({
+			fromCI: val,
 			toCI: val
 		});
 
-		this.handleSetCIs(this.state.fromCI, val);
+		this.handleSetCIs(val, val);
 	}
 
 	handleSetCIs(from, to) {
         this.props.onUpdateLocation({
             ci_from: from ? from.split(",").join(";") : "",
-            ci_to: ""
+            ci_to: to ? to.split(",").join(";") : ""
         });
     }
 
@@ -98,7 +101,7 @@ class LocationFilter extends React.Component {
     resetFilter() {
     	this.setState({
     		fromCI: DefaultFilter.ci_from,
-    		toCI: ""
+    		toCI: DefaultFilter.ci_to
     	});
     }
 

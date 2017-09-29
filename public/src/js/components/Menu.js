@@ -18,7 +18,6 @@ class Menu extends React.Component {
         this.handleSetPersonnel = this.handleSetPersonnel.bind(this);
         this.handleSetLocation = this.handleSetLocation.bind(this);
         this.handleApplyFilter = this.handleApplyFilter.bind(this);
-        this.resetFilter = this.resetFilter.bind(this);
 
         this.filters = _.assign({}, DefaultFilter);
         this.timeFilter = {
@@ -26,11 +25,16 @@ class Menu extends React.Component {
             date_to: DefaultFilter.date_to
         };
         this.locFilter = {
-            ci_from: DefaultFilter.fromCI
+            ci_from: DefaultFilter.ci_from,
+            ci_to: DefaultFilter.ci_to
         };
         this.pplFilter = {
             numbers: DefaultFilter.numbers
         };
+
+        this.state = {
+            filter: _.assign({}, this.timeFilter, this.locFilter, this.pplFilter)
+        }
     }
 
     handleUpdateFP() {
@@ -60,6 +64,10 @@ class Menu extends React.Component {
             'date_from': new Date(date1),
             'date_to': new Date(date2)
         };
+
+        this.setState({
+            filter: _.assign({}, this.timeFilter, this.locFilter, this.pplFilter)
+        })
     }
 
     handleSetLocation(loc) {
@@ -77,8 +85,8 @@ class Menu extends React.Component {
     }
 
     // TODO rewrite with Flux
-    resetFilter() {
-        this.refs.fp.resetFilter();
+    resetAllFilters() {
+        this.refs.fp.resetAllFilters();
     }
 
     render() {
@@ -136,6 +144,8 @@ class Menu extends React.Component {
 
                     <FilterPanel 
                         ref="fp"
+                        currFilter={this.state.filter}
+                        suspects={this.props.suspects}
                         isUnfold={isUnfold} 
                         onOpenFilter={this.handleOpenFilter} 
                         onSetDateRange={this.handleSetDateRange} 
@@ -147,7 +157,7 @@ class Menu extends React.Component {
                     {/*sidebar menu*/}
                     <div id="sidebar-footer" className="sidebar-footer">
                         <span className="content">重置所有筛选条件</span>
-                        <span className="resetall"><img onClick={this.resetFilter} src={"../icons/svg/filtericon/resetall" + (this.filters.length > 0 ? "-active" : "") + "@1x.svg"} className="logo"/></span>
+                        <span className="resetall"><img onClick={this.resetAllFilters} src={"../icons/svg/filtericon/resetall" + (this.filters.length > 0 ? "-active" : "") + "@1x.svg"} className="logo"/></span>
                     </div>
                 </div>
             </div>

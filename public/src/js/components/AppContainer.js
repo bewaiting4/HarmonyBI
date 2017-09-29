@@ -43,7 +43,7 @@ class AppContainer extends React.Component {
 		this.openExport = this.openExport.bind(this);
 		this.closeExport = this.closeExport.bind(this);
 
-		this.exportPDF = this.exportPDF.bind(this);
+		this.handleExport = this.handleExport.bind(this);
 		this.Exporter = PDFExporter();
 
 		this.dataModel = Model();
@@ -69,6 +69,10 @@ class AppContainer extends React.Component {
 		this.updateWindowDimensions();
 	  	window.addEventListener('resize', this.updateWindowDimensions);
 	}
+
+    componentDidUpdate() {
+
+    }
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.updateWindowDimensions);
@@ -119,13 +123,23 @@ class AppContainer extends React.Component {
 	}
 
 	openExport() {
-    	this.refs.expDlg.setState({
-            showExport: true
-        });
+    	// this.refs.expDlg.setState({
+     //        showExport: true
+     //    });
+     this.handleExport({});
 	}
 
-    handleExport() {
-        this.exportPDF();     
+    handleExport(config) {
+
+		this.Exporter.export({
+			title: config.title,
+			filter: this.dataModel.getFilter(),
+			contactTable: this.state.docData.contactTable,
+			suspectTable: this.state.docData.suspectTable,
+			charts: this.refs.docView.charts,
+			filterSuspects: JSON.parse(this.dataModel.getFilter().numbers),
+			caseTime: this.refs.menu.refs.fp.getTimeFilterContent()
+		});
     }
 
     closeExport() {
@@ -133,10 +147,6 @@ class AppContainer extends React.Component {
             showExport: false
         });
     }
-
-	exportPDF() {
-		Exporter.export();
-	}
 
 	render() {
 		if (window.clientDebug) {
@@ -146,10 +156,8 @@ class AppContainer extends React.Component {
 		const isUnfold = this.state.isUnfold;
 		let suspects = {};
 
-		if (this.dataModel.condition) {
-			suspects = _.keyBy(JSON.parse(this.dataModel.condition.numbers), 'number') || {};
-		} else if (DefaultFilter) {
-			suspects = _.keyBy(JSON.parse(DefaultFilter.numbers), 'number') || {}
+		if (this.dataModel.getFilter()) {
+			suspects = _.keyBy(JSON.parse(this.dataModel.getFilter().numbers), 'number') || {};
 		} else {
 			suspects = {};
 		}
@@ -160,16 +168,19 @@ class AppContainer extends React.Component {
 					<div className="container body">
 						<div className="main_container">
 							<Menu
+								ref='menu'
+								suspects={suspects}
 								onToggleChange={this.handleToggle}
 								isUnfold={isUnfold}
-								onExport={this.exportPDF}
+								onExport={this.handleExport}
 								dim={{height: this.state.height}}
 								onApplyFilter={this.handleApplyFilter}
 								CIData={this.CIData}
 								onOpenExport={this.openExport}
 							/>
 							<TopNav />
-							<DocumentView 
+							<DocumentView
+								ref='docView'
 								data={myData}
 								tab={this.state.activeTab} 
 								dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} 

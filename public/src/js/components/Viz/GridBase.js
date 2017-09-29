@@ -5,7 +5,7 @@ import { Editors, Toolbar, Formatters } from 'react-data-grid-addons'
 import ENUM from '../Enums'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
 import HighlightFormatter from './HighlightFormatter'
-const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
+const {DropDownEditor} = Editors;
 
 class GridBase extends React.Component {
 	constructor(props) {

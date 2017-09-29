@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 function getTCommOption(data, subtype, filter, data2) {
 
 	function renderItem(params, api) {
@@ -23,6 +25,8 @@ function getTCommOption(data, subtype, filter, data2) {
 	var arrTimeStamp = [];
 	var series = [];
 	var idxNumber = 0;
+	var hashData2 = _.keyBy(data2, 'number');
+
 	for (var i = data.length - 1; i >= 0; i--) {
 		var datum = data[i],
 			callStart = datum['call_start'],
@@ -32,6 +36,14 @@ function getTCommOption(data, subtype, filter, data2) {
 			duration = parseInt(datum['call_duration']),
 			from = datum['f_number'],
 			to = datum['t_number'];
+
+		if (!from || !hashData2[from]) {
+			continue;
+		}
+
+		if (!to || !hashData2[to]) {
+			continue;
+		}
 
 		if (from && hashNumber[from] === undefined) {
 			hashNumber[from] = idxNumber++;
@@ -71,12 +83,12 @@ function getTCommOption(data, subtype, filter, data2) {
 		}
 	}
 
-	_.forEach(h1, function(value, key) {
-		if (value) {
-			yTicks.push(key);
-			h1[key] = false;
-		}
-	});
+	// _.forEach(h1, function(value, key) {
+	// 	if (value) {
+	// 		yTicks.push(key);
+	// 		h1[key] = false;
+	// 	}
+	// });
 
 	return {
 	    tooltip: {
@@ -90,7 +102,7 @@ function getTCommOption(data, subtype, filter, data2) {
 	    },
 	    yAxis: {
 	    	type: 'category',
-	    	data: yTicks,
+	    	data: _.reverse(yTicks),
 	    	splitLine: {
 	        	show: true
 	        },
@@ -101,7 +113,7 @@ function getTCommOption(data, subtype, filter, data2) {
 				type: 'slider',
 				show: true,
 				start: 0,
-				end: 6,
+				end: 100,
 				handleSize: 20
 			}
 		],

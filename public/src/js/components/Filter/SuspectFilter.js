@@ -35,21 +35,29 @@ class SuspectFilter extends React.Component {
         this.onCatChange = this.onCatChange.bind(this);
         this.onOnlineChange = this.onOnlineChange.bind(this);
 
-        this.suspectList = _.map(JSON.parse(DefaultFilter.numbers), function(o) {
-            // number, type, serviceSpan
-            return {category: o.type, phone: o.number, online: o.serviceSpan};
-        });
-
         this.dftState = {
             category: ENUM.CATEGORY_KEY.UNKNOWN,
             online: ENUM.ONLINE_KEY.TEMP,
+            suspectList: _.map(JSON.parse(DefaultFilter.numbers), function(o) {
+                // number, type, serviceSpan
+                return {category: o.type, phone: o.number, online: o.serviceSpan};
+            })
         };
 
-        this.state = _.assign({cnt: this.suspectList.length}, this.dftState);
+        this.state = _.assign({}, this.dftState);
     }
 
-    _transform() {
-        return _.map(this.suspectList, function(o) {
+    componentDidMount() {
+        this.setState({
+            suspectList: _.map(this.props.suspects, function(o) {
+                // number, type, serviceSpan
+                return {category: o.type, phone: o.number, online: o.serviceSpan};
+            })
+        });
+    }
+
+    _transform(list) {
+        return _.map(list, function(o) {
             return {
                 type: o.category,
                 serviceSpan: o.online,
@@ -59,30 +67,32 @@ class SuspectFilter extends React.Component {
     }
 
     handleAddSuspect() {
-        this.suspectList.push({
+        var list = this.state.suspectList.slice();
+
+        list.push({
             category: this.state.category,
             online: this.state.online,
             phone: this.refs.phone.value
         });
 
-        this.setState(_.assign({
-            cnt: this.suspectList.length
-        }, this.dftState));
+        this.setState({
+            suspectList: list
+        });
+
         this.refs.phone.value = "";
 
-        this.props.onUpdateSuspect(this._transform());
+        this.props.onUpdateSuspect(this._transform(list));
     }
 
     handleDeleteSuspect(suspect) {
-        this.suspectList = _.filter(this.suspectList, function(o) {
+        var list = _.filter(this.state.suspectList, function(o) {
             return o.phone !== suspect.phone;
         });
-
         this.setState({
-            cnt: this.suspectList.length
+            suspectList: list
         });
 
-        this.props.onUpdateSuspect(this._transform());
+        this.props.onUpdateSuspect(this._transform(list));
     }
 
     onCatChange(val) {
@@ -97,26 +107,42 @@ class SuspectFilter extends React.Component {
         });
     }
 
+    onItemCatChange(suspect) {
+        return this._onItemChange(suspect, 'category');
+    }
+
+    _onItemChange(suspect, prop) {
+        var me = this;
+        return function(val) {
+            var list = me.state.suspectList.slice();
+            _.forEach(list, function(o) {
+                if (o.phone === suspect.phone) {
+                    o[prop] = val;
+                }
+            });
+            me.setState(list);
+
+            me.props.onUpdateSuspect(me._transform(list));
+        };        
+    } 
+
+    onItemOnlineChange(suspect) {
+        return this._onItemChange(suspect, 'online');
+    }    
+
     resetFilter() {
-        this.suspectList = _.map(JSON.parse(DefaultFilter.numbers), function(o) {
-            // number, type, serviceSpan
-            return {category: o.type, phone: o.number, online: o.serviceSpan};
-        });
+        this.setState(_.assign({}, this.dftState));
 
-        this.setState({
-            cnt: this.suspectList.length
-        });
-
-        this.props.onUpdateSuspect(this._transform());
+        this.props.onUpdateSuspect(this._transform(this.dftState.suspectList));
     }
 
     render() {
         var me = this,
-            suspectList = _.map(this.suspectList, function(suspect) {
+            suspectList = _.map(this.state.suspectList, function(suspect) {
                 return <ul key={suspect.phone} className="list">
                     <span className="phone_search">{suspect.phone}</span>			 
-                	<Select simpleValue options={optionsCategory} placeholder="身份" value={suspect.category} className="category"/>
-                    <Select simpleValue options={optionsOnline} placeholder="续网" value={suspect.online} className="online"/>
+                	<Select simpleValue options={optionsCategory} placeholder="身份" value={suspect.category} className="category" onChange={me.onItemCatChange(suspect)}/>
+                    <Select simpleValue options={optionsOnline} placeholder="续网" value={suspect.online} className="online" onChange={me.onItemOnlineChange(suspect)}/>
                     <div className="upload_img">
                         <img/> 
                     </div>			 

@@ -66,7 +66,7 @@ module.exports = {
 				number: p.number,
 				closeScore: p.closeScore,
 				serviceType: p.serviceType,
-				isSpecialNumber: (p.isSpecialNumber === ENUM.SPECIAL_NUMBER_KEY.NOT) ? ENUM.SPECIAL_NUMBER_KEY.NOT : ENUM.SPECIAL_NUMBER_KEY.YES,
+				isSpecialNumber: p.isSpecialNumber && ((p.isSpecialNumber === ENUM.SPECIAL_NUMBER_KEY.NOT) ? ENUM.SPECIAL_NUMBER_KEY.NOT : ENUM.SPECIAL_NUMBER_KEY.YES),
 				connectionStatus: p.connectionStatus,
 				isIntersect: p.isIntersect,
 				isPresent: p.isPresent

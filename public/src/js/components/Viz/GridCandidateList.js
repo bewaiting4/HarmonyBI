@@ -1,27 +1,21 @@
 import React from 'react'
 import ReactDataGrid from 'react-data-grid'
 import ENUM from '../Enums'
+import GridBase from './GridBase'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
 import HighlightFormatter from './HighlightFormatter'
 import { Editors, Toolbar, Formatters } from 'react-data-grid-addons'
-const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
+const {DropDownEditor} = Editors;
 
 class GridCandidateList extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.rowGetter = this.rowGetter.bind(this);
-		this.getColumns = this.getColumns.bind(this);
 	}
-
-  	rowGetter(i) {
-    	return this.props.data[i];
-  	}
 
 	getColumns() {
 		let lvlMapping_sn = {}
-		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.YES] = 2;
-		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.NOT] = 1;
+		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.YES] = 1;
+		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.NOT] = 2;
 
 		return [
 			{key: 'index', name: "序号", resizable: true},
@@ -99,43 +93,20 @@ class GridCandidateList extends React.Component {
 		];
 	}
 
-	componentDidMount() {
-		this.setState({
-			rows: _.map(this.props.data, function(p) {
-				return _.assign(p, {
-					type: ENUM.CATEGORY_MAP[p.type],
-					isSpecialNumber: (p.isSpecialNumber === ENUM.SPECIAL_NUMBER_KEY.NOT) ? ENUM.SPECIAL_NUMBER_KEY.NOT : ENUM.SPECIAL_NUMBER_KEY.YES,
-				});
-			})
-		})
-	}
-
-	componentDidUpdate() {
-		this.refs.grid.updateMetrics();
-	}
-
-	handleGridRowsUpdated({ fromRow, toRow, updated }) {
-		let rows = this.state.rows.slice();
-
-		for (let i = fromRow; i <= toRow; i++) {
-			let rowToUpdate = rows[i];
-			let updatedRow = _.merge(rowToUpdate, updated);
-			rows[i] = updatedRow;
-		}
-
-		this.setState({rows});
+	adjustRow(p) {
+		return _.assign({}, p, {
+			type: ENUM.CATEGORY_MAP[p.type],
+			isSpecialNumber: p.isSpecialNumber && ((p.isSpecialNumber === ENUM.SPECIAL_NUMBER_KEY.NOT) ? ENUM.SPECIAL_NUMBER_KEY.NOT : ENUM.SPECIAL_NUMBER_KEY.YES),
+		});
 	}
 
 	render() {
-		return <ReactDataGrid
-			ref='grid'
-			enableCellSelect={true}
-			columns={this.getColumns()}
-			rowGetter={this.rowGetter}
-			rowsCount={this.props.data.length}
-			minHeight={this.props.height}
-			onGridRowsUpdated={this.handleGridRowsUpdated}
-		/>;
+		return <GridBase 
+			data={this.props.data} 
+			columns={this.getColumns()} 
+			fnCusmizeRows={this.adjustRow}
+			height={this.props.height}
+		/>
 	}
 }
 

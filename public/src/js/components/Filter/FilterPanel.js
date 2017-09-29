@@ -15,6 +15,13 @@ class FilterPanel extends React.Component {
 
 		this.handleOpenFilter = this.handleOpenFilter.bind(this);
 
+        this.resetAllFilters = this.resetAllFilters.bind(this);
+        this.resetTimeFilter = this.resetTimeFilter.bind(this);
+        this.resetLocFilter = this.resetLocFilter.bind(this);
+        this.resetSusFilter = this.resetSusFilter.bind(this);
+
+        this.getTimeFilterContent = this.getTimeFilterContent.bind(this);
+
 		this.dftState = {
 			onTimeFilter: false,
 			onLocationFilter: false,
@@ -59,10 +66,30 @@ class FilterPanel extends React.Component {
     }
 
     // TODO rewrite with Flux
-    resetFilter() {
-    	this.refs.timeFilter.resetFilter();
-    	this.refs.locFilter.resetFilter();
-    	this.refs.susFilter.resetFilter();
+    resetAllFilters() {
+        this.resetTimeFilter();
+        this.resetLocFilter();
+        this.resetSusFilter();
+    }
+
+    resetTimeFilter() {
+        this.refs.timeFilter.resetFilter();        
+    }
+
+    resetLocFilter() {
+        this.refs.locFilter.resetFilter();
+    }
+
+    resetSusFilter() {
+        this.refs.susFilter.resetFilter();
+    }
+
+    getTimeFilterContent() {
+        return this.refs.timeFilter.getTimeFilterContent();
+    }
+
+    getCurrentDateRange() {
+        return this.props.currFilter.date_from.toLocaleString('zh') + '-' + this.props.currFilter.date_to.toLocaleString('zh')
     }
 
 	render() {
@@ -81,10 +108,12 @@ class FilterPanel extends React.Component {
                         <FilterPortlet
                             name="Time"
                             text="案发时间"
+                            currSel={this.getCurrentDateRange()}
                             isUnfold={isUnfold}
                             onOpenFilter={this.handleOpenFilter}
                             icon={onTimeFilter ? "date-set": "date-unset"}
                             onFilter={onTimeFilter}
+                            onResetFilter={this.resetTimeFilter}
                         >
                             <TimeFilter ref="timeFilter" onSetDateRange={this.handleSetDateRange}/>
                         </FilterPortlet>
@@ -95,7 +124,8 @@ class FilterPanel extends React.Component {
                             isUnfold={isUnfold}
                             onOpenFilter={this.handleOpenFilter}
                             icon={onLocationFilter ? "map-set": "map-unset"}
-                            onFilter={onLocationFilter}                            
+                            onFilter={onLocationFilter}
+                            onResetFilter={this.resetLocFilter}                           
                         >
                             <LocationFilter ref="locFilter" onUpdateLocation={this.handleUpdateLocation}/>
                         </FilterPortlet>
@@ -107,8 +137,9 @@ class FilterPanel extends React.Component {
                             onOpenFilter={this.handleOpenFilter}
                             icon={onIdNumberFilter ? "id-set": "id-unset"}
                             onFilter={onIdNumberFilter}
+                            onResetFilter={this.resetSusFilter}
                         >
-                        	<SuspectFilter ref="susFilter" onUpdateSuspect={this.handleUpdateSuspect}/>
+                        	<SuspectFilter ref="susFilter" suspects={this.props.suspects} onUpdateSuspect={this.handleUpdateSuspect}/>
                         </FilterPortlet>
                     </ul>
                 </div>
