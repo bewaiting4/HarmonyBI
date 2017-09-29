@@ -6,6 +6,7 @@ import Network from './Network';
 import Pie from './Pie';
 import TCom from './TCom';
 import Table from './Table';
+import Network2 from './Network2'
 
 class EChartsWrapper {
 	constructor(container) {
@@ -29,12 +30,23 @@ class EChartsWrapper {
 			Table.renderTable(id);
 		} else if (type === "map") {
 			Map.renderMap(id, data, config, data2);
+		// } else if (type === "network") {
+		// 	window.networks = window.networks || {};
+		// 	if (!chartInstance) {
+		// 		if (!window.networks[id]) {
+		// 			chartInstance = new Network2();
+		// 		} else {
+		// 			chartInstance = window.networks[id];
+		// 		}				
+		// 	}
+
+		// 	chartInstance.render(id, data);
 		} else {
 			if (!chartInstance) {
 				chartInstance = echarts.init(document.getElementById(id), this.theme);	
 			}
 			
-			chartInstance.setOption(this.getChartOption(type, data, config.subType, config.filter, data2));
+			chartInstance.setOption(this.getChartOption(type, data, config.subType, config.filter, data2, chartInstance));
 		}
 
 		return chartInstance;
@@ -49,8 +61,8 @@ class EChartsWrapper {
 		}[type];
 	}
 
-	getChartOption(type, data, subType, filter, data2) {
-		return this.getChart(type).getChartOption(data, subType, filter, data2);
+	getChartOption(type, data, subType, filter, data2, chartInstance) {
+		return this.getChart(type).getChartOption(data, subType, filter, data2, chartInstance);
 	}
 
 	resizeChart(chartInstance) {
