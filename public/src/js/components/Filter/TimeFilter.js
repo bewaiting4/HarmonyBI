@@ -15,6 +15,7 @@ class TimeFilter extends React.Component {
 		this.onPostHoursChange = this.onPostHoursChange.bind(this);
 		this.onCaseDateChange = this.onCaseDateChange.bind(this);
 		this.updateDateRange = this.updateDateRange.bind(this);
+		this.getTimeFilterContent = this.getTimeFilterContent.bind(this);
 
 		this.dftState = {
 			preHours: 48,
@@ -23,6 +24,8 @@ class TimeFilter extends React.Component {
 		};
 
 		this.state = _.assign({}, this.dftState);
+
+		this.filterContent = _.assign({}, this.dftState);
 	}
 
 	componentDidMount() {
@@ -40,6 +43,10 @@ class TimeFilter extends React.Component {
 				enabled: true
 			}
 		}).bind('datepicker-change', (function(evt, obj) {
+			this.filterContent = {
+				date_from: obj.date1,
+				date_to: obj.date2
+			}
 			this.props.onSetDateRange(obj.date1, obj.date2);
 		}).bind(this));
 
@@ -47,6 +54,12 @@ class TimeFilter extends React.Component {
 	}
 
 	_calcDateRange(caseDate, preHours, postHours) {
+		this.filterContent = {
+			caesDate: caseDate,
+			preHours: preHours,
+			postHours: postHours
+		};
+
 		return [(new moment(caseDate)).subtract(preHours, 'hours').toDate(), (new moment(caseDate)).add(postHours, 'hours').toDate()]
 	}
 
@@ -76,6 +89,10 @@ class TimeFilter extends React.Component {
 
 	updateDateRange(range) {
 		this.props.onSetDateRange(range[0], range[1]);
+	}
+
+	getTimeFilterContent() {
+		return this.filterContent;
 	}
 
 	resetFilter() {

@@ -20,6 +20,8 @@ class FilterPanel extends React.Component {
         this.resetLocFilter = this.resetLocFilter.bind(this);
         this.resetSusFilter = this.resetSusFilter.bind(this);
 
+        this.getTimeFilterContent = this.getTimeFilterContent.bind(this);
+
 		this.dftState = {
 			onTimeFilter: false,
 			onLocationFilter: false,
@@ -80,6 +82,10 @@ class FilterPanel extends React.Component {
 
     resetSusFilter() {
         this.refs.susFilter.resetFilter();
+    }
+
+    getTimeFilterContent() {
+        return this.refs.timeFilter.getTimeFilterContent();
     }
 
     getCurrentDateRange() {
