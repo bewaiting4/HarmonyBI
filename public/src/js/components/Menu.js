@@ -25,7 +25,8 @@ class Menu extends React.Component {
             date_to: DefaultFilter.date_to
         };
         this.locFilter = {
-            ci_from: DefaultFilter.fromCI
+            ci_from: DefaultFilter.ci_from,
+            ci_to: DefaultFilter.ci_to
         };
         this.pplFilter = {
             numbers: DefaultFilter.numbers
