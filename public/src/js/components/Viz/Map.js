@@ -1,4 +1,5 @@
 import Theme from './EChartsThemeConfig'
+import Enum from '../Enums'
 
 function addArrow(map, polyline, length, angleValue, color) { //绘制箭头的函数  
 	var linePoint = polyline.getPath(); //线的坐标串  
@@ -60,8 +61,16 @@ function addArrow(map, polyline, length, angleValue, color) { //绘制箭头的�
 function renderMap(id, data, config, data2) {
 
 	var intervalId,
-		myMap;
+		myMap,
+		geoCoder = new BMap.Geocoder(),
+		hashData2 = {},
+		hashColor = {};
 
+
+	_.forEach(data2, function(o, idx) {
+		hashData2[o.number] = o;
+		hashColor[o.number] = Theme.color[idx];
+	});
 
 	function initMap() {
 		if (BMap) {
@@ -78,7 +87,7 @@ function renderMap(id, data, config, data2) {
 		var zLv = 15;
 		var point;
 		if (config && config.mapCenter) {
-			point = new BMap.Point(config.mapCenter.lat, config.mapCenter.long);
+			point = new BMap.Point(config.mapCenter.long, config.mapCenter.lat);
 			map.centerAndZoom(point,17);
 		} else {
 			point = new BMap.Point("乌鲁木齐");
@@ -118,7 +127,7 @@ function renderMap(id, data, config, data2) {
 		//map.setViewport([point]);
 
 		if (config && config.lat !== undefined && config.long !== undefined) {
-			var marker = new BMap.Marker(new BMap.Point(config.lat, config.long));
+			var marker = new BMap.Marker(new BMap.Point(config.long, config.lat));
 			map.addOverlay(marker);
 		}
 
@@ -146,6 +155,7 @@ function renderMap(id, data, config, data2) {
 
 		var hashPTs = {};
 		var tracks = {};
+		var connection = {};
 		var clrIdx = 0;
 
 		function generateObjects(datum, PREFIX) {
@@ -199,23 +209,114 @@ function renderMap(id, data, config, data2) {
 			}			
 		}
 
+		function generateConnection(datum) {
+			if (datum['f_number'] && datum['t_number']) {
+				var key1 = datum['f_number'] + ':' + datum['t_number'];
+				var key2 = datum['t_number'] + ':' + datum['f_number'];
+
+				if (connection[key1] || connection[key2]) {
+					return ;
+				}
+
+				if (datum['f_long'] && datum['f_lat'] && datum['f_long'] !== "0" && datum['f_lat'] !== "0"
+					&& datum['f_long'] && datum['f_lat'] && datum['f_long'] !== "0" && datum['f_lat'] !== "0") {
+
+					connection[key1] = [
+						new BMap.Point(datum['f_long'], datum['f_lat']),
+						new BMap.Point(datum['t_long'], datum['t_lat'])
+					];
+				}
+
+			}
+		}
+
+
+		var hashDistrict = {};
 		for (var i = 0; i < data.length; i++) {
 			var datum = data[i];
 			generateObjects(datum, 'f');
 			generateObjects(datum, 't');
+			generateConnection(datum);
+
+			if (!hashDistrict[datum['f_number']]) {
+				hashDistrict[datum['f_number']] = datum['f_district'];
+			}
+
+			if (!hashDistrict[datum['t_number']]) {
+				hashDistrict[datum['t_number']] = datum['t_district'];
+			}
 		}
 
-		
-		_.forEach(tracks, function(value, key) {
-			if (value.length > 1) {
-				var clr = Theme.color[clrIdx++ % Theme.color.length];				
-				var polyline = new BMap.Polyline(value, {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
-				myMap.addOverlay(polyline);
-				if (config.subtype === 1) {
-					addArrow(myMap, polyline, 15, Math.PI / 7, clr);
+		if (config.subtype === 1) {
+			_.forEach(tracks, function(value, key) {
+				if (value.length > 1) {
+					var clr = Theme.color[clrIdx++ % Theme.color.length];
+
+					for (var i=0; i< value.length-1; i++) {
+						var polyline = new BMap.Polyline([value[i],value[i+1]], {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
+						myMap.addOverlay(polyline);
+						addArrow(myMap, polyline, 15, Math.PI / 7, clr);						
+					}			
 				}
-			}
-		});
+			});			
+		} else if (config.subtype === 2) {
+			var cntGeo = 0;
+			var hashConnection = {};
+			var mappingGeo = {};
+
+			_.forEach(hashDistrict, function(value, key) {
+				if (value) {
+					cntGeo++;
+					geoCoder.getPoint(value, function(res) {
+						cntGeo--;
+
+						if (res) {
+							var lat = res.lat;
+							var long = res.lng;
+
+							if(lat !== 0 && long !== 0) {
+								while (hashConnection[lat + ':' + long]) {
+									lat = lat + Math.random()*0.004-0.002;
+									long = long + Math.random()*0.004-0.002;
+								}
+								hashConnection[lat + ':' + long] = true;
+								mappingGeo[key] = new BMap.Point(long, lat);	
+
+								var clr = hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? hashColor[key] : 'grey',
+									r = hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? 15: 5,
+									scontent = "<h3>" + key + "</h3>";
+
+								var circle = new BMap.Circle(mappingGeo[key], r, {strokeColor: clr, fillColor: clr, strokeWeight:1, strokeOpacity:0.5});
+
+								addClickHandler(scontent, circle);
+
+								myMap.addOverlay(circle);										
+							}
+						}
+
+						if (cntGeo <=0) {
+							console.log('draw connections');
+							console.log(mappingGeo);
+							console.log(hashConnection);
+							_.forEach(connection, function(value, key) {
+								var clr = Theme.color[clrIdx++ % Theme.color.length];
+								var ks = key.split(':');
+								if (mappingGeo[ks[0]] && mappingGeo[ks[1]]) {
+									var path = [mappingGeo[ks[0]], mappingGeo[ks[1]]];
+									var polyline = new BMap.Polyline(path, {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
+									myMap.addOverlay(polyline);
+								}
+							});
+
+							myMap.setViewport(_.values(mappingGeo));
+
+						}
+					})
+				}
+			});
+
+			return ;
+		}
 
 		myMap.setViewport(points);
 	}

@@ -39,11 +39,11 @@ class LocationFilter extends React.Component {
 	componentDidMount() {
 		this.filterInstance = this.wrapper.renderChart(this.mapLocId, "map", this.filterInstance, null, {
 			subtype: 3, // map as filter
-			lat: 78.274895,//78.274895, 37.617298
-			long: 37.617298,
+			long: 78.274895,//78.274895, 37.617298
+			lat: 37.617298,
 			mapCenter: {
-				lat: 78.274895,
-				long: 37.617298
+				long: 78.274895,
+				lat: 37.617298
 			},
 			callback: function(lat, long, radius) {
 				this.handleSetPin(lat, long, radius);
