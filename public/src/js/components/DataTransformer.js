@@ -76,7 +76,8 @@ module.exports = {
 		function getContactProps(p) {
 			return {
 				number: p.number,
-				closeScore: p.closeScore
+				closeScore: p.closeScore,
+				callTime: Math.round(p.callTime)
 			}
 		}
 

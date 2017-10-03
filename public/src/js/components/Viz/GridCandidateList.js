@@ -12,9 +12,13 @@ class GridCandidateList extends React.Component {
 		super(props);
 	}
 
+	getCellWidth() {
+
+	}
+
 	getColumns() {
 		let lvlMapping_sn = {}
-		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.YES] = 1;
+		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.YES] = 0;
 		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.NOT] = 2;
 
 		return [
@@ -28,7 +32,12 @@ class GridCandidateList extends React.Component {
 			},
 			{key: "number", name: "电话号码", width: 100, resizable: true}, 
 			{key: "idNumber", name: "身份证号", resizable: true},
-			{key: "district", name: "电话号码归属地", resizable: true},
+			{
+				key: "district", 
+				name: "电话号码归属地", 
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>电话号码归属地</div>
+			},
 			{key: "lang", name: "语种", resizable: true},
 			{key: "IMEI", name: "电话机型", resizable: true},
 			{
@@ -56,7 +65,8 @@ class GridCandidateList extends React.Component {
 				formatter: <HighlightFormatter 
 					lvlMapping={ENUM.CLOSE_SCORE_MAP}
 					titleMapping={ENUM.CLOSE_MAP}
-				/>
+				/>,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>案发前后紧密度</div>				
 			},
 			{
 				key: "connectionStatus",
@@ -65,7 +75,8 @@ class GridCandidateList extends React.Component {
 				formatter: <HighlightFormatter 
 					lvlMapping={ENUM.CONNECTION_SCORE_MAP}
 					titleMapping={ENUM.CONNECTION_MAP}
-				/>
+				/>,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>案发前后联系状况</div>				
 			},
 			{
 				key: "isIntersect",
@@ -74,7 +85,8 @@ class GridCandidateList extends React.Component {
 				formatter: <HighlightFormatter 
 					lvlMapping={ENUM.INTERSECT_SCORE_MAP}
 					titleMapping={ENUM.INTERSECT_MAP}
-				/>				
+				/>,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>案发前后活动轨迹</div>				
 			},
 			{
 				key: "isPresent",
@@ -83,7 +95,8 @@ class GridCandidateList extends React.Component {
 				formatter: <HighlightFormatter 
 					lvlMapping={ENUM.PRESENT_SCORE_MAP}
 					titleMapping={ENUM.PRESENT_MAP}
-				/>
+				/>,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>案发前后是否在场</div>
 			}, {
 				key: "notes",
 				name: "备注",

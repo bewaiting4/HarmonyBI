@@ -15,7 +15,7 @@ class SuspectTypeFormatter extends React.Component {
 	}
 
 	render() {
-		return <div>
+		return <div style={{'text-align': 'left'}}>
 			<FontAwesome name="user" style={{color: this.colorMap[ENUM.CATEGORY_MAP_REVERSE[this.props.value]] || this.COLOR_DEFAULT}}/>{this.props.value === "" ? ENUM.CATEGORY_MAP[0] : this.props.value}
 		</div>
 	}

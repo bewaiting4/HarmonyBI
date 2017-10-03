@@ -6,6 +6,29 @@ import ENUM from '../Enums'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
 import HighlightFormatter from './HighlightFormatter'
 const {DropDownEditor} = Editors;
+const { Row } = ReactDataGrid;
+
+const RowRenderer = React.createClass({
+  propTypes: {
+    idx: React.PropTypes.string.isRequired
+  },
+
+  setScrollLeft(scrollBy) {
+    // if you want freeze columns to work, you need to make sure you implement this as apass through
+    this.row.setScrollLeft(scrollBy);
+  },
+
+  getRowClassName() {
+    return this.props.idx % 2 ?  'odd' : 'even';
+  },
+
+  render: function() {
+    // here we are just changing the style
+    // but we could replace this with anything we liked, cards, images, etc
+    // usually though it will just be a matter of wrapping a div, and then calling back through to the grid
+    return (<div className={this.getRowClassName()}><Row ref={ node => this.row = node } {...this.props}/></div>);
+  }
+});
 
 class GridBase extends React.Component {
 	constructor(props) {
@@ -56,6 +79,7 @@ class GridBase extends React.Component {
 			rowsCount={this.state.rows.length}
 			minHeight={this.props.height || 200}
 			onGridRowsUpdated={this.handleGridRowsUpdated}
+			rowRenderer={RowRenderer}
 		/>;
 	}
 }
