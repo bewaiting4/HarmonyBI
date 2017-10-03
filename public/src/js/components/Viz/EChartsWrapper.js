@@ -30,17 +30,17 @@ class EChartsWrapper {
 			Table.renderTable(id);
 		} else if (type === "map") {
 			Map.renderMap(id, data, config, data2);
-		// } else if (type === "network") {
-		// 	window.networks = window.networks || {};
-		// 	if (!chartInstance) {
-		// 		if (!window.networks[id]) {
-		// 			chartInstance = new Network2();
-		// 		} else {
-		// 			chartInstance = window.networks[id];
-		// 		}				
-		// 	}
+		} else if (type === "network") {
+			window.networks = window.networks || {};
+			if (!chartInstance) {
+				if (!window.networks[id]) {
+					chartInstance = new Network2();
+				} else {
+					chartInstance = window.networks[id];
+				}				
+			}
 
-		// 	chartInstance.render(id, data);
+			chartInstance.render(id, data, data2);
 		} else {
 			if (!chartInstance) {
 				chartInstance = echarts.init(document.getElementById(id), this.theme);	

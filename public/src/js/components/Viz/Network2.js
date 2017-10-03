@@ -1,13 +1,25 @@
+import Theme from './EChartsThemeConfig'
+import Enum from '../Enums'
+
 class Network2 {
 	resize() {
 		this.render(this.id, this.data);
 	}
 
-	render(id, data) {
+	render(id, data, data2) {
 		var svg = d3.select('#' + id);
 
 		this.id = id;
 		this.data = data;
+
+		var hashData2 = {},
+			hashColor = {};
+
+		_.forEach(data2, function(o, idx) {
+			hashData2[o.number] = o;
+			hashColor[o.number] = Theme.color[idx];
+		});
+
 
 		function parseData(data) {
 			var mapping = {}
@@ -58,7 +70,7 @@ class Network2 {
 			}
 
 			return {
-				nodes: _.map(nodes, function(node, key) {return {id: key, weight: node.value}}),
+				nodes: _.map(nodes, function(node, key) {return {id: key, weight: node.value, color: hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? hashColor[key] : 'grey'}}),
 				links: links
 			}
 		}
