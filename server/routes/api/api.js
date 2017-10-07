@@ -10,4 +10,6 @@ router.use('/viz', require('./viz/vizRouter'));
 
 router.use('/filter', require('./filter/filterRouter'));
 
+router.use('/image', require('./image/imageRouter'));
+
 module.exports = router;
