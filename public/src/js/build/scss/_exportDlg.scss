@@ -1,0 +1,96 @@
+.modal-dialog {
+	width: 440px;
+	button.close {
+		color: #979EAC
+	}
+
+	.modal-title {
+		font-size: 22px;;
+		text-align: center;
+	}
+}
+.modal-content {
+	background-color: #323947;
+	color: inherit;
+
+	.col-xs-6 {
+		line-height: 0;
+	}
+
+	.modal-body {
+		padding: 20px 30px 30px 30px;
+	}
+
+	.modal-header {
+		background-color: #000000;
+		border-bottom: none;
+		padding: 16px;
+	}
+
+	.label {
+		background-color: transparent;
+		font-size: 12px;
+		font-weight: normal;
+		padding: 0px 0 6px 0;
+		display: inline-block;
+	}
+
+	.chartsel {
+		padding-top: 24px;
+		padding-bottom: 8px;
+	}
+
+	.form-control {
+		border-radius: 4px;
+		height: 32px;
+	}
+
+	button.success {
+		background-color: #1A66D9;
+		color: #FFF;
+		width: 380px;
+		margin-bottom: 0;
+		margin-right: 0;
+		border-color: transparent;
+		margin-top: 14px;
+	}
+
+	.thumbnail {
+		display: inline-block;
+		border-radius: 0;
+		border: 1px solid black;
+		width: 89px;
+		height: 45px;
+		margin-bottom: 0;
+		background: transparent;
+
+		img {
+			width: 24px;
+			height: 23px;
+			margin-top: 5px;
+		}
+
+		&.callList {
+			width: 178px;
+			height: 90px;
+
+			img {
+				margin-top: 16%;
+			}
+		}
+	}
+
+	.thumbContainer {
+		width: 180px;
+		height: 92px;
+		border: 1px solid #1A66D9
+	}
+
+	.checkbox {
+		line-height: 20px;
+
+		label {
+			font-size: 12px;
+		}
+	}
+}

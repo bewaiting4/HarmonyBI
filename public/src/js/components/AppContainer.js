@@ -123,10 +123,9 @@ class AppContainer extends React.Component {
 	}
 
 	openExport() {
-    	// this.refs.expDlg.setState({
-     //        showExport: true
-     //    });
-     this.handleExport({});
+    	this.refs.expDlg.setState({
+            showExport: true
+        });
 	}
 
     handleExport(config) {
@@ -138,7 +137,7 @@ class AppContainer extends React.Component {
 			suspectTable: this.state.docData.suspectTable,
 			charts: this.refs.docView.charts,
 			filterSuspects: JSON.parse(this.dataModel.getFilter().numbers),
-			caseTime: this.refs.menu.refs.fp.getTimeFilterContent()
+			timeFilter: this.refs.menu.timeFilter
 		});
     }
 

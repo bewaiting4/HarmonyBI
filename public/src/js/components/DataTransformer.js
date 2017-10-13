@@ -100,6 +100,24 @@ module.exports = {
 			});
 		});
 
+		res.ciList = {};
+		_.forEach(vizData, function(item, idx) {
+			if (item['f_ci'] && !res.ciList[item['f_ci']]) {
+				res.ciList[item['f_ci']] = {
+					lat: item['f_lat'],
+					long: item['f_long']
+				}
+			}
+
+			if (item['t_ci'] && !res.ciList[item['t_ci']]) {
+				res.ciList[item['t_ci']] = {
+					lat: item['t_lat'],
+					long: item['t_long']
+				}
+			}
+
+		});
+
 		return res;
 	}
 }

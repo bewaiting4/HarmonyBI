@@ -10,13 +10,19 @@ class ExportDialog extends React.Component {
 		this.handleClose = this.handleClose.bind(this);
 		this.hanldeExport = this.hanldeExport.bind(this);
 
+		this.handleCheckCallList = this.handleCheckCallList.bind(this);
+
 		this.state = {
-			showExport: false
+			showExport: false,
+			callList: false,
+			title: "皮山县2017年2.14暴恐案件话单分析报告"
 		}
 	}
 
-	handleTitleChange(val) {
-		this.title = val;
+	handleTitleChange(e) {
+		this.setState({
+			title: e.target.value
+		});
 	}
 
 	handleClose() {
@@ -25,7 +31,13 @@ class ExportDialog extends React.Component {
 
 	hanldeExport() {
 		this.props.onClose();
-		this.props.onExport({title: this.title});
+		this.props.onExport({title: this.state.title});
+	}
+
+	handleCheckCallList(e) {
+		this.setState({
+			callList: e.target.checked
+		});
 	}
 
 	render() {
@@ -46,24 +58,31 @@ class ExportDialog extends React.Component {
 					<FormControl
 			            type="text"
 			            placeholder="输入标题"
+			            value={this.state.title}
 			            onChange={this.handleTitleChange}
 			        />
-			        <Label>报告图表选择</Label>
+			        <Label className="chartsel">报告图表选择</Label>
 					<Grid>
 					    <Row>
 						    <Col xs={6}>
-						    	<Thumbnail src="/assets/thumbnaildiv.png" alt="242x200">
-						    		<Checkbox checked>
-	      								分析页面
-	    							</Checkbox>
-						      	</Thumbnail>
+						    	<div className="thumbContainer">
+							    	<Thumbnail src="../icons/png/defaultimage/network@1x.png" alt="242x200"/>
+							    	<Thumbnail src="../icons/png/defaultimage/network@1x.png" alt="242x200"/>
+							    	<Thumbnail src="../icons/png/defaultimage/map1@1x.png"/>
+							    	<Thumbnail src="../icons/png/defaultimage/map1@1x.png"/>
+	    						</div>
+	    						<Checkbox checked>
+	      							分析页面
+	    						</Checkbox>
+
 						    </Col>
 						    <Col xs={6}>
-						      	<Thumbnail src="/assets/thumbnaildiv.png" alt="242x200">
-						        	<Checkbox>
-	      								话单页面
-	    							</Checkbox>
-						      	</Thumbnail>
+						    	<div className="thumbContainer">
+							      	<Thumbnail className="callList" src="../icons/png/defaultimage/table@1x.png" alt="242x200"/>
+							     </div>
+					        	<Checkbox onChange={this.handleCheckCallList}>
+      								话单页面
+    							</Checkbox>						      	
 						    </Col>
 					    </Row>
 					</Grid>			        

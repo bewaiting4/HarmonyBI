@@ -26,18 +26,15 @@ class PDFExporter {
 		var charts = [];
 
 		_.forEach(config.charts, function(chart, idx){
-			if (chart.category === 'echarts' && chart.type !== 'map') {
+			if (chart.category === 'echarts' && chart.type !== 'map' && chart.type !== 'network') {
 				charts[idx] = getChartImage(chart.id);
 			}
 		});
 
-		return {
+		var res = {
 			title: config.title,
 			susNumbers: _.map(sus, 'number'),
 			susIdNumbers: null,//_.map(sus, 'idNubmer'),
-			caseDate: config.caseTime.caseDate,
-			preHours: config.caseTime.preHours,
-			postHours: config.caseTime.postHours,
 			caseCI: config.filter.ci_from,
 			charts: charts,
 			contactTable: _.map(config.contactTable, function(p, idx) {
@@ -74,6 +71,18 @@ class PDFExporter {
 			}),
 			filterSuspects: config.filterSuspects || []
 		};
+
+		if (config.timeFilter) {
+			res.caseDate = config.timeFilter.caseDate;
+			res.preHours = config.timeFilter.preHours;
+			res.postHours = config.timeFilter.postHours;
+		} else {
+			res.caseDate = config.date_to;
+			res.preHours = 48;
+			res.postHours = 24;
+		}		
+
+		return res;
 	}
 
     download(config) {
@@ -91,6 +100,7 @@ class PDFExporter {
         var filterSuspects = config.filterSuspects;
 
         var singleLineSpacing = 6;
+        var susTableWidth = []
 
         var dd = {
             // a string or { width: number, height: number }
@@ -203,6 +213,9 @@ class PDFExporter {
                     ],
                     style: 'paragraph'
                 }, {
+                	text: '  ',
+                	style: 'paragraph'
+                }, {
                     text: '案发地点:',
                     style: 'titleCover'
                 }, {
@@ -269,7 +282,20 @@ class PDFExporter {
                 }, {
                     style: 'tableExample',
                     table: {
-                        widths: _.map(_.keys(suspectTable[0]), function(){return 'auto'}),
+                        widths: [
+                        	20,
+                        	50,
+                        	'auto',
+                        	'auto',
+                        	50,
+                        	20,
+                        	40,
+                        	40,
+                        	40,
+                        	40,
+                        	40,
+                        	40
+                        ],
                         body: function(){
                             var res = [_.keys(suspectTable[0])];
 
@@ -309,22 +335,22 @@ class PDFExporter {
                     style: 'titleStyle',
                     pageBreak: 'before',
                     pageOrientation: 'portrait',
-                }, {
-                    text: '案发前后：',
-                    style: 'paragraph'
-                }, {
-                    image: config.charts[0],
-                    width: 250,
-                    heigth: 250,
-                    alignment: 'center'
+                // }, {
+                //     text: '案发前后：',
+                //     style: 'paragraph'
+                // }, {
+                //     image: config.charts[0],
+                //     width: 250,
+                //     heigth: 250,
+                //     alignment: 'center'
                 }, {
                     text: '平时（案发前3个月）：',
                     style: 'paragraph'
-                }, {
-                    image: config.charts[1],
-                    width: 250,
-                    heigth: 250,
-                    alignment: 'center'
+                // }, {
+                //     image: config.charts[1],
+                //     width: 250,
+                //     heigth: 250,
+                //     alignment: 'center'
                 }, 
 
                 // page 5
@@ -387,16 +413,16 @@ class PDFExporter {
                     style: 'paragraph'
                 }, {
                     image: config.charts[6],
-                    width: 300,
-                    heigth: 300,
+                    width: 250,
+                    height: 250,
                     alignment: 'center'
                 }, {
                     text: '平时（案发前3个月）：',
                     style: 'paragraph'
                 }, {
                     image: config.charts[7],
-                    width: 300,
-                    heigth: 300,
+                    width: 250,
+                    height: 250,
                     alignment: 'center'
                 }, 
 
@@ -407,16 +433,16 @@ class PDFExporter {
                     pageBreak: 'before'
                 }, {
                     image: config.charts[9],
-                    width: 300,
-                    heigth: 300,
+                    width: 250,
+                    height: 250,
                     alignment: 'center'
                 }, {
                     text: '嫌疑人手机型号：',
                     style: 'titleStyle'
                 }, {
                     image: config.charts[8],
-                    width: 300,
-                    heigth: 300,
+                    width: 250,
+                    height: 250,
                     alignment: 'center'
                 }
             ],
@@ -457,7 +483,7 @@ class PDFExporter {
                 tableExample: {
                     alignment: 'center',
                     margin: [0, 5, 0, 15],
-                    fontSize: 11
+                    fontSize: 10
                 }           
             },
             defaultStyle: {
