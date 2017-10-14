@@ -19,6 +19,8 @@ class Menu extends React.Component {
         this.handleSetLocation = this.handleSetLocation.bind(this);
         this.handleApplyFilter = this.handleApplyFilter.bind(this);
 
+        this.resetAllFilters = this.resetAllFilters.bind(this);
+
         this.filters = _.assign({}, DefaultFilter);
         this.timeFilter = {
             preHours: 48,

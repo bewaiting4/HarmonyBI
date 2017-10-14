@@ -98,6 +98,20 @@ class Model {
             });
     }
 
+    getImageUrl(inputUrl, callback) {
+        fetch('/api/image/?url=' + inputUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'jpeg/png'
+            }
+        })
+        .then(res => res.json())
+        .then(resData => {
+            callback(resData);
+        }).catch(ex => {
+            console.log('Getting image data failed', ex)
+        });
+    }
 
     getVizData(callback) {
 

@@ -1,5 +1,9 @@
 import Theme from './EChartsThemeConfig'
 import Enum from '../Enums'
+import DataModel from '../../model/Model'
+
+var dataModel = DataModel();
+var staticUrl = "http://api.map.baidu.com/staticimage?width=300&height=300"
 
 function addArrow(map, polyline, length, angleValue, color) { //绘制箭头的函数  
 	var linePoint = polyline.getPath(); //线的坐标串  
@@ -66,6 +70,11 @@ function renderMap(id, data, config, data2) {
 		hashData2 = {},
 		hashColor = {};
 
+	window.mapData = window.mapData || {};
+
+	var centerUrl = "";
+	var markerUrl = "";
+
 
 	_.forEach(data2, function(o, idx) {
 		hashData2[o.number] = o;
@@ -89,6 +98,8 @@ function renderMap(id, data, config, data2) {
 		if (config && config.mapCenter) {
 			point = new BMap.Point(config.mapCenter.long, config.mapCenter.lat);
 			map.centerAndZoom(point,17);
+			centerUrl = '&center='+point.lng+','+point.lat+'&zoom=' + '17';
+			markerUrl = '&markers=' + point.lng + ',' + point.lat;
 		} else {
 			point = new BMap.Point("乌鲁木齐");
 			map.centerAndZoom(point,17);                     // 初始化地图,设置中心点坐标和地图级别。 
@@ -115,6 +126,10 @@ function renderMap(id, data, config, data2) {
 			var zoomHandler = setInterval(function() {
 				var center = map.getCenter();
 				if (!center.equals(lastCenter) || resetCnt > 15) {
+					centerUrl = '&center='+center.lng+','+center.lat+'&zoom=' + '14'
+					dataModel.getImageUrl(staticUrl+centerUrl+markerUrl, function(data) {
+						window.mapData[id] = data.dataUri;
+					});
 					clearInterval(zoomHandler);
 				}
 				map.centerAndZoom(point,14);
@@ -310,6 +325,8 @@ function renderMap(id, data, config, data2) {
 
 							myMap.setViewport(_.values(mappingGeo));
 
+							createStaticMap(_.values(mappingGeo));
+
 						}
 					})
 				}
@@ -319,6 +336,25 @@ function renderMap(id, data, config, data2) {
 		}
 
 		myMap.setViewport(points);
+
+		createStaticMap(points)
+
+		function createStaticMap(points) {
+			var viewCenter = myMap.getCenter();
+			centerUrl = '&center=' + viewCenter.lng + ',' + viewCenter.lat;
+			if (points.length > 0) {
+				markerUrl = '&markers=';
+			}
+			_.forEach(points, function(pt) {
+				markerUrl += '|' + pt.lng + ',' + pt.lat;
+			});
+
+			dataModel.getImageUrl(staticUrl+centerUrl+markerUrl, function(data) {
+				window.mapData[id] = data.dataUri;
+			});
+
+		}
+
 	}
 
 	function setMapEvent() {
@@ -388,5 +424,5 @@ function renderMap(id, data, config, data2) {
 }
 
 module.exports = {
-	renderMap: renderMap	
+	renderMap: renderMap
 }

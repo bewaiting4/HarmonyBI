@@ -41,7 +41,8 @@ class GridBase extends React.Component {
 	}
 
   	rowGetter(i) {
-  		return this.state.rows[i];
+  		//return this.props.data[i];
+  		return _.map(this.props.data, this.props.fnCusmizeRows)[i];
   	}
 
 	getColumns() {
@@ -49,9 +50,9 @@ class GridBase extends React.Component {
 	}
 	
 	componentDidMount() {
-		this.setState({
-			rows: _.map(this.props.data, this.props.fnCusmizeRows)
-		})
+		// this.setState({
+		// 	rows: _.map(this.props.data, this.props.fnCusmizeRows)
+		// })
 	}
 
 	componentDidUpdate() {
@@ -76,7 +77,7 @@ class GridBase extends React.Component {
 			enableCellSelect={true}
 			columns={this.getColumns()}
 			rowGetter={this.rowGetter}
-			rowsCount={this.state.rows.length}
+			rowsCount={this.props.data.length}
 			minHeight={this.props.height || 200}
 			onGridRowsUpdated={this.handleGridRowsUpdated}
 			rowRenderer={RowRenderer}
