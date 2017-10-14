@@ -15,7 +15,8 @@ const LOGGER_CLASS = '/api/image: ';
 
 router.route('/')
     .get(function (req, res, next) {
-        var url = req.query.url;
+        //var url = req.query.url;
+        var url = req.url.substring(6);
 
         logger.log(LOGGER_CLASS + 'get image from ' + url);
 

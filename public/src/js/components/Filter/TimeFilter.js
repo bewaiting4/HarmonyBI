@@ -10,7 +10,6 @@ class TimeFilter extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this._calcDateRange = this._calcDateRange.bind(this);
 		this.onPreHoursChange = this.onPreHoursChange.bind(this);
 		this.onPostHoursChange = this.onPostHoursChange.bind(this);
 		this.onCaseDateChange = this.onCaseDateChange.bind(this);
@@ -47,20 +46,13 @@ class TimeFilter extends React.Component {
 				date_from: obj.date1,
 				date_to: obj.date2
 			}
-			this.props.onSetDateRange(obj.date1, obj.date2);
+			this.updateDateRange({
+				date_from: obj.date1,
+				date_to: obj.date2	
+			});
 		}).bind(this));
 
 		//$('#picker6').data('dateRangePicker').setDateRange('2016-11-15','2016-11-25');
-	}
-
-	_calcDateRange(caseDate, preHours, postHours) {
-		this.filterContent = {
-			caesDate: caseDate,
-			preHours: preHours,
-			postHours: postHours
-		};
-
-		return [(new moment(caseDate)).subtract(preHours, 'hours').toDate(), (new moment(caseDate)).add(postHours, 'hours').toDate()]
 	}
 
 	onPreHoursChange(event) {
@@ -68,7 +60,11 @@ class TimeFilter extends React.Component {
 			preHours: event.target.value
 		});
 
-		this.updateDateRange(this._calcDateRange(this.state.caseDate, event.target.value, this.state.postHours));
+		this.updateDateRange({
+			caseDate: this.state.caseDate, 
+			preHours: event.target.value, 
+			postHours: this.state.postHours
+		});
 	}
 
 	onPostHoursChange(event) {
@@ -76,7 +72,11 @@ class TimeFilter extends React.Component {
 			postHours: event.target.value
 		});
 
-		this.updateDateRange(this._calcDateRange(this.state.caseDate, this.state.preHours, event.target.value));
+		this.updateDateRange({
+			caseDate: this.state.caseDate, 
+			preHours: this.state.preHours, 
+			postHours: event.target.value
+		});
 	}
 
 	onCaseDateChange(date) {
@@ -84,11 +84,15 @@ class TimeFilter extends React.Component {
 			caseDate: date
 		});
 
-		this.updateDateRange(this._calcDateRange(date, this.state.preHours, this.state.postHours));
+		this.updateDateRange({
+			caseDate: date,
+			preHours: this.state.preHours,
+			postHours: this.state.postHours
+		});
 	}
 
-	updateDateRange(range) {
-		this.props.onSetDateRange(range[0], range[1]);
+	updateDateRange(timeFilter) {
+		this.props.onUpdateTime(timeFilter);
 	}
 
 	getTimeFilterContent() {
@@ -100,7 +104,7 @@ class TimeFilter extends React.Component {
 
 		this.setState(this.dftState);
 
-		this.updateDateRange(this._calcDateRange(this.dftState.caseDate, this.dftState.preHours, this.dftState.postHours));
+		this.updateDateRange(this.dftState);
 	}
 
 	render() {

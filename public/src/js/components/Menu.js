@@ -14,15 +14,18 @@ class Menu extends React.Component {
         this.handleOpenFilter = this.handleOpenFilter.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
 
-        this.handleSetDateRange = this.handleSetDateRange.bind(this);
+        this.handleSetTime = this.handleSetTime.bind(this);
         this.handleSetPersonnel = this.handleSetPersonnel.bind(this);
         this.handleSetLocation = this.handleSetLocation.bind(this);
         this.handleApplyFilter = this.handleApplyFilter.bind(this);
 
+        this.resetAllFilters = this.resetAllFilters.bind(this);
+
         this.filters = _.assign({}, DefaultFilter);
         this.timeFilter = {
-            date_from: DefaultFilter.date_from,
-            date_to: DefaultFilter.date_to
+            preHours: 48,
+            postHours: 24,
+            caseDate: moment(DefaultFilter.date_to).subtract(1, 'day')
         };
         this.locFilter = {
             ci_from: DefaultFilter.ci_from,
@@ -33,7 +36,7 @@ class Menu extends React.Component {
         };
 
         this.state = {
-            filter: _.assign({}, this.timeFilter, this.locFilter, this.pplFilter)
+            filter: _.assign({}, this._transformTime(), this.locFilter, this.pplFilter)
         }
     }
 
@@ -57,17 +60,33 @@ class Menu extends React.Component {
         }
     }
 
-    handleSetDateRange(date1, date2) {
-        //this.props.onSetDateRange(date1, date2);
-
-        this.timeFilter = {
-            'date_from': new Date(date1),
-            'date_to': new Date(date2)
-        };
+    handleSetTime(time) {
+        this.timeFilter = time;
 
         this.setState({
-            filter: _.assign({}, this.timeFilter, this.locFilter, this.pplFilter)
-        })
+            filter: _.assign({}, this._transformTime(), this.locFilter, this.pplFilter)
+        });        
+    }
+
+    _calcDateRange(caseDate, preHours, postHours) {
+        this.filterContent = {
+            caesDate: caseDate,
+            preHours: preHours,
+            postHours: postHours
+        };
+
+        return [(new moment(caseDate)).subtract(preHours, 'hours').toDate(), (new moment(caseDate)).add(postHours, 'hours').toDate()]
+    }
+
+    _transformTime() {
+        if (this.timeFilter.caseDate) {
+            return {
+                date_from: (new moment(this.timeFilter.caseDate)).subtract(this.timeFilter.preHours, 'hours').toDate(),
+                date_to: (new moment(this.timeFilter.caseDate)).add(this.timeFilter.postHours, 'hours').toDate()
+            };
+        } else {
+            return this.timeFilter;
+        }
     }
 
     handleSetLocation(loc) {
@@ -77,11 +96,11 @@ class Menu extends React.Component {
     handleSetPersonnel(list) {
         this.pplFilter = {
             numbers: JSON.stringify(list)
-        }
+        };
     }
 
     handleApplyFilter() {
-        this.props.onApplyFilter(_.assign({}, this.timeFilter, this.locFilter, this.pplFilter));
+        this.props.onApplyFilter(_.assign({}, this._transformTime(), this.locFilter, this.pplFilter));
     }
 
     // TODO rewrite with Flux
@@ -147,8 +166,8 @@ class Menu extends React.Component {
                         currFilter={this.state.filter}
                         suspects={this.props.suspects}
                         isUnfold={isUnfold} 
-                        onOpenFilter={this.handleOpenFilter} 
-                        onSetDateRange={this.handleSetDateRange} 
+                        onOpenFilter={this.handleOpenFilter}
+                        onUpdateTime={this.handleSetTime}
                         onUpdateLocation={this.handleSetLocation}
                         onUpdateSuspect={this.handleSetPersonnel}
                         onUpdateFP={this.handleUpdateFP}

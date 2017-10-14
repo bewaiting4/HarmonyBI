@@ -9,7 +9,7 @@ class FilterPanel extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.handleSetDateRange = this.handleSetDateRange.bind(this);
+        this.handleUpdateTime = this.handleUpdateTime.bind(this);
 		this.handleUpdateSuspect = this.handleUpdateSuspect.bind(this);
 		this.handleUpdateLocation = this.handleUpdateLocation.bind(this);
 
@@ -35,8 +35,8 @@ class FilterPanel extends React.Component {
 		this.props.onUpdateFP();
 	}
 
-    handleSetDateRange(date1, date2) {
-        this.props.onSetDateRange(date1, date2);
+    handleUpdateTime(filter) {
+        this.props.onUpdateTime(filter);
     }
 
     handleUpdateLocation(filter) {
@@ -115,7 +115,7 @@ class FilterPanel extends React.Component {
                             onFilter={onTimeFilter}
                             onResetFilter={this.resetTimeFilter}
                         >
-                            <TimeFilter ref="timeFilter" onSetDateRange={this.handleSetDateRange}/>
+                            <TimeFilter ref="timeFilter" onUpdateTime={this.handleUpdateTime}/>
                         </FilterPortlet>
 
                         <FilterPortlet

@@ -123,10 +123,9 @@ class AppContainer extends React.Component {
 	}
 
 	openExport() {
-    	// this.refs.expDlg.setState({
-     //        showExport: true
-     //    });
-     this.handleExport({});
+    	this.refs.expDlg.setState({
+            showExport: true
+        });
 	}
 
     handleExport(config) {
@@ -138,7 +137,7 @@ class AppContainer extends React.Component {
 			suspectTable: this.state.docData.suspectTable,
 			charts: this.refs.docView.charts,
 			filterSuspects: JSON.parse(this.dataModel.getFilter().numbers),
-			caseTime: this.refs.menu.refs.fp.getTimeFilterContent()
+			timeFilter: this.refs.menu.timeFilter
 		});
     }
 
@@ -162,42 +161,56 @@ class AppContainer extends React.Component {
 			suspects = {};
 		}
 
+		var loadingClass;
 		if (!this.state.isLoading || DEBUG_MODE) {
-			return (
-				<div className={isUnfold ? "nav-md" : "nav-sm"}>
-					<div className="container body">
-						<div className="main_container">
-							<Menu
-								ref='menu'
-								suspects={suspects}
-								onToggleChange={this.handleToggle}
-								isUnfold={isUnfold}
-								onExport={this.handleExport}
-								dim={{height: this.state.height}}
-								onApplyFilter={this.handleApplyFilter}
-								CIData={this.CIData}
-								onOpenExport={this.openExport}
-							/>
-							<TopNav />
-							<DocumentView
-								ref='docView'
-								data={myData}
-								tab={this.state.activeTab} 
-								dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} 
-								isUnfold={this.state.isUnfold}
-								suspects={suspects}
-								conditin={this.dataModel.condition}
-							/>
-							<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
-						</div>
-					</div>
-                	
-                	<ExportDialog ref="expDlg" show={this.state.showExport} onClose={this.closeExport} onExport={this.handleExport}/>
-				</div>
-			);
+			loadingClass = "loading-bg hidden";
 		} else {
-			return <div className="loading-bg" style={{width: this.state.width, height: this.state.height}}><h1>数据加载中</h1></div>;
+			loadingClass = "loading-bg";
 		}
+
+		var url = "http://api.map.baidu.com/staticimage?center=116.313127,39.984242&markers=116.313127,39.984242&zoom=13&width=540&height=220";
+
+		this.dataModel.getImageUrl(url, function(data) {
+			console.log(data);
+		});
+
+		return (
+			<div>
+							<div className={loadingClass} style={{width: this.state.width, height: this.state.height}}><h1>数据加载中</h1></div>;
+			<div className={isUnfold ? "nav-md" : "nav-sm"}>
+
+				<div className="container body">
+					<div className="main_container">
+						<Menu
+							ref='menu'
+							suspects={suspects}
+							onToggleChange={this.handleToggle}
+							isUnfold={isUnfold}
+							onExport={this.handleExport}
+							dim={{height: this.state.height}}
+							onApplyFilter={this.handleApplyFilter}
+							CIData={this.CIData}
+							onOpenExport={this.openExport}
+						/>
+						<TopNav />
+						<DocumentView
+							ref='docView'
+							data={myData}
+							tab={this.state.activeTab} 
+							dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} 
+							isUnfold={this.state.isUnfold}
+							suspects={suspects}
+							conditin={this.dataModel.condition}
+						/>
+						<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
+					</div>
+				</div>
+            	
+            	<ExportDialog ref="expDlg" show={this.state.showExport} onClose={this.closeExport} onExport={this.handleExport}/>
+								
+			</div>
+			</div>
+		);
 	}
 }
 module.exports = AppContainer;

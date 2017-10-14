@@ -126,11 +126,11 @@ function getTCommOption(data, subtype, filter, data2) {
 	    series: [{
 	        type: 'custom',
 	        renderItem: renderItem,
-	        dimensions: ['call_start', 'call_end', 'f_number', 'to_number'],
+	        dimensions: ['主叫号码', '被叫号码','通话开始', '通话结束'],
 	        encode: {
 	            x: [0, 1],
 	            y: [2, 3],
-	            tooltip: [0, 1, 2, 3],
+	            tooltip: [2, 3, 0, 1],
 	            itemName: 2
 	        },
 	        data: series

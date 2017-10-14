@@ -11,13 +11,15 @@ class DocumentView extends React.Component {
 			id: "chart1",
 			type: "network",
 			category: "echarts",
-			title: "嫌疑人社会关系(案发前后)"			
+			title: "嫌疑人社会关系(案发前后)",
+			data2: 'suspectTable'
 		}, {
 			id: "chart1-2",
 			type: "network",
 			category: "echarts",			
 			title: "嫌疑人社会关系(平时)",
-			data: 'threeMonthCalls'			
+			data: 'threeMonthCalls',
+			data2: 'suspectTable'
 		}, {
 			id: "chart3",
 			type: "map",
@@ -78,7 +80,7 @@ class DocumentView extends React.Component {
 			id: "chart7",
 			type: "tcomm",
 			category: "echarts",
-			title: "嫌疑犯通讯特征",
+			title: "嫌疑人通讯特征",
 			data: 'threeMonthCalls',
 			data2: 'suspectTable'
 		}, {

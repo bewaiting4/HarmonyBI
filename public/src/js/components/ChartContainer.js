@@ -44,7 +44,7 @@ class ChartContainer extends React.Component {
 		} else if (this.props.type === "tableContactList") {
 			vizContent = <GridContactList data={DEBUG_MODE ? DataTransformer.transform(DefaultData).contactTable: this.props.data} height={chart_height}/>
 		} else {
-			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} />;
+			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} ><svg/> </div>;
 		}
 
 		return vizContent;

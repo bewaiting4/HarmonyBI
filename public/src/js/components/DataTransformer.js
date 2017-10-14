@@ -76,7 +76,8 @@ module.exports = {
 		function getContactProps(p) {
 			return {
 				number: p.number,
-				closeScore: p.closeScore
+				closeScore: p.closeScore,
+				callTime: Math.round(p.callTime)
 			}
 		}
 
@@ -97,6 +98,24 @@ module.exports = {
 				f_type: pplInfo[item.f_number] && pplInfo[item.f_number].type,
 				t_type: pplInfo[item.t_number] && pplInfo[item.t_number].type
 			});
+		});
+
+		res.ciList = {};
+		_.forEach(vizData, function(item, idx) {
+			if (item['f_ci'] && !res.ciList[item['f_ci']]) {
+				res.ciList[item['f_ci']] = {
+					lat: item['f_lat'],
+					long: item['f_long']
+				}
+			}
+
+			if (item['t_ci'] && !res.ciList[item['t_ci']]) {
+				res.ciList[item['t_ci']] = {
+					lat: item['t_lat'],
+					long: item['t_long']
+				}
+			}
+
 		});
 
 		return res;
