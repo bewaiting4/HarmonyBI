@@ -54,11 +54,13 @@ class AppContainer extends React.Component {
 			isUnfold: true,
 			activeTab: 0,
 			width: '0',
-			heigth: '0',
+			height: '0',
             showExport: false
 		};
 
   		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+
+  		window.HarmonyGlobal = {};
 	}
 
 	componentDidMount() {
@@ -176,7 +178,7 @@ class AppContainer extends React.Component {
 
 		return (
 			<div>
-							<div className={loadingClass} style={{width: this.state.width, height: this.state.height}}><h1>数据加载中</h1></div>;
+			<div className={loadingClass} style={{width: this.state.width, height: this.state.height}}><h1>数据加载中</h1></div>;
 			<div className={isUnfold ? "nav-md" : "nav-sm"}>
 
 				<div className="container body">

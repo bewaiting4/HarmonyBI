@@ -130,7 +130,7 @@ function getTCommOption(data, subtype, filter, data2) {
 	        encode: {
 	            x: [0, 1],
 	            y: [2, 3],
-	            tooltip: [2, 3, 0, 1],
+	            tooltip: [0, 1, 2, 3],
 	            itemName: 2
 	        },
 	        data: series

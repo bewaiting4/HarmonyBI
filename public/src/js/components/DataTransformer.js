@@ -118,6 +118,40 @@ module.exports = {
 
 		});
 
+		// init global colormapping
+		var arrColor = [
+			"#1266D8",
+			"#DE0CA3",
+			"#5085E3",
+			"#088490",		
+			"#515DA9",
+			"#41A5C4",
+			"#F996F1",
+			"#8B56F0",
+			"#C79FBE",
+			"#BF4B9A"	
+			// "#1266D8",
+			// "#5085E3",
+			// "#515DA9",
+			// "#41A5C4",
+			// "#DE0CA3",
+			// "#088490",
+			// "#F996F1",
+			// "#8B56F0",
+			// "#C79FBE",
+			// "#BF4B9A"
+		], 
+		clrIdx = 0,
+		susClr = window.HarmonyGlobal.susClr = window.HarmonyGlobal.susClr || {};
+
+		_.forEach(suspects, function(o) {
+			if (o.type === ENUM.CATEGORY_KEY.SUSPECT) {
+				susClr[o.number] = arrColor[clrIdx%arrColor.length];
+				clrIdx++;
+			}
+		});
+		window.HarmonyGlobal.clrIdx = clrIdx;
+
 		return res;
 	}
 }

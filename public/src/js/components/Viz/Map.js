@@ -72,6 +72,9 @@ function renderMap(id, data, config, data2) {
 
 	window.mapData = window.mapData || {};
 
+	var hGlobal = window.HarmonyGlobal;
+	hGlobal.susPos = hGlobal.susPos || {};
+
 	var centerUrl = "";
 	var markerUrl = "";
 
@@ -171,7 +174,7 @@ function renderMap(id, data, config, data2) {
 		var hashPTs = {};
 		var tracks = {};
 		var connection = {};
-		var clrIdx = 0;
+		var clrIdx = hGlobal.clrIdx || 0;
 
 		function generateObjects(datum, PREFIX) {
 			if (datum[PREFIX + '_long'] && datum[PREFIX + '_lat'] && datum[PREFIX + '_long'] !== "0" && datum[PREFIX + '_lat'] !== "0") {
@@ -206,7 +209,7 @@ function renderMap(id, data, config, data2) {
 					r = 10;
 					scontent = "<h3>" + datum['f_number'] + "</h3>";
 				} else {
-					clr = Theme.color[clrIdx++ % Theme.color.length];
+					clr = hGlobal.susClr[number] || Theme.color[clrIdx++ % Theme.color.length];
 					r = 25;
 				    scontent = "<h3>" + datum['f_number'] + "</h3>"
 						+ "<p>经过此地时间: " + datum['call_start'] + "</p>"
@@ -233,14 +236,16 @@ function renderMap(id, data, config, data2) {
 					return ;
 				}
 
-				if (datum['f_long'] && datum['f_lat'] && datum['f_long'] !== "0" && datum['f_lat'] !== "0"
-					&& datum['f_long'] && datum['f_lat'] && datum['f_long'] !== "0" && datum['f_lat'] !== "0") {
+				connection[key1] = true;
 
-					connection[key1] = [
-						new BMap.Point(datum['f_long'], datum['f_lat']),
-						new BMap.Point(datum['t_long'], datum['t_lat'])
-					];
-				}
+				// if (datum['f_long'] && datum['f_lat'] && datum['f_long'] !== "0" && datum['f_lat'] !== "0"
+				// 	&& datum['f_long'] && datum['f_lat'] && datum['f_long'] !== "0" && datum['f_lat'] !== "0") {
+
+				// 	connection[key1] = [
+				// 		new BMap.Point(datum['f_long'], datum['f_lat']),
+				// 		new BMap.Point(datum['t_long'], datum['t_lat'])
+				// 	];
+				// }
 
 			}
 		}
@@ -279,58 +284,84 @@ function renderMap(id, data, config, data2) {
 			var hashConnection = {};
 			var mappingGeo = {};
 
+			function handleDistrict(res, key) {
+				var lat = res.lat;
+				var long = res.lng;
+
+				if(lat !== 0 && long !== 0) {
+					while (hashConnection[lat + ':' + long]) {
+						lat = lat + Math.random()*0.004-0.002;
+						long = long + Math.random()*0.004-0.002;
+					}
+					hashConnection[lat + ':' + long] = true;
+					mappingGeo[key] = new BMap.Point(long, lat);
+					hGlobal.susPos[key] = mappingGeo[key];
+
+					var clr = hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? hGlobal.susClr[key] || hashColor[key] : 'grey',
+						r = hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? 15: 5,
+						scontent = "<h3>" + key + "</h3>";
+
+					var circle = new BMap.Circle(mappingGeo[key], r, {strokeColor: clr, fillColor: clr, strokeWeight:1, strokeOpacity:0.5});
+
+					addClickHandler(scontent, circle);
+
+					myMap.addOverlay(circle);										
+				}				
+			}
+
+			function drawConnection() {
+				console.log('draw connections');
+				console.log(mappingGeo);
+				console.log(hashConnection);
+				_.forEach(connection, function(value, key) {
+					var ks = key.split(':');
+					if (mappingGeo[ks[0]] && mappingGeo[ks[1]]) {
+						var clr = hGlobal.susClr[ks[0]] ||  hGlobal.susClr[ks[1]] || Theme.color[clrIdx++ % Theme.color.length];
+
+						var path = [mappingGeo[ks[0]], mappingGeo[ks[1]]];
+						var polyline = new BMap.Polyline(path, {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
+						myMap.addOverlay(polyline);
+					}
+				});
+
+				myMap.setViewport(_.values(mappingGeo));
+
+				createStaticMap(_.values(mappingGeo));				
+			}
+
+			var cacheValue = {};
+
 			_.forEach(hashDistrict, function(value, key) {
 				if (value) {
 					cntGeo++;
-					geoCoder.getPoint(value, function(res) {
+					// if it's in global cache
+					if (hGlobal.susPos[key]) {
+						handleDistrict(hGlobal.susPos[key], key);
 						cntGeo--;
+					// if it's in local cache
+					} else if (cacheValue[value] !== undefined) {
+						handleDistrict(cacheValue[Value], key);
+						cntGeo--;
+					} else {
+						// reverse geocoding
+						geoCoder.getPoint(value, function(res) {
+							cntGeo--;
 
-						if (res) {
-							var lat = res.lat;
-							var long = res.lng;
-
-							if(lat !== 0 && long !== 0) {
-								while (hashConnection[lat + ':' + long]) {
-									lat = lat + Math.random()*0.004-0.002;
-									long = long + Math.random()*0.004-0.002;
-								}
-								hashConnection[lat + ':' + long] = true;
-								mappingGeo[key] = new BMap.Point(long, lat);	
-
-								var clr = hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? hashColor[key] : 'grey',
-									r = hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? 15: 5,
-									scontent = "<h3>" + key + "</h3>";
-
-								var circle = new BMap.Circle(mappingGeo[key], r, {strokeColor: clr, fillColor: clr, strokeWeight:1, strokeOpacity:0.5});
-
-								addClickHandler(scontent, circle);
-
-								myMap.addOverlay(circle);										
+							if (res) {
+								handleDistrict(res, key);
 							}
-						}
 
-						if (cntGeo <=0) {
-							console.log('draw connections');
-							console.log(mappingGeo);
-							console.log(hashConnection);
-							_.forEach(connection, function(value, key) {
-								var clr = Theme.color[clrIdx++ % Theme.color.length];
-								var ks = key.split(':');
-								if (mappingGeo[ks[0]] && mappingGeo[ks[1]]) {
-									var path = [mappingGeo[ks[0]], mappingGeo[ks[1]]];
-									var polyline = new BMap.Polyline(path, {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
-									myMap.addOverlay(polyline);
-								}
-							});
-
-							myMap.setViewport(_.values(mappingGeo));
-
-							createStaticMap(_.values(mappingGeo));
-
-						}
-					})
+							if (cntGeo <=0) {
+								drawConnection();
+							}
+						})
+					}
 				}
 			});
+
+			if (cntGeo <= 0) {
+				drawConnection();
+			}
 
 			return ;
 		}
