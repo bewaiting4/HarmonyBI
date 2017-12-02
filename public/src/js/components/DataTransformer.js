@@ -2,7 +2,7 @@ import _ from 'lodash'
 import ENUM from './Enums'
 
 module.exports = {
-	transform: function(docData) {
+	transform: function(docData, filter) {
 		var suspects = docData.suspectTable;
 		var contacts = docData.contactTable;
 		var vizData = docData.vizData;
@@ -130,27 +130,30 @@ module.exports = {
 			"#8B56F0",
 			"#C79FBE",
 			"#BF4B9A"	
-			// "#1266D8",
-			// "#5085E3",
-			// "#515DA9",
-			// "#41A5C4",
-			// "#DE0CA3",
-			// "#088490",
-			// "#F996F1",
-			// "#8B56F0",
-			// "#C79FBE",
-			// "#BF4B9A"
 		], 
 		clrIdx = 0,
 		susClr = window.HarmonyGlobal.susClr = window.HarmonyGlobal.susClr || {};
 
 		_.forEach(suspects, function(o) {
-			if (o.type === ENUM.CATEGORY_KEY.SUSPECT) {
-				susClr[o.number] = arrColor[clrIdx%arrColor.length];
-				clrIdx++;
-			}
+			susClr[o.number] = arrColor[clrIdx%arrColor.length];
+			clrIdx++;
 		});
 		window.HarmonyGlobal.clrIdx = clrIdx;
+
+		res.susTraces = threeMonthCalls.filter(function(row) {
+			        // 案发开始时间
+		        if (new Date(filter.date_from) - new Date(row.call_start) > 0) {
+		            return false;
+		        }
+
+		        // 案发结束时间
+		        if (filter.date_to &&
+		            (new Date(filter.date_to) - new Date(row.call_start) < 0)) {
+		            return false;
+		        }
+
+		        return true;
+			});
 
 		return res;
 	}

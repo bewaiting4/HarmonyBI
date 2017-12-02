@@ -1551,6 +1551,12 @@ BODY {
     background-color: $filter-bgcolor;
 }
 
+.nav-sm {
+    .filter_bg {
+        display: none;
+    }
+}
+
 /**
 * filter footer
 */

@@ -1,13 +1,20 @@
 import _ from 'lodash'
+import ThemeConfig from './EChartsThemeConfig'
 
 function getTCommOption(data, subtype, filter, data2) {
+	var clrIdx = HarmonyGlobal.clrIdx;
 
 	function renderItem(params, api) {
 	    var start = api.coord([api.value(0), api.value(3)]);
 	    var end = api.coord([api.value(1), api.value(2)]);
 	    var size = api.size([hashTimeStamp[api.value(1)] - hashTimeStamp[api.value(0)], hashNumber[api.value(3)] - hashNumber[api.value(2)]]);
 	    var style = api.style();
-
+		if (HarmonyGlobal.susClr[api.value(2)] || HarmonyGlobal.susClr[api.value(3)]) {
+			style.fill = HarmonyGlobal.susClr[api.value(2)] || HarmonyGlobal.susClr[api.value(3)];
+		} else {
+			style.fill = ThemeConfig.color[(clrIdx++) % ThemeConfig.color.length];
+		}
+	    
 	    return {
 	        type: 'rect',
 	        shape: {
@@ -126,11 +133,11 @@ function getTCommOption(data, subtype, filter, data2) {
 	    series: [{
 	        type: 'custom',
 	        renderItem: renderItem,
-	        dimensions: ['主叫号码', '被叫号码','通话开始', '通话结束'],
+	        dimensions: ['通话开始', '通话结束', '主叫号码', '被叫号码'],
 	        encode: {
 	            x: [0, 1],
 	            y: [2, 3],
-	            tooltip: [0, 1, 2, 3],
+	            tooltip: [2, 3, 0, 1],
 	            itemName: 2
 	        },
 	        data: series

@@ -270,7 +270,7 @@ function renderMap(id, data, config, data2) {
 		if (config.subtype === 1) {
 			_.forEach(tracks, function(value, key) {
 				if (value.length > 1) {
-					var clr = Theme.color[clrIdx++ % Theme.color.length];
+					var clr = hGlobal.susClr[key] || Theme.color[clrIdx++ % Theme.color.length];
 
 					for (var i=0; i< value.length-1; i++) {
 						var polyline = new BMap.Polyline([value[i],value[i+1]], {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});

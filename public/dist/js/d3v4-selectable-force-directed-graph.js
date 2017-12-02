@@ -8,8 +8,10 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
     var width = +svg.attr("width"),
         height = +svg.attr("height");
 
-    let parentWidth = svg.select('svg').node().parentNode.clientWidth;
-    let parentHeight = svg.select('svg').node().parentNode.clientHeight;
+    var parentWidth = svg.select('svg').node().parentNode.clientWidth;
+    var parentHeight = svg.select('svg').node().parentNode.clientHeight;
+
+    window.NNWidth = parentWidth;
 
     var svg = svg.select('svg')
     .attr('width', parentWidth)
@@ -91,11 +93,23 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
                 return d.id; 
         });
 
+      // node.append("text")
+      //     .attr("dx", 12)
+      //     .attr("dy", ".35em")
+      //     .text(function(d) { return d.id });       
+  var label = svg.append("g")
+      .attr("class", "labels")
+      .selectAll("text")
+      .data(graph.nodes)
+      .enter().append("text")
+        .attr("class", "label")
+        .text(function(d) { return d.id; });
+
     var simulation = d3v4.forceSimulation()
         .force("link", d3v4.forceLink()
                 .id(function(d) { return d.id; })
                 .distance(function(d) { 
-                    return 30;
+                    return window.NNWidth/3.5;
                     //var dist = 20 / d.value;
                     //console.log('dist:', dist);
 
@@ -124,6 +138,30 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
 
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
+
+        label.attr("x", function(d) { return d.x; })
+            .attr("y", function (d) { return d.y; })
+            .style("font-size", "12px").style("fill", function(d) {return d.color});    
+
+
+        // label.each(function(d, i) {
+        //     // if(i % 2 == 0) {
+        //         d.x = d.node.x;
+        //         d.y = d.node.y;
+        //     // } else {
+        //     //     var b = this.childNodes[0].parentElement.getBBox();
+
+        //     //     var diffX = d.x - d.node.x;
+        //     //     var diffY = d.y - d.node.y;
+
+        //     //     var dist = Math.sqrt(diffX * diffX + diffY * diffY);
+
+        //     //     var shiftX = b.width * (diffX - dist) / (dist * 2);
+        //     //     shiftX = Math.max(-b.width, Math.min(0, shiftX));
+        //     //     var shiftY = 5;
+        //     //     this.childNodes[0].parentElement.setAttribute("transform", "translate(" + shiftX + "," + shiftY + ")");
+        //     // }
+        // });                    
     }
 
     var brushMode = false;
@@ -144,7 +182,7 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         });
     }
 
-    rect.on('click', () => {
+    rect.on('click', function() {
         node.each(function(d) {
             d.selected = false;
             d.previouslySelected = false;
