@@ -1177,7 +1177,7 @@ BODY {
         }
         border: 0;
         padding: 0;
-        width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);;
+        width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);
     }
 
     .date-picker-wrapper .month-wrapper table .day {
@@ -1195,7 +1195,7 @@ BODY {
     }
 
     .date-picker-wrapper .time input[type=range] {
-        width: 136px;
+        width: ($menu-width-md - $menu-width-sm - 154)/2;
         display: inline-block;
     }
 
@@ -1344,6 +1344,7 @@ BODY {
     .Select-control {
         height: inherit;
         background-color: $input-fill-color;
+        border-color: $input-fill-color;
     }
 }
 
@@ -1383,8 +1384,8 @@ BODY {
 
         & > .category,
         & > .online, {
-            width: 74px;
-            margin-right: 6px;
+            width: 104px;
+            margin-right: 12px;
             line-height: 30px;
 
             .Select-control {
@@ -1405,7 +1406,7 @@ BODY {
         }
 
         & > .phone_search {
-            width: 94px;
+            width: 128px;
             min-height: 32px;
             margin-right: 12px;
             padding: 0 0 0 5px;
@@ -1416,7 +1417,7 @@ BODY {
         }
 
         & > .upload_img {
-            width: 64px;
+            width: 98px;
             height: 32px;
             line-height: 24px;
             font-size: 12px;
@@ -1429,12 +1430,12 @@ BODY {
                 width: 22px;
                 height: 22px;
                 margin-top: 5px;
-                margin-left: 21px;
+                margin-left: 38px;
             }
         }
 
         & > .add {
-            width: 44px;
+            width: 64px;
             height: 32px;
             margin-right: 0;            
             background-color: $fill1;
@@ -1445,7 +1446,7 @@ BODY {
         }
 
         & > .delete {
-            width: 44px;
+            width: 64px;
             height: 32px;
             margin-right: 0;
             color: $color3;
@@ -1482,8 +1483,38 @@ BODY {
     .Select-arrow-zone {
         padding-right: 0;
     }
+}
 
+.main_menu_side {
+    .Select-menu-outer {
+        margin-top: 5px;
+        z-index: 1000;
+        border: 1px solid $color3;
+        border-radius: 4px;
+    }
 
+    .Select-option {
+        background-color: $color3;
+        border-color: $color3;
+        color: #fff;
+
+        &:hover {
+            background-color: $filter-bgcolor;
+            color: #e9e9e9;
+        }
+
+        &.is-selected:hover {
+            opacity: 1;
+        }
+
+        &.is-selected {
+            opacity: 0.75;
+        }
+    }
+
+    .Select-noresults {
+        background-color: $color3;
+    }
 }
 
 #locMap {
