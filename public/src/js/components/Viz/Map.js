@@ -3,11 +3,13 @@ import Enum from '../Enums'
 import DataModel from '../../model/Model'
 
 var dataModel = DataModel();
-var staticUrl = "http://api.map.baidu.com/staticimage?width=300&height=300"
+var staticUrl = "http://api.map.baidu.com/staticimage?";
+window.mapData = window.mapData || {};
 
 function addArrow(map, polyline, length, angleValue, color) { //绘制箭头的函数  
 	var linePoint = polyline.getPath(); //线的坐标串  
 	var arrowCount = linePoint.length;
+	var arrows = [];
 	for (var i = 1; i < arrowCount; i++) { //在拐点处绘制箭头  
 		var pixelStart = map.pointToPixel(linePoint[i - 1]);
 		var pixelEnd = map.pointToPixel(linePoint[i]);
@@ -59,7 +61,133 @@ function addArrow(map, polyline, length, angleValue, color) { //绘制箭头的�
 			strokeOpacity: 0.5
 		});
 		map.addOverlay(Arrow);
+
+		arrows.push(Arrow);
 	}
+
+	return arrows;
+}
+
+// function refinePolyLine(map, linePoint) {
+// 	var delta = 2;
+// 	var pixelStart = map.pointToPixel(linePoint[0]);
+// 	var pixelEnd = map.pointToPixel(linePoint[1]);
+// 	var pixelX, pixelY, pixelX1, pixelY1; 
+
+// 	if (pixelEnd.x - pixelStart.x == 0) { //斜率不存在是时  
+// 		pixelX = pixelStart.x;
+// 		if (pixelEnd.y > pixelStart.y) {
+// 			pixelY = pixelStart.y + r;
+// 		} else {
+// 			pixelY = pixelStart.y - r;
+// 		}
+
+// 		pixelX1 = pixelEnd.x;
+// 		if (pixelEnd.y > pixelStart.y) {
+// 			pixelY1 = pixelEnd.y - r;
+// 		} else {
+// 			pixelY1 = pixelEnd.y + r;
+// 		}
+
+// 		map.pixelToPoint(new BMap.Pixel(pixelTemX.x, pixelTemY))
+
+// 	} else //斜率存在时  
+
+// }
+
+function createStaticMap(config, dots, lines) {
+
+	if  (!config || !config.map || !config.id) {
+		return ;
+	}
+
+	var myMap = config.map,
+		id = config.id,
+		viewCenter = myMap.getCenter(),
+		viewZoom = myMap.getZoom() - 1,
+		viewSize = myMap.getSize();
+
+	// if (points.length > 0) {
+	// 	markerUrl = '&markers=';
+	// }
+	// _.forEach(points, function(pt) {
+	// 	markerUrl += '|' + pt.lng + ',' + pt.lat;
+	// });
+
+	var scale = 2,
+		scaleUrl = '&scale=' + scale,
+		dimUrl = 'width=' + viewSize.width + '&height=' + viewSize.height,
+		centerUrl = '&center=' + viewCenter.lng + ',' + viewCenter.lat + '&zoom=' + viewZoom,
+		markerUrl = "",
+		imageUrl = staticUrl+dimUrl+centerUrl+markerUrl+scaleUrl;
+
+	console.log(imageUrl);
+	dataModel.getImageUrl(imageUrl, function(data) {
+		window.mapData[id] = {
+			image: data.dataUri,
+			width: viewSize.width,
+			height: viewSize.height
+		};
+
+		var canvas = document.createElement('canvas');
+		var ctx = canvas.getContext('2d');
+		var img = new Image;
+		img.onload = function() {
+			ctx.drawImage(img,0,0); // Or at whatever offset you like
+			canvas.width = img.width;
+			canvas.height = img.height;
+			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+			var clrIdx = 0,
+				w1 = viewSize.width,
+				h1 = viewSize.height,
+				w2 = canvas.width,
+				h2 = canvas.height;
+
+			// transform from visualization size to PDF size
+			function transform(pt) {
+				pt.x = (pt.x - w1/2) * scale + w2 / 2;
+				pt.y = (pt.y - h1/2) * scale + h2 / 2;
+				return pt;
+			}
+
+			_.forEach(lines, function(path) {
+				if (!path.pt1 || !path.pt2) {
+					return ;
+				}
+
+				var px1 = transform(myMap.pointToPixel(path.pt1)),
+					px2 = transform(myMap.pointToPixel(path.pt2));
+
+				ctx.beginPath();
+				ctx.strokeStyle = path.color || Theme.color[clrIdx++ % Theme.color.length];
+				ctx.lineWidth = 2;
+				ctx.moveTo(px1.x, px1.y);
+				ctx.lineTo(px2.x, px2.y);
+				ctx.stroke();		  
+			});
+
+			_.forEach(dots, function(dot) {
+				if (!dot.pt) {
+					return ;
+				}
+				var px = transform(myMap.pointToPixel(dot.pt));
+
+				ctx.beginPath();
+				ctx.arc(px.x, px.y, dot.raius, 0, Math.PI * 2, false);
+				ctx.fillStyle = dot.color;
+				ctx.fill();
+			});
+
+			window.mapData[id] = {
+				image: canvas.toDataURL(),
+				width: canvas.width,
+				height: canvas.height
+			};
+		};
+
+		img.src = data.dataUri;
+	});
 }
 
 function renderMap(id, data, config, data2) {
@@ -69,8 +197,6 @@ function renderMap(id, data, config, data2) {
 		geoCoder = new BMap.Geocoder(),
 		hashData2 = {},
 		hashColor = {};
-
-	window.mapData = window.mapData || {};
 
 	var hGlobal = window.HarmonyGlobal;
 	hGlobal.susPos = hGlobal.susPos || {};
@@ -129,9 +255,19 @@ function renderMap(id, data, config, data2) {
 			var zoomHandler = setInterval(function() {
 				var center = map.getCenter();
 				if (!center.equals(lastCenter) || resetCnt > 15) {
-					centerUrl = '&center='+center.lng+','+center.lat+'&zoom=' + '14'
-					dataModel.getImageUrl(staticUrl+centerUrl+markerUrl, function(data) {
-						window.mapData[id] = data.dataUri;
+					var scale = 2,
+						dimUrl = 'width=' + (map.getSize().width || 300) + '&height=' + (map.getSize().height || 300),
+						scaleUrl = '&scale=' + scale,
+						centerUrl = '&center='+center.lng+','+center.lat+'&zoom=' + '14';
+
+					var imageUrl = staticUrl+dimUrl+centerUrl+markerUrl;
+					console.log(imageUrl);
+					dataModel.getImageUrl(imageUrl, function(data) {
+						window.mapData[id] = {
+							image: data.dataUri,
+							width: 300,
+							height: 300
+						};
 					});
 					clearInterval(zoomHandler);
 				}
@@ -268,6 +404,7 @@ function renderMap(id, data, config, data2) {
 		}
 
 		if (config.subtype === 1) {
+			var lines = [];
 			_.forEach(tracks, function(value, key) {
 				if (value.length > 1) {
 					var clr = hGlobal.susClr[key] || Theme.color[clrIdx++ % Theme.color.length];
@@ -275,14 +412,46 @@ function renderMap(id, data, config, data2) {
 					for (var i=0; i< value.length-1; i++) {
 						var polyline = new BMap.Polyline([value[i],value[i+1]], {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
 						myMap.addOverlay(polyline);
-						addArrow(myMap, polyline, 15, Math.PI / 7, clr);						
+						lines.push({
+							type: 'line',							
+							pt1: value[i],
+							pt2: value[i+1],
+							color: clr							
+						});
+						var arrows = addArrow(myMap, polyline, 15, Math.PI / 7, clr);
+
+						arrows.forEach(function(arrow) {
+							var p = arrow.getPath();
+
+							lines.push({
+								type: 'line',
+								pt1: p[0],
+								pt2: p[1],
+								color: arrow.getStrokeColor()
+							});
+
+							lines.push({
+								type: 'line',
+								pt1: p[1],
+								pt2: p[2],
+								color: arrow.getStrokeColor()
+							});
+						});
 					}			
 				}
-			});			
+			});
+
+			myMap.setViewport(points);
+
+			createStaticMap({map: myMap, id: id}, points, lines);
+
+			return ;
+
 		} else if (config.subtype === 2) {
 			var cntGeo = 0;
 			var hashConnection = {};
 			var mappingGeo = {};
+			var dots = [];
 
 			function handleDistrict(res, key) {
 				var lat = res.lat;
@@ -305,32 +474,57 @@ function renderMap(id, data, config, data2) {
 
 					addClickHandler(scontent, circle);
 
-					myMap.addOverlay(circle);										
+					myMap.addOverlay(circle);
+
+					dots.push({
+						type: 'point',
+						pt: mappingGeo[key],
+						color: clr,
+						radius: r
+					});							
 				}				
 			}
 
 			function drawConnection() {
 				console.log('draw connections');
-				console.log(mappingGeo);
-				console.log(hashConnection);
+				var lines = [];
 				_.forEach(connection, function(value, key) {
 					var ks = key.split(':');
 					if (mappingGeo[ks[0]] && mappingGeo[ks[1]]) {
 						var clr = hGlobal.susClr[ks[0]] ||  hGlobal.susClr[ks[1]] || Theme.color[clrIdx++ % Theme.color.length];
 
-						var path = [mappingGeo[ks[0]], mappingGeo[ks[1]]];
+						var path = [mappingGeo[ks[0]], mappingGeo[ks[1]]];						
 						var polyline = new BMap.Polyline(path, {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
 						myMap.addOverlay(polyline);
+
+						lines.push({
+							type: 'line',
+							pt1: path[0],
+							pt2: path[1],
+							color: clr
+						});
 					}
 				});
 
 				myMap.setViewport(_.values(mappingGeo));
 
-				createStaticMap(_.values(mappingGeo));				
+				var viewTimeoutCountOut = 0;
+				var viewTimeoutHandler = setInterval(function() {
+					if (myMap.getCenter().lat !== 0 && myMap.getCenter().lng !== 0) {
+						clearInterval(viewTimeoutHandler);
+						createStaticMap({map: myMap, id: id}, dots, lines);
+					}
+
+					// 超过重测次数阈值，停止尝试
+					if (viewTimeoutCountOut++ >= 10) {
+						clearInterval(viewTimeoutHandler);
+					}
+
+					myMap.setViewport(_.values(mappingGeo));
+				}, 500);
 			}
 
 			var cacheValue = {};
-
 			_.forEach(hashDistrict, function(value, key) {
 				if (value) {
 					cntGeo++;
@@ -339,17 +533,21 @@ function renderMap(id, data, config, data2) {
 						handleDistrict(hGlobal.susPos[key], key);
 						cntGeo--;
 					// if it's in local cache
-					} else if (cacheValue[value] !== undefined) {
-						handleDistrict(cacheValue[Value], key);
-						cntGeo--;
+					} else if (cacheValue[value] && cacheValue[value].length > 0) {
+						cacheValue[value].push(key);
 					} else {
+						cacheValue[value] = [key];
 						// reverse geocoding
 						geoCoder.getPoint(value, function(res) {
-							cntGeo--;
+							cntGeo -= cacheValue[value].length;
 
 							if (res) {
-								handleDistrict(res, key);
+								for (var k in cacheValue[value]) {
+									handleDistrict(res, cacheValue[value][k]);
+								}	
 							}
+
+							cacheValue[value] = undefined;
 
 							if (cntGeo <=0) {
 								drawConnection();
@@ -368,23 +566,7 @@ function renderMap(id, data, config, data2) {
 
 		myMap.setViewport(points);
 
-		createStaticMap(points)
-
-		function createStaticMap(points) {
-			var viewCenter = myMap.getCenter();
-			centerUrl = '&center=' + viewCenter.lng + ',' + viewCenter.lat;
-			if (points.length > 0) {
-				markerUrl = '&markers=';
-			}
-			_.forEach(points, function(pt) {
-				markerUrl += '|' + pt.lng + ',' + pt.lat;
-			});
-
-			dataModel.getImageUrl(staticUrl+centerUrl+markerUrl, function(data) {
-				window.mapData[id] = data.dataUri;
-			});
-
-		}
+		createStaticMap({map: myMap, id: id}, points);
 
 	}
 
