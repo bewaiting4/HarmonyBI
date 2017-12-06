@@ -61,6 +61,7 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
 
     var link = gDraw.append("g")
         .attr("class", "link")
+        .style("stroke", "#999")
         .selectAll("line")
         .data(graph.links)
         .enter().append("line")
