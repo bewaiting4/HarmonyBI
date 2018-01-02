@@ -87,22 +87,38 @@ class LocationFilter extends React.Component {
     handleSetDistrict1(district) {
     	this.district1 = district;
         this.props.onUpdateLocation({
-            district: this.district1 // TODO add district2
+            district: (district.province || "") + " " + (district.city || "") + " " + (district.county || "") // TODO add district2
         });
     }
 
     handleSetDistrict2(district) {
     	this.district2 = district;
         this.props.onUpdateLocation({
-            district: district2 // TODO add district1
+            district: (district.province || "") + " " + (district.city || "") + " " + (district.county || "") // TODO add district1
         });
     }
 
     resetFilter() {
+    	// reset CI filter
     	this.setState({
     		fromCI: DefaultFilter.ci_from,
     		toCI: DefaultFilter.ci_to
     	});
+
+    	// reset Administration filter
+    	this.refs.location1.resetFilter();
+    	this.refs.location2.resetFilter();
+
+    	// reset map filter
+    	this.wrapper.resetChart(this.mapLocId, "map", this.filterInstance, null, {
+			subtype: 3, // map as filter
+			mapCenter: {
+				long: 78.274895,
+				lat: 37.617298
+			},
+			long: 78.274895,
+			lat: 37.617298
+		});
     }
 
 	render() {
@@ -130,9 +146,9 @@ class LocationFilter extends React.Component {
 				<Tab eventKey={3} title="行政区划定位" className="tab_region">
 					<div className="region_container">
 						<label>案发地点</label>
-						<RegionDropdownGroup id="location1" onUpdateRegion={this.handleSetDistrict1}/>
+						<RegionDropdownGroup ref="location1" id="location1" onUpdateRegion={this.handleSetDistrict1}/>
 						<div className="separator"><span>并且</span></div>				  
-						<RegionDropdownGroup id="location2" onUpdateRegion={this.handleSetDistrict2}/>
+						<RegionDropdownGroup ref="location2" id="location2" onUpdateRegion={this.handleSetDistrict2}/>
 					</div>
 				</Tab>
 

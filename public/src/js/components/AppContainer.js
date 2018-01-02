@@ -54,11 +54,13 @@ class AppContainer extends React.Component {
 			isUnfold: true,
 			activeTab: 0,
 			width: '0',
-			heigth: '0',
+			height: '0',
             showExport: false
 		};
 
   		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+
+  		window.HarmonyGlobal = {};
 	}
 
 	componentDidMount() {
@@ -85,7 +87,7 @@ class AppContainer extends React.Component {
 	updateVizDataModel(data) {
  	 	this.CIData = parseCIData(data.vizData);
 		this.setState({
-			docData: DataTransformer.transform(data),
+			docData: DataTransformer.transform(data, this.dataModel.getFilter()),
 			isLoading: false
 		});
 	}
@@ -168,16 +170,11 @@ class AppContainer extends React.Component {
 			loadingClass = "loading-bg";
 		}
 
-		var url = "http://api.map.baidu.com/staticimage?center=116.313127,39.984242&markers=116.313127,39.984242&zoom=13&width=540&height=220";
-
-		this.dataModel.getImageUrl(url, function(data) {
-			console.log(data);
-		});
-
 		return (
 			<div>
-							<div className={loadingClass} style={{width: this.state.width, height: this.state.height}}><h1>数据加载中</h1></div>;
-			<div className={isUnfold ? "nav-md" : "nav-sm"}>
+			<div className={loadingClass} style={{width: '100%', height: '100%'}}><h1>数据加载中</h1></div>
+
+			<div className={isUnfold ? "nav-md" : "nav-sm"} style={{'top': 0}}>
 
 				<div className="container body">
 					<div className="main_container">
@@ -202,13 +199,14 @@ class AppContainer extends React.Component {
 							suspects={suspects}
 							conditin={this.dataModel.condition}
 						/>
-						<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
+						<TabBar ref="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 					</div>
 				</div>
             	
             	<ExportDialog ref="expDlg" show={this.state.showExport} onClose={this.closeExport} onExport={this.handleExport}/>
 								
 			</div>
+
 			</div>
 		);
 	}

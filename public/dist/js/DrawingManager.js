@@ -1,3 +1,5 @@
+//http://api.map.baidu.com/library/DrawingManager/1.4/docs/symbols/src/BMapLib_DrawingManager.js.html
+//https://github.com/baidumap/DrawingManager
 /**
  * @fileoverview ç™¾åº¦åœ°å›¾çš„é¼ æ ‡ç»˜åˆ¶å·¥å…·ï¼Œå¯¹å¤–å¼€æ”¾ã€‚
  * å…è®¸ç”¨æˆ·åœ¨åœ°å›¾ä¸Šç‚¹å‡»å®Œæˆé¼ æ ‡ç»˜åˆ¶çš„åŠŸèƒ½ã€‚
@@ -975,7 +977,17 @@ var BMAP_DRAWING_MARKER    = "marker",     // é¼ æ ‡ç”»ç‚¹æ¨¡å�
             if(me.controlButton == "right" && (e.button == 1 || e.button==0)){
                 return ;
             }
+            // makesure there is only one overlay
+            (map.getOverlays() || []).forEach(function(overlay) {
+                if (overlay._className === "Marker" || 
+                    overlay._className === "Circle") {
+                    map.removeOverlay(overlay);
+                }
+            });
+            console.log('dddd');
             centerPoint = e.point;
+            var marker = new BMap.Marker(centerPoint, me.markerOptions);
+            map.addOverlay(marker);
             circle = new BMap.Circle(centerPoint, 0, me.circleOptions);
             map.addOverlay(circle);
             mask.enableEdgeMove();
@@ -1475,7 +1487,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // é¼ æ ‡ç”»ç‚¹æ¨¡å�
         drawingToolOptions = this.drawingToolOptions = drawingToolOptions || {};
         // é»˜è®¤åœé ä½ç½®å’Œåç§»é‡
         this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-        this.defaultOffset = new BMap.Size(10, 10);
+        this.defaultOffset = new BMap.Size(-23, 5);
 
         //é»˜è®¤æ‰€æœ‰å·¥å…·æ éƒ½æ˜¾ç¤º
         this.defaultDrawingModes = [

@@ -40,14 +40,14 @@ class RegionDropdownGroup extends React.Component {
 
 		this.setState(obj);
 
-		this.props.onUpdateRegion(this.state.location);
+		this.props.onUpdateRegion(obj[name]);
 	}
 
 	onCityChange(val) {
 		var name = 'location';
+		var obj = {};
 
 		this.setState(function(prevState, props) {
-			var obj = {};
 
 			obj[name] = {
 				province: prevState[name].province,
@@ -58,15 +58,14 @@ class RegionDropdownGroup extends React.Component {
 			return obj;
 		});
 
-		this.props.onUpdateRegion(this.state.location);
+		this.props.onUpdateRegion(obj[name]);
 	}
 
 	onCountyChange(val) {
 		var name = 'location';
+		var obj = {};
 
 		this.setState(function(prevState, props) {
-			var obj = {};
-
 			obj[name] = {
 				province: prevState[name].province,
 				city: prevState[name].city,
@@ -76,7 +75,7 @@ class RegionDropdownGroup extends React.Component {
 			return obj;
 		});
 
-		this.props.onUpdateRegion(this.state.location);
+		this.props.onUpdateRegion(obj[name]);
 	}
 
 	resetFilter() {
@@ -86,7 +85,6 @@ class RegionDropdownGroup extends React.Component {
 	}
 
 	render() {
-		let optionsCI = createOptionsList(this.props.CIData, true);
 		const prov = this.state.location.province;
 		let listCity = prov ?  createOptionsList(RegionList[prov]): [];
 		let listCounty = prov ? createOptionsList(RegionList[prov][this.state.location.city]): [];

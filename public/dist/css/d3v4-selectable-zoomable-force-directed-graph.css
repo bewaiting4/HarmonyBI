@@ -12,7 +12,3 @@
 .node .selected {
   stroke: black;
 }
-
-.link {
-  stroke: #999;
-}

@@ -44,6 +44,7 @@ class DocumentView extends React.Component {
 			type: "map",
 			category: "echarts",
 			title: "嫌疑人轨迹(案发前后)",
+			data: 'susTraces',
 			data2: 'suspectTable',
 			config: {
 				subtype: 1

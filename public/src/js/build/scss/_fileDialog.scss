@@ -1,0 +1,64 @@
+.fileDialog {
+
+	.modal-header {
+		height: 42px;
+    	padding: 5px 10px 5px 10px;
+
+    	.modal-title {
+    		color: #fff;
+    	}
+	}
+
+	.modal-footer {
+		border-top: 0;
+		padding-top: 0;
+    	padding-right: 25px;
+
+    	.save {
+    		background-color: $fill1;
+    	}
+	}
+
+	.fileList {
+		background-color: #FFF;
+		height: 300px;
+		overflow: auto;
+
+		.list-group-item {
+			border-radius: 0;
+		}
+
+		.fileInfo {
+			.date {
+				float: left;
+			}
+
+			.user {
+				white-space: nowrap;
+				max-width: 100px;
+				text-overflow: clip;
+				float: right;
+			}
+		}
+	}
+
+	.list-group-item {
+		&.selected {
+			background-color: #f5f5f5;
+		}
+	}
+
+	.newfile {
+		height: 32px;
+		line-height: 32px;
+
+		label {
+			height: inherit;
+			line-height: inherit;
+		}
+
+		.fileInput {
+			width: 305px;
+		}
+	}
+}

@@ -90,13 +90,13 @@ function parseData(data, subType, filter, data2) {
 				if (point && point.duration) {
 					durationSeries[number].data.push(point.duration);
 				} else {
-					durationSeries[number].data.push(NaN);
+					durationSeries[number].data.push(0);
 				}
 
 				if (point && point.count) {
 					countSeries[number].data.push(point.count);
 				} else {
-					countSeries[number].data.push(NaN);
+					countSeries[number].data.push(0);
 				}
 
 			}

@@ -1,6 +1,8 @@
 import Theme from './EChartsThemeConfig'
 import Enum from '../Enums'
 
+window.network = window.network || {};
+
 class Network2 {
 	resize() {
 		this.render(this.id, this.data);
@@ -75,12 +77,27 @@ class Network2 {
 			}
 		}
 
-	var traces = parseData(data);
+		var traces = parseData(data);
 
-    createV4SelectableForceDirectedGraph(svg, traces);
+	    createV4SelectableForceDirectedGraph(svg, traces);
+
+	    setTimeout(function() {
+		    var canvas = document.createElement('canvas');
+		    canvas.width = svg.attr("width");
+		    canvas.height = svg.attr("height");
+
+		    var serializer = new XMLSerializer();
+		    var svgStr = serializer.serializeToString(svg.select("svg").node());
+
+		    canvg(canvas, svgStr);
+
+		    window.network[id] = {
+		    	image: canvas.toDataURL(),
+		    	width: canvas.width,
+		    	height: canvas.height
+		    };
+	    }, 1000);
 	}
-
-	
 }
 
 module.exports = Network2;

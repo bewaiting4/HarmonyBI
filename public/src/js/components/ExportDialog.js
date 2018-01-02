@@ -44,6 +44,7 @@ class ExportDialog extends React.Component {
 		return (
 			<div>
 			<Modal
+				className="exportDialog"
 				show={this.state.showExport}
 				onHide={this.handleClose}
 				container={this}
@@ -51,7 +52,7 @@ class ExportDialog extends React.Component {
 				backdrop="static"
 			>
 				<Modal.Header closeButton>
-					<Modal.Title id="contained-modal-title">输出分析报告</Modal.Title>
+					<Modal.Title id="contained-modal-title">导出分析报告</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Label>报告标题</Label>
@@ -71,7 +72,7 @@ class ExportDialog extends React.Component {
 							    	<Thumbnail src="../icons/png/defaultimage/map1@1x.png"/>
 							    	<Thumbnail src="../icons/png/defaultimage/map1@1x.png"/>
 	    						</div>
-	    						<Checkbox checked>
+	    						<Checkbox disabled checked>
 	      							分析页面
 	    						</Checkbox>
 
@@ -80,7 +81,7 @@ class ExportDialog extends React.Component {
 						    	<div className="thumbContainer">
 							      	<Thumbnail className="callList" src="../icons/png/defaultimage/table@1x.png" alt="242x200"/>
 							     </div>
-					        	<Checkbox onChange={this.handleCheckCallList}>
+					        	<Checkbox disabled onChange={this.handleCheckCallList}>
       								话单页面
     							</Checkbox>						      	
 						    </Col>
