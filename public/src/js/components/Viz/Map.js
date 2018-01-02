@@ -632,6 +632,26 @@ function renderMap(id, data, config, data2) {
 	intervalId = setInterval(initMap, 1000); //创建和初始化地图
 }
 
+function resetMap(id, data, config, data2) {
+	var map = window['map' + id];
+	if (config.subtype === 3) {
+        (map.getOverlays() || []).forEach(function(overlay) {
+            if (overlay._className === "Marker" || 
+                overlay._className === "Circle") {
+                map.removeOverlay(overlay);
+            }
+        });
+
+		var point = new BMap.Point(config.mapCenter.long, config.mapCenter.lat);
+		map.centerAndZoom(point, 14);
+
+		var marker = new BMap.Marker(new BMap.Point(config.long, config.lat));
+		map.addOverlay(marker);
+
+	} 
+}
+
 module.exports = {
-	renderMap: renderMap
+	renderMap: renderMap,
+	resetMap: resetMap
 }

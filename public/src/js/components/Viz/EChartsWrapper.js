@@ -21,6 +21,12 @@ class EChartsWrapper {
 		this.theme = themeCfg;
 	}
 
+	resetChart(id, type, chartInstance, data, config, data2) {
+		if (type === "map") {
+			Map.resetMap(id, data, config, data2);
+		}
+	}
+
 	renderChart(id, type, chartInstance, data, config, data2) {
 		this.init_echarts();
 
