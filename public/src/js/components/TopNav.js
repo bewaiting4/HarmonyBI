@@ -14,7 +14,8 @@ class TopNav extends React.Component {
 	handleExpandMenu(name) {
 		this.setState(function(prevState, props) {
 			return {
-				on: prevState.on === name ? "" : name
+				// 如果选中该选项且下拉菜单确实打开
+				on: prevState.on === name ? ""  : name
 			};
 		});
 	}
@@ -36,6 +37,7 @@ class TopNav extends React.Component {
 
 							{/* Open Dashboard*/}
 							<NavSetting
+								ref="openDlg"
 								name="Open"
 								icon="cog"
 								menuItem="打开"
@@ -45,6 +47,7 @@ class TopNav extends React.Component {
 
 							{/* Close Dashboard*/}
 							<NavSetting
+								ref="saveDlg"
 								name="Save"
 								icon="save"
 								menuItem="保存"

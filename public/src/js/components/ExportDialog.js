@@ -44,6 +44,7 @@ class ExportDialog extends React.Component {
 		return (
 			<div>
 			<Modal
+				className="exportDialog"
 				show={this.state.showExport}
 				onHide={this.handleClose}
 				container={this}
