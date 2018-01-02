@@ -133,6 +133,7 @@ class PDFExporter {
 
         var singleLineSpacing = 6;
         var susTableWidth = [];
+        var ddd = new Date();
 
         function getImageBlock(index) {
             return {
@@ -464,6 +465,27 @@ class PDFExporter {
                 }, 
                 getImageBlock(8)
             ],
+            footer: function(page, pages) {
+                if (page > 1) {
+                    return { 
+                        columns: [ 
+                            ddd.toLocaleDateString() + " " + ddd.toLocaleTimeString() + " " + window.appConfig.user,
+                            { 
+                                alignment: 'right',
+                                text: [
+                                    { text: "第"},
+                                    { text: page.toString(), italics: true },
+                                    '/',
+                                    { text: pages.toString(), italics: true },
+                                    { text: "页"}
+                                ]
+                            }
+                        ],
+                        margin: [ 72, 60, 72, 0 ],
+                        fontSize: 10
+                    };                    
+                }
+            },
             styles: {
                 largetext: {
                     fontSize: 14,
