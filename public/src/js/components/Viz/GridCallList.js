@@ -15,18 +15,35 @@ class GridCallList extends React.Component {
 	getColumns() {
 		return [
 			{key: "index", name: "序号", resizable: true},
-			{key: "f_number", name: "本方电话号码", width: 100, resizable: true}, 
+			{key: "f_number", name: "本方电话号码", width: 100, height: 50, resizable: true}, 
 			{
 				key: "f_type", 
 				name: "本方身份判别", 
 				resizable: true,
 				formatter: SuspectTypeFormatter,
-				editor: <DropDownEditor options={_.values(ENUM.CATEGORY_MAP)}/>				
+				editor: <DropDownEditor options={_.values(ENUM.CATEGORY_MAP)}/>,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>本方身份判别</div>
 			},
-			{key: "f_idNumber", name: "本方身份证号", resizable: true},
+			{
+				key: "f_idNumber",
+				name: "本方身份证号",
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>本方身份证号</div>
+			},
 			{key: "f_lang", name: "本方语种", resizable: true},
-			{key: "f_IMEI", name: "本方IMEI（机型）", resizable: true},			
-			{key: "f_district", name: "本方号码归属地", resizable: true},			
+			{
+				key: "f_IMEI",
+				name: "本方 IMEI （机型）",
+				width: 100,
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>本方 IMEI （机型）</div>
+			},
+			{
+				key: "f_district",
+				name: "本方号码归属地",
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>本方号码归属地</div>
+			},
 			{key: "f_host", name: "本方运营商", resizable: true},
 			{key: "f_LAC", name: "本方LAC", resizable: true},
 			{key: "f_CI", name: "本方CI", resizable: true},
@@ -41,19 +58,41 @@ class GridCallList extends React.Component {
 				name: "对方身份判别", 
 				resizable: true,
 				formatter: SuspectTypeFormatter,
-				editor: <DropDownEditor options={_.values(ENUM.CATEGORY_MAP)}/>								
+				editor: <DropDownEditor options={_.values(ENUM.CATEGORY_MAP)}/>,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>对方身份判别</div>						
 			},
-			{key: "t_idNumber", name: "对方身份证号", resizable: true},
+			{
+				key: "t_idNumber",
+				name: "对方身份证号",
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>对方身份证号</div>
+			},
 			{key: "t_lang", name: "对方语种", resizable: true},
-			{key: "t_IMEI", name: "对方IMEI（机型）", resizable: true},
-			{key: "t_district", name: "对方号码归属地", resizable: true},
+			{
+				key: "t_IMEI",
+				name: "对方 IMEI （机型）",
+				width: 100,
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>对方 IMEI （机型）</div>
+			},
+			{
+				key: "t_district",
+				name: "对方号码归属地",
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>对方号码归属地</div>
+			},
 			{key: "t_host", name: "对方运营商", resizable: true},
 			{key: "t_LAC", name: "对方LAC", resizable: true},
 			{key: "t_CI", name: "对方CI", resizable: true},
 			{key: "t_addr", name: "对方地址", resizable: true},
 			{key: "t_long", name: "对方经度", resizable: true},
 			{key: "t_lat", name: "对方纬度", resizable: true},
-			{key: "t_origNumber", name: "对方原始号码", resizable: true}
+			{
+				key: "t_origNumber",
+				name: "对方原始号码",
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>对方原始号码</div>
+			}
 		];
 	}
 

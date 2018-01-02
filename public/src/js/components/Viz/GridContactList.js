@@ -25,11 +25,16 @@ class GridContactList extends React.Component {
 			},
 			{key: "number", name: "电话号码", width: 100, resizable: true}, 
 			{key: "id", name: "身份证号", resizable: true},
-			{key: "district", name: "电话号码归属地", resizable: true},
+			{
+				key: "district",
+				name: "电话号码归属地",
+				resizable: true,
+				headerRenderer: <div className='widget-HeaderCell__value wraptext'>电话号码归属地</div>
+			},
 			{key: "lang", name: "语种", resizable: true},
 			{key: "IMEI", name: "电话机型", resizable: true},
 			{key: "callCount", name: "通话次数", resizable: true},
-			{key: "callTime", name: "通话时长（分）", resizable: true},
+			{key: "callTime", name: "通话时长（分）", width: 100, resizable: true},
 			{key: "closeScore", name: "紧密度", resizable: true, formatter: <HighlightFormatter lvlMapping={ENUM.CLOSE_SCORE_MAP} titleMapping={ENUM.CLOSE_MAP}/>},
 			{key: "notes", name: "备注", resizable: true, editable: true}
 		];

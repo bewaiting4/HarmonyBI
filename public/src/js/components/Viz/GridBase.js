@@ -78,6 +78,8 @@ class GridBase extends React.Component {
 			columns={this.getColumns()}
 			rowGetter={this.rowGetter}
 			rowsCount={this.props.data.length}
+			rowHeight={40}
+			headerRowHeight={50}
 			minHeight={this.props.height || 200}
 			onGridRowsUpdated={this.handleGridRowsUpdated}
 			rowRenderer={RowRenderer}
