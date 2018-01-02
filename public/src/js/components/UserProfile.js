@@ -13,6 +13,7 @@ class UserProfile extends React.Component {
 
     render() {
         const openUserMenu = this.props.selected === this.props.name;
+        const user = window.appConfig && window.appConfig.user || "" ;
 
         return (
             <li className={openUserMenu ? "open" : ""}>
@@ -33,11 +34,8 @@ class UserProfile extends React.Component {
 
                 <ul className="dropdown-menu dropdown-usermenu pull-right">
                     <li>
-                        <a href="javascript:;">帮助</a>
-                    </li>
-                    <li>
                         <a href="javascript:;">
-                            <FontAwesome name="sign-out" />登出
+                            <FontAwesome name="sign-out" />登出 {"  " + user}
                         </a>
                     </li>
                 </ul>
