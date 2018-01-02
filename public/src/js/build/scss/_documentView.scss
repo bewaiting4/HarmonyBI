@@ -180,10 +180,12 @@ $doc-padding-h: 24px;
 .nav-md {
     .container.body .right_col {
         margin-left: $menu-width-md;
+        padding-bottom: 10px;
     }
 }
 .nav-sm  {
     .container.body .right_col {
         margin-left: $menu-width-sm;
+        padding-bottom: 10px;
     }
 }

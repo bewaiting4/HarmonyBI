@@ -199,7 +199,7 @@ class AppContainer extends React.Component {
 							suspects={suspects}
 							conditin={this.dataModel.condition}
 						/>
-						<TabBar refs="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
+						<TabBar ref="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 					</div>
 				</div>
             	
