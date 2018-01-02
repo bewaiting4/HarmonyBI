@@ -19,6 +19,58 @@ class Model {
         this.condition = condition;
     }
 
+    getFilterList(callback) {
+        fetch('/api/filter', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(resData => {
+            callback(resData);
+        }).catch(ex => {
+            console.log('Getting filter list failed', ex);
+        })
+    }
+
+    openFilter(id) {
+        fetch('/api/filter/' + id, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(res => res.json())
+        .then(resData => {
+            callback(resData);
+        }).catch(ex => {
+            console.log('Getting suspect data failed', ex)
+        });        
+    }
+
+    /**
+     * @param info typedef{name, modelData}
+     */
+    saveNewFilter(info, callback) {
+        fetch('/api/filter', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'content-Type': 'application/json'
+            },
+            body: JSON.stringify(info)
+        })
+        .then(res => res.json())
+        .then(resData => {
+            callback(resData);
+        }).catch(ex => {
+            console.log('save new filter failed', ex);
+        })
+    }
+
     getSuspectData(callback) {
         fetch('/api/suspect', {
                 method: 'GET',
