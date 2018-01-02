@@ -68,32 +68,53 @@ function addArrow(map, polyline, length, angleValue, color) { //绘制箭头的�
 	return arrows;
 }
 
-// function refinePolyLine(map, linePoint) {
-// 	var delta = 2;
-// 	var pixelStart = map.pointToPixel(linePoint[0]);
-// 	var pixelEnd = map.pointToPixel(linePoint[1]);
-// 	var pixelX, pixelY, pixelX1, pixelY1; 
+function sqr(a) {
+	return a * a;
+}
 
-// 	if (pixelEnd.x - pixelStart.x == 0) { //斜率不存在是时  
-// 		pixelX = pixelStart.x;
-// 		if (pixelEnd.y > pixelStart.y) {
-// 			pixelY = pixelStart.y + r;
-// 		} else {
-// 			pixelY = pixelStart.y - r;
-// 		}
+function refinePolyLine(map, linePoint) {
+	var p1 = map.pointToPixel(linePoint[0]);
+	var p2 = map.pointToPixel(linePoint[1]);
+	var lineLen = Math.sqrt(sqr(p1.x - p2.x) + sqr(p2.y - p2.y));
+	var r = lineLen / 2 > 16 ? 16 : lineLen/4;
 
-// 		pixelX1 = pixelEnd.x;
-// 		if (pixelEnd.y > pixelStart.y) {
-// 			pixelY1 = pixelEnd.y - r;
-// 		} else {
-// 			pixelY1 = pixelEnd.y + r;
-// 		}
+	if (p2.x - p1.x == 0) { //斜率不存在时  
+		// 同一个点， 直接返回
+		if (p2.y === p1.y) {
+			return linePoint;
+		}
 
-// 		map.pixelToPoint(new BMap.Pixel(pixelTemX.x, pixelTemY))
+		if (p2.y > p1.y) {
+			p1.y += r;
+			p2.y -= r;
+		} else {
+			p1.y -= r;
+			p2.y += r;
+		}
+	} else { //斜率存在时  
+		var delta = (p2.y - p1.y) / (p2.x - p1.x);
+		var param = Math.sqrt(delta * delta + 1);
 
-// 	} else //斜率存在时  
+		if ((p2.x - p1.x) < 0) {//第二、三象限  
+			p2.x += r / param;
+			p1.x -= r / param;
 
-// }
+			p2.y += delta * r / param;
+			p1.y -= delta * r / param;
+		} else {//第一、四象限  
+			p2.x -= r / param;
+			p1.x += r / param;
+
+			p2.y -= delta * r / param;
+			p1.y += delta * r / param;
+		}		
+	}
+
+	var ptStart = map.pixelToPoint(new BMap.Pixel(p1.x, p1.y));
+	var ptEnd = map.pixelToPoint(new BMap.Pixel(p2.x, p2.y));
+
+	return [ptStart, ptEnd];
+}
 
 function createStaticMap(config, dots, lines) {
 
@@ -234,21 +255,6 @@ function renderMap(id, data, config, data2) {
 			map.centerAndZoom(point,17);                     // 初始化地图,设置中心点坐标和地图级别。 
 		}
 
-		// if (config.subtype === 3) {
-		// 	zLv = 11;
-		// }
-
-		// BMap.Convertor.translate(point, 0, function(point){ 
-		//   var marker = new BMap.Marker (point);
-		//   marker.setTitle ("This is a marker"); 
-		//   map.addOverlay (marker); 
-
-		//   map.enableScrollWheelZoom();                            //启用滚轮放大缩小 
-
-		//   map.addEventListener('click', function(e){ 
-		//     console.log(e.point);})
-		// }); 
-		//map.setViewport({center: point, zoom: 17});
 		if (config.subtype === 3) {
 			var lastCenter = point;
 			var resetCnt = 0;
@@ -410,13 +416,14 @@ function renderMap(id, data, config, data2) {
 					var clr = hGlobal.susClr[key] || Theme.color[clrIdx++ % Theme.color.length];
 
 					for (var i=0; i< value.length-1; i++) {
-						var polyline = new BMap.Polyline([value[i],value[i+1]], {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
+						var refLine = refinePolyLine(myMap, [value[i],value[i+1]]);
+						var polyline = new BMap.Polyline(refLine, {strokeColor:clr, fillColor: clr, strokeWeight:2, strokeOpacity:0.5});
 						myMap.addOverlay(polyline);
 						lines.push({
 							type: 'line',							
-							pt1: value[i],
-							pt2: value[i+1],
-							color: clr							
+							pt1: refLine[0],
+							pt2: refLine[1],
+							color: clr						
 						});
 						var arrows = addArrow(myMap, polyline, 15, Math.PI / 7, clr);
 
