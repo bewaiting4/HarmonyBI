@@ -78,7 +78,7 @@ class PDFExporter {
 					'语种': p.lang || "",
 					'电话机型': ENUM.SERVICE_TYPE_MAP[p.IMEI] || "",
 					'通话次数': p.callCount,
-					'通话时长': p.callTime,
+					'通话时长(分钟)': p.callTime,
 					'紧密度': ENUM.CONNECTION_MAP[p.closeScore] || "",
 //					'备注': p.notes|| "",				};
 				};
@@ -144,6 +144,19 @@ class PDFExporter {
                 alignment: 'center'
             };
         }
+
+
+        var tableWidths = [20, 40, 70, 90, 80, 30, 40, 35, 40, 40, 40, 40];
+        var contactTableWidths = [20, 40, 70, 90, 80, 30, 40, 40, 40, 40];
+        var MARGIN_SINGLELINE = [0, singleLineSpacing, 0, singleLineSpacing];
+
+        function getImageTitleMargin(height) {
+            var res = MARGIN_SINGLELINE.slice();
+
+            res[1] = 300 - height;
+            return res;
+        }
+
 
         var dd = {
             // a string or { width: number, height: number }
@@ -305,7 +318,7 @@ class PDFExporter {
                         body: function(){                            
                             var res = [];
 
-                            res.push(['', '身份', '手机号码', '身份证号']);
+                            res.push(['序号', '身份', '手机号码', '身份证号']);
                             _.forEach(filterSuspects, function(o, idx) {
                                 res.push([idx+1, ENUM.CATEGORY_MAP[o.type] || "", o.number || "", o.idNumber|| ""]);
                             });
@@ -324,20 +337,7 @@ class PDFExporter {
                 }, {
                     style: 'tableExample',
                     table: {
-                        widths: [
-                        	20,
-                        	50,
-                        	'auto',
-                        	'auto',
-                        	50,
-                        	20,
-                        	40,
-                        	40,
-                        	40,
-                        	40,
-                        	40,
-                        	40
-                        ],
+                        widths: tableWidths,
                         body: function(){
                             var res = [_.keys(suspectTable[0])];
 
@@ -358,7 +358,7 @@ class PDFExporter {
                 }, {
                     style: 'tableExample',
                     table: {
-                        widths: _.map(_.keys(contactTable[0]), function(){return 'auto'}),
+                        widths: contactTableWidths,
                         body: function(){
                             var res = [_.keys(contactTable[0])];
 
@@ -387,7 +387,8 @@ class PDFExporter {
                     alignment: 'center'
                 }, {
                     text: '平时（案发前3个月）：',
-                    style: 'paragraph'
+                    style: 'paragraph',
+                    margin: getImageTitleMargin(window.network["chart1"].height)
                 }, {
                     image: window.network["chart1-2"].image,
                     width: window.network["chart1-2"].width || 250,
@@ -407,16 +408,17 @@ class PDFExporter {
                     image: charts[2].image,
                     width: charts[2].width || 250,
                     height: charts[2].height || 250,
-                    margin: [0, singleLineSpacing, 0, singleLineSpacing],
+                    margin: MARGIN_SINGLELINE,
                     alignment: 'center'
                 }, {
                     text: '平时（案发前3个月）：',
-                    style: 'paragraph'
+                    style: 'paragraph',
+                    margin: getImageTitleMargin(charts[2].height)
                 }, {
                     image: charts[3].image,
                     width: charts[3].width || 250,
                     height: charts[3].height || 250,
-                    margin: [0, singleLineSpacing, 0, singleLineSpacing],
+                    margin: MARGIN_SINGLELINE,
                     alignment: 'center'
                 },
 
@@ -432,7 +434,8 @@ class PDFExporter {
                 getImageBlock(4),
                 {
                     text: '平时（案发前3个月）：',
-                    style: 'paragraph'
+                    style: 'paragraph',
+                    margin: getImageTitleMargin(getImageBlock(4).height)
                 },
                 getImageBlock(5),
 
@@ -448,7 +451,8 @@ class PDFExporter {
                 getImageBlock(6),
                 {
                     text: '平时（案发前3个月）：',
-                    style: 'paragraph'
+                    style: 'paragraph',
+                    margin: getImageTitleMargin(getImageBlock(6).height)
                 }, 
                 getImageBlock(7),
 
@@ -461,7 +465,8 @@ class PDFExporter {
                 getImageBlock(9),
                 {
                     text: '嫌疑人手机型号：',
-                    style: 'titleStyle'
+                    style: 'titleStyle',
+                    margin: getImageTitleMargin(getImageBlock(9).height)
                 }, 
                 getImageBlock(8)
             ],
@@ -499,25 +504,25 @@ class PDFExporter {
 
                 titleStyle: {
                     fontSize: 20,
-                    margin: [0, singleLineSpacing, 0, singleLineSpacing]
+                    margin: MARGIN_SINGLELINE
                 },
 
                 titleCover: {
                     fontSize: 20,
-                    margin: [0, singleLineSpacing, 0, singleLineSpacing]
+                    margin: MARGIN_SINGLELINE
                 },
 
                 paragraph: {
                     fontSize: 14,
                     bold: false,
-                    margin: [0, singleLineSpacing, 0, singleLineSpacing]
+                    margin: MARGIN_SINGLELINE
                 },
 
                 underlineParagraph: {
                     decoration: 'underline',
                     fontSize: 14,
                     bold: false,
-                    margin: [0, singleLineSpacing, 0, singleLineSpacing]
+                    margin: MARGIN_SINGLELINE
                 },
 
                 tableExample: {
@@ -530,7 +535,7 @@ class PDFExporter {
                 font: 'simsun',
                 fontSize: 14,
                 bold: false,
-                margin: [0, singleLineSpacing, 0, singleLineSpacing]                
+                margin: MARGIN_SINGLELINE
             }
         };
         pdfMake.fonts = {
