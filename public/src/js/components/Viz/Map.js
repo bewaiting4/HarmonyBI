@@ -580,7 +580,7 @@ function renderMap(id, data, config, data2) {
 	//地图控件添加函数：
 	function addMapControl() {
 		//向地图中添加缩放控件
-		var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+		var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_ZOOM});
 		myMap.addControl(ctrl_nav);
 		//        //向地图中添加缩略图控件import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)
 		// var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
@@ -589,48 +589,44 @@ function renderMap(id, data, config, data2) {
 		var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
 		myMap.addControl(ctrl_sca);
 
-	    var overlays = [];
-		var overlaycomplete = function(e){
-			if (config.subtype === 3) {
+		if (config.subtype === 3) {
+			var overlaycomplete = function(e){
 				config.callback(
 					e.overlay.point.lat, 
 					e.overlay.point.lng, 
 					Math.abs(e.overlay._bounds._neLat - e.overlay._bounds._swLat)/2
 				);
-			}
-	        overlays.push(e.overlay);
-	    };
-	    var styleOptions = {
-	        strokeColor:"red",    //边线颜色。
-	        //fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
-	        strokeWeight: 1,       //边线的宽度，以像素为单位。
-	        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
-	        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
-	        strokeStyle: 'solid' //边线的样式，solid或dashed。
-	    }
-	    //实例化鼠标绘制工具
-	    var drawingManager = new BMapLib.DrawingManager(myMap, {
-	        isOpen: false, //是否开启绘制模式
-	        enableDrawingTool: true, //是否显示工具栏
-	        enableCalculate: true,
-	        drawingToolOptions: {
-	        	scale: 0.5,
-	            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
-	            offset: new BMap.Size(5, 5), //偏离值
-		        drawingModes : [
-		            BMAP_DRAWING_CIRCLE
-		        ]
-	        },
-	        circleOptions: styleOptions, //圆的样式
-	        closeCallback: function() {
-				for(var i = 0; i < overlays.length; i++){
-		            myMap.removeOverlay(overlays[i]);
+		    };
+		    var styleOptions = {
+		        strokeColor:"red",    //边线颜色。
+		        //fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+		        strokeWeight: 1,       //边线的宽度，以像素为单位。
+		        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+		        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+		        strokeStyle: 'solid' //边线的样式，solid或dashed。
+		    }
+		    //实例化鼠标绘制工具
+		    var drawingManager = new BMapLib.DrawingManager(myMap, {
+		        isOpen: false, //是否开启绘制模式
+		        enableDrawingTool: true, //是否显示工具栏
+		        enableCalculate: true,
+		        drawingToolOptions: {
+		        	scale: 0.5,
+		            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+		            //offset: new BMap.Size(-25, 10), //偏离值
+			        drawingModes : [
+			            BMAP_DRAWING_CIRCLE
+			        ]
+		        },
+		        circleOptions: styleOptions, //圆的样式
+		        closeCallback: function() {
+			        myMap.clearOverlays();
 		        }
-		        overlays.length = 0   
-	        }
-	    });  
-		 //添加鼠标绘制工具监听事件，用于获取绘制结果
-	    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+		    });  
+			 //添加鼠标绘制工具监听事件，用于获取绘制结果
+		    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+		}
+
     }
 
 	intervalId = setInterval(initMap, 1000); //创建和初始化地图
