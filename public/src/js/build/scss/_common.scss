@@ -1,3 +1,35 @@
+/* color system */
+$blue-main: #1A66D9;
+$grey-main: #1B304B;
+
+$blue1: #1A66D9;
+$blue2: #0D89FF;
+$blue3: #85ABFB;
+$blue4: #8AB9FB;
+$blue5: #C2D5FD;
+$blue6: #D6E3FF;
+
+$grey1: #161E2C;
+$grey2: #222937;
+$grey3: #323947;
+$grey4: #424F69;
+$grey5: #5D6370;
+$grey6: #8494A5;
+$grey7: #A6A9B0;
+$grey8: #979EAC;
+$grey9: #CBD1DB;
+
+$fill1: #1A66D9; /*blue*/
+$fill2: #1B304B; /* dark blue*/
+$color3: #424F69; /* gery */
+
+$color-font-main: #FFF;
+$color-font1: #EDEDED;
+$color-font2: rgba(255,255,255,0.45);
+$color-font3: rgba(255,255,255,0.5);
+$color-font4: #000;
+
+
 /* general layout */
 $page-height-tt: 900px;
 $page-width-tt: 1440px;
@@ -30,11 +62,7 @@ $filter-item-width: 280px;
 $filter-bgcolor: #222937;
 $filter_tab-bgcolor: #323947;
 $filter-sidebar-fill: #161E2C;
-$filter-hover-bgcolor: rgba(255, 255, 255, 0.06);
+$filter-hover-bgcolor: rgba(255, 255, 255, 0.16);
 
 $input-fill-color: #161E2C;
 
-/* color system */
-$fill1: #1A66D9; /*blue*/
-$fill2: #1B304B; /* dark blue*/
-$color3: #424F69; /* gery */

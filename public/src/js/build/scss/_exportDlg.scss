@@ -1,7 +1,7 @@
 .modal-dialog {
 	width: 440px;
 	button.close {
-		color: #979EAC
+		color: $grey8
 	}
 
 	.modal-title {
@@ -10,7 +10,7 @@
 	}
 }
 .modal-content {
-	background-color: #323947;
+	background-color: $grey4;
 	color: inherit;
 
 	.col-xs-6 {
@@ -46,7 +46,7 @@
 	}
 
 	button.success {
-		background-color: #1A66D9;
+		background-color: $blue-main;
 		color: #FFF;
 		width: 380px;
 		margin-bottom: 0;
@@ -83,7 +83,7 @@
 	.thumbContainer {
 		width: 180px;
 		height: 92px;
-		border: 1px solid #1A66D9
+		border: 1px solid $blue-main
 	}
 
 	.checkbox {

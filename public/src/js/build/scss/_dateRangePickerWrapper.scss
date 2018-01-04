@@ -1,0 +1,100 @@
+@import 'common';
+
+.tab_time {
+    .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months,
+    .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months.has-gap {
+        width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);
+        padding: 0;
+    }
+
+    .date-picker-wrapper {
+        background-color: transparent;
+        font-weight: normal;
+        color: $color-font-main;
+        font-size: 10px;
+
+        .month-wrapper {
+            width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding) !important;
+            border: 0;
+            background-color: $filter-bgcolor;
+
+            table {
+                width: 50%;
+
+                &.month2 {
+                    float: right;
+                }        
+            }
+
+        }
+        border: 0;
+        padding: 0;
+        width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);
+    }
+
+    .date-picker-wrapper .month-wrapper table .day {
+        font-size: 10px;
+    }
+
+    .date-picker-wrapper .time1, .time2 {
+        width: 50%;
+        padding: 0;
+    }
+
+    .date-picker-wrapper .hour, .minute {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .date-picker-wrapper .time input[type=range] {
+        width: ($menu-width-md - $menu-width-sm - 154)/2;
+        display: inline-block;
+    }
+
+    .date-picker-wrapper .drp_top-bar {
+        padding-right: 0;
+        padding-left: 10px;
+    }
+
+    .date-picker-wrapper table .caption {
+        height: 27px;
+    }
+
+    .date-picker-wrapper .month-wrapper table .day.toMonth.valid {
+        color: $color-font-main;
+    }
+    .caption {
+        background-color: transparent;
+    }
+
+    .date-picker-wrapper .footer {
+        padding-top: 0;
+    }
+
+    .date-picker-wrapper .gap {
+        display: none !important;
+    }
+
+    .date-picker-wrapper .drp_top-bar.normal {
+        font-size: 14px;
+
+        .normal-top {
+            span, i {
+                color: $grey7;
+            }
+
+            b {
+                color: $color-font-main;
+                font-weight: normal;
+            }
+        }
+    }
+
+    .date-picker-wrapper .selected-days {
+        font-style: normal;
+    }
+
+    .date-picker-wrapper .date-range-length-tip {
+        background-color: $blue-main;
+    }   
+}

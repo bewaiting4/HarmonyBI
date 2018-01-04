@@ -1,5 +1,10 @@
 @import 'common';
 
+@mixin text-decoration-none {
+    text-decoration: none;
+    background: transparent    
+}
+
 .nav-sm {
     .container.body {
         .col-md-3.left_col {
@@ -244,36 +249,30 @@ a:focus {
 .navbar {
     margin-bottom: 0
 }
-.navbar-header {
-    background: #34495E
+.nav{
+    &.side-menu > li {
+        position: relative;
+        display: block;
+        cursor: pointer;
+        a:hover {
+            color: #F2F5F7 !important;
+            @include text-decoration-none;      
+        }
+
+        &.current-page,
+        &.active {
+            border-right: 5px solid #1ABB9C
+        }
+        &.active>a {
+            text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
+            background: linear-gradient(#334556, #2C4257), $filter-bgcolor;
+            box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0
+        }
+    }
 }
-.navbar-right {
-    margin-right: 0
-}
-.navbar-static-top {
-    position: fixed;
-    top: 0;
-    width: 100%
-}
-.sidebar-header {
-    border-bottom: 0;
-    margin-top: 46px
-}
-.sidebar-header:first-of-type {
-    margin-top: 0
-}
-.nav.side-menu>li {
-    position: relative;
-    display: block;
-    cursor: pointer
-}
-.nav.side-menu>li>a:hover {
-    color: #F2F5F7 !important
-}
-.nav.side-menu>li>a:hover,
+
 .nav>li>a:focus {
-    text-decoration: none;
-    background: transparent
+    @include text-decoration-none;
 }
 
 .nav.child_menu {
@@ -300,15 +299,6 @@ a:focus {
     position: relative;
     display: block;
     padding: 13px 15px 12px
-}
-.nav.side-menu>li.current-page,
-.nav.side-menu>li.active {
-    border-right: 5px solid #1ABB9C
-}
-.nav.side-menu>li.active>a {
-    text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
-    background: linear-gradient(#334556, #2C4257), $filter-bgcolor;
-    box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0
 }
 .nav.top_menu>li>a {
     position: relative;
@@ -499,61 +489,15 @@ span.section {
     border: 0;
     border-bottom: 1px solid #e5e5e5
 }
-.form-control {
-    border-radius: 0;
-    width: 100%
-}
-.form-horizontal .control-label {
-    padding-top: 8px
-}
-.form-control:focus {
-    border-color: #CCD0D7;
-    box-shadow: none !important
-}
 legend {
     font-size: 18px;
     color: inherit
-}
-.form-horizontal .form-group {
-    margin-right: 0;
-    margin-left: 0
-}
-.form-control-feedback {
-    margin-top: 8px;
-    height: 23px;
-    color: #bbb;
-    line-height: 24px;
-    font-size: 15px
-}
-.form-control-feedback.left {
-    border-right: 1px solid #ccc;
-    left: 13px
-}
-.form-control-feedback.right {
-    border-left: 1px solid #ccc;
-    right: 13px
-}
-.form-control.has-feedback-left {
-    padding-left: 45px
-}
-.form-control.has-feedback-right {
-    padding-right: 45px
 }
 .form-group {
     margin-bottom: 10px
 }
 .validate {
     margin-top: 10px
-}
-.bad input,
-.bad select,
-.bad textarea {
-    border: 1px solid #CE5454;
-    box-shadow: 0 0 4px -2px #CE5454;
-    position: relative;
-    left: 0;
-    -moz-animation: .7s 1 shake linear;
-    -webkit-animation: 0.7s 1 shake linear
 }
 .item input,
 .item textarea {
@@ -592,26 +536,6 @@ legend {
 }
 .inl-bl {
     display: inline-block
-}
-.autocomplete-suggestions {
-    border: 1px solid #e4e4e4;
-    background: #F4F4F4;
-    cursor: default;
-    overflow: auto
-}
-.autocomplete-suggestion {
-    padding: 2px 5px;
-    font-size: 1.2em;
-    white-space: nowrap;
-    overflow: hidden
-}
-.autocomplete-selected {
-    background: #f0f0f0
-}
-.autocomplete-suggestions strong {
-    font-weight: normal;
-    color: #3399ff;
-    font-weight: bolder
 }
 .btn {
     border-radius: 3px
@@ -765,30 +689,6 @@ form:after {
     clear: both;
     visibility: hidden
 }
-#username {
-    background-position: 10px 10px !important
-}
-#password {
-    background-position: 10px -53px !important
-}
-.login_content form div a {
-    font-size: 12px;
-    margin: 10px 15px 0 0
-}
-.reset_pass {
-    margin-top: 10px !important
-}
-.login_content div .reset_pass {
-    margin-top: 13px !important;
-    margin-right: 39px;
-    float: right
-}
-/*.separator {
-    border-top: 1px solid #D8D8D8;
-    margin-top: 10px;
-    padding-top: 10px
-}
-done */
 .button {
     background: #f7f9fa;
     background: linear-gradient(top, #f7f9fa 0%, #f0f0f0 100%);
@@ -804,18 +704,6 @@ done */
 #content form .submit {
     float: left;
     margin-left: 38px
-}
-.button a {
-    background: url(http://cssdeck.com/uploads/media/items/8/8bcLQqF.png) 0 -112px no-repeat;
-    color: #7E7E7E;
-    font-size: 17px;
-    padding: 2px 0 2px 40px;
-    text-decoration: none;
-    transition: all 0.3s ease
-}
-.button a:hover {
-    background-position: 0 -135px;
-    color: #00aeef
 }
 header {
     width: 100%
@@ -836,6 +724,10 @@ fieldset {
 }
 
 /*====================================================================================================*/
+.form-control {
+    width: 100%
+}
+
 html, body {
     height:100%;
 }
@@ -934,15 +826,21 @@ BODY {
 
                 &.current {
                     float: right;
+                    padding: 0 6px;
                     font-size: 10px;
                     /*max-width: 200px;*/
                     white-space: nowrap;
                     font-weight: 100;
                     height: 44px;
                     line-height: 48px;
-                    /*margin-right: 30px;*/
                     span {
+                        display: inline-block;
                         font-size: 12px;
+                        height: 28px;
+                        padding: 0 7px;
+                        line-height: 28px;
+                        border: 1px solid $blue-main;
+                        border-radius: 21px;              
                     }
                 }
             }
@@ -1114,7 +1012,7 @@ BODY {
     }
 
     .form-control {
-        background-color: $input-fill-color;
+        background-color: $filter-bgcolor;
         border: none;
         color: #FFF;
     }
@@ -1127,7 +1025,7 @@ BODY {
 
         .inputWrap {
             float: right;
-            background-color: $input-fill-color;
+            background-color: $filter-bgcolor;
             height: 21px;
             line-height: 21px;
 
@@ -1136,92 +1034,18 @@ BODY {
                 float: left;
                 border: none;
                 padding: 0 0 0 6px;
-                background-color: $input-fill-color;
+                background-color: $filter-bgcolor;
             }
 
             div {
                 float: right;
+                padding: 0 6px 0 0;
             }
         }
 
     }
-
-
 
     /* date range picker */
-    .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months,
-    .date-picker-wrapper.no-shortcuts.inline-wrapper.no-gap.two-months.has-gap {
-        width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);
-        padding: 0;
-    }
-
-    .date-picker-wrapper {
-        background-color: transparent;
-        font-weight: normal;
-        color: #FFFFFF;
-        font-size: 10px;
-
-        .month-wrapper {
-            width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding) !important;
-            border: 0;
-            background-color: transparent;
-
-            table {
-                width: 50%;
-
-                &.month2 {
-                    float: right;
-                }        
-            }
-
-        }
-        border: 0;
-        padding: 0;
-        width: $menu-width-md - $menu-width-sm - (2 * 10) - (2 * $filter-item-padding);
-    }
-
-    .date-picker-wrapper .month-wrapper table .day {
-        font-size: 10px;
-    }
-
-    .date-picker-wrapper .time1, .time2 {
-        width: 50%;
-        padding: 0;
-    }
-
-    .date-picker-wrapper .hour, .minute {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
-    .date-picker-wrapper .time input[type=range] {
-        width: ($menu-width-md - $menu-width-sm - 154)/2;
-        display: inline-block;
-    }
-
-    .date-picker-wrapper .drp_top-bar {
-        padding-right: 0;
-        padding-left: 10px;
-    }
-
-    .date-picker-wrapper table .caption {
-        height: 27px;
-    }
-
-    .date-picker-wrapper .month-wrapper table .day.toMonth.valid {
-        color: #aaa;
-    }
-    .caption {
-        background-color: transparent;
-    }
-
-    .date-picker-wrapper .footer {
-        padding-top: 0;
-    }
-
-    .date-picker-wrapper .gap {
-        display: none !important;
-    }
 }
 
 .logo {
@@ -1294,10 +1118,22 @@ BODY {
         }
 
         .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-            color: $font-color;
+            color: $color-font-main;
+        }
+
+        .Select-input {
+            color: $color-font-main;
         }
 
         .Select-clear-zone {
+            display: none;
+        }
+
+        .hide-options .Select-arrow-zone {
+            display: none;
+        }
+
+        .hide-options .Select-menu-outer {
             display: none;
         }
     }
@@ -1330,7 +1166,7 @@ BODY {
 
     .btn-group {
         button {
-            color: $font-color;
+            color: $color-font-main;
             background-color: $input-fill-color;
             border: none;
             font-size: 12px;
@@ -1438,9 +1274,9 @@ BODY {
             width: 64px;
             height: 32px;
             margin-right: 0;            
-            background-color: $fill1;
+            background-color: $blue-main;
             font-size: 12px;
-            color: $font-color;
+            color: $color-font-main;
             border: 0;
             border-radius: 4px;
         }
@@ -1457,7 +1293,7 @@ BODY {
                 font-size: 12px;
             }
             &:hover {
-                color: $fill1;
+                color: $blue-main;
             }
         }
     }
@@ -1477,7 +1313,7 @@ BODY {
     }
 
     .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-        color: $font-color;
+        color: $color-font-main;
     }
 
     .Select-arrow-zone {
@@ -1565,7 +1401,7 @@ BODY {
             line-height: 32px;
             margin: 0 $filter-item-padding 0 $filter-item-padding;
             padding: 0;
-            background-color: #1A66D9;
+            background-color: $blue-main;
             border: none;
         }
     }

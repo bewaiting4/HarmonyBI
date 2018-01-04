@@ -1,3 +1,4 @@
+@import 'common';
 
 .main_container .footer {
     margin-left: $menu-width-md;
@@ -24,7 +25,7 @@
     }
 
     .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-        background-color: #0D89FF;
+        background-color: $blue-main;
     }    
 }
 
