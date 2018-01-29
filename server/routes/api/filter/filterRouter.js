@@ -49,6 +49,7 @@ var Filter = require('../../../db/filter/filter');
 // Pre-precess the id.
 router.param('id', function (req, res, next, id) {
     Filter.findById(id)
+        .populate('user')
         .then(function (filter) {
             if (!filter) {
                 next(new Error('No filter with that id'));
@@ -64,12 +65,17 @@ router.param('id', function (req, res, next, id) {
 router.route('/')
     .get(function (req, res, next) {
         Filter.find({})
+            .populate('user')
             .then(function (filters) {
                 var result = filters.map(function (filter) {
                     return {
+                        id: filter.id,
                         name: filter.name,
                         create_date: filter.create_date,
-                        user: filter.user
+                        user: {
+                            id: filter.user && filter.user.id,
+                            name: filter.user && filter.user.name
+                        }
                     };
                 });
 
@@ -89,7 +95,7 @@ router.route('/')
 
         // Attach the author.
         if (req.session.auth) {
-            newFilter.user = req.session.auth._id;
+            newFilter.user = req.user;
         }
 
         newFilter.save(function (err, filter) {
@@ -105,7 +111,7 @@ router.route('/')
 
 router.route('/:id')
     .get(function (req, res, next) {
-        var modelData = req.filter.dataModel || {};
+        var modelData = req.filter.modelData || {};
 
         res.json({
             filter: modelData.filter,
