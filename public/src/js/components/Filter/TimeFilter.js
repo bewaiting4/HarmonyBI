@@ -17,6 +17,7 @@ class TimeFilter extends React.Component {
 		this.getTimeFilterContent = this.getTimeFilterContent.bind(this);
 
 		this.dftState = {
+			activeTab: 1,
 			preHours: 48,
 			postHours: 24,
 			caseDate: moment(DefaultFilter.date_to).subtract(1, 'day')
@@ -33,7 +34,7 @@ class TimeFilter extends React.Component {
 		$('#picker6').dateRangePicker({
 			inline:true,
 			container: '#picker6_container',
-			format: 'DD.MM.YYYY HH:mm',
+			format: 'YYYY/MM/DD H:mm',
 			language: 'cn',
 			defaultTime: new Date(DefaultFilter.date_from), // TODO get default date
 			defaultEndTime: new Date(DefaultFilter.date_to), // TODO get default date1
@@ -52,7 +53,7 @@ class TimeFilter extends React.Component {
 			});
 		}).bind(this));
 
-		//$('#picker6').data('dateRangePicker').setDateRange('2016-11-15','2016-11-25');
+		$('#picker6').data('dateRangePicker').setDateRange(new Date(DefaultFilter.date_from),new Date(DefaultFilter.date_to));
 	}
 
 	onPreHoursChange(event) {
@@ -100,6 +101,7 @@ class TimeFilter extends React.Component {
 	}
 
 	resetFilter() {
+		$('#picker6').data('dateRangePicker').setDateRange(new Date(DefaultFilter.date_from),new Date(DefaultFilter.date_to));
 		$('#picker6').data('dateRangePicker').resetMonthsView();
 
 		this.setState(this.dftState);
@@ -119,7 +121,7 @@ class TimeFilter extends React.Component {
 				</div>
 			</div>;
 
-		var navRange = <Tabs defaultActiveKey={1} justified id="tab_time" className="tab_time filter_nav">
+		var navRange = <Tabs activeKey={this.state.activeTab} justified id="tab_time" className="tab_time filter_nav" onSelect={(key) => {this.setState({activeTab: key})}}>
 				<Tab eventKey={1} title="精确案发时间" bsClass="timetab">
 					<div style={{height: "215px"}}>
 						<Datetime locale="zh-cn" open={true} value={this.state.caseDate} onChange={this.onCaseDateChange}/>
