@@ -71,7 +71,19 @@ $nav-bgcolor: #5D6370;
     .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
         background: none;
     }
-    .nav.navbar-nav > li > a {
+    .nav.navbar-nav > li {
+        background-color: transparent;
+    }
+
+    .btn-group.open .dropdown-toggle {
+        box-shadow: none;
+    }
+
+    .nav.navbar-nav > li > .btn-toolbar > .dropdown > button {
+        padding: ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2 ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2;
+        background-color: transparent;
+        border: none;
+
 
         .fa-stack:hover {
             .fa-stack-1x {
@@ -92,18 +104,7 @@ $nav-bgcolor: #5D6370;
             color: #FFFFFF !important
         }
 
-        padding: ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2 ($top-nav-height - $nav-line-height)/2 $nav-icon-padding/2;
     }
-}
-
-a.user-profile {
-    color: #5E6974 !important
-}
-.user-profile img {
-    width: 29px;
-    height: 29px;
-    border-radius: 50%;
-    margin-right: 10px
 }
 
 .navbar-nav .open .dropdown-menu {
@@ -120,7 +121,7 @@ a.user-profile {
     width: 300px
 }
 
-.navbar-nav>li>a {
+.navbar-nav>li>button {
     color: #fff !important
 }
 
@@ -130,7 +131,7 @@ a.user-profile {
     margin-left: 0 !important;
     line-height: 32px
 }
-.nav.navbar-nav>li>a {
+.nav.navbar-nav>li>button {
     color: #515356 !important
 }
 

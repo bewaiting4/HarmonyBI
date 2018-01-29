@@ -29,7 +29,6 @@
         }
     }
 
-
     .nav.child_menu li.active,
     .nav.side-menu li.active-sm {
         border-right: 5px solid #1ABB9C
@@ -107,27 +106,24 @@
     display: inline-block
 }
 
-.nav-md .container.body .col-md-1.left_col {
+@mixin left_col_style($w) {
     min-height: 100%;
-    /*width: 60px;*/
-    width: $menu-width-sm;
+    width: $w;
     padding: 0;
     position: absolute;
     display: -ms-flexbox;
     display: flex;
-    z-index: 1
+    z-index: 1    
+}
+
+.nav-md .container.body .col-md-1.left_col {
+    @include left_col_style($menu-width-sm);
 }
 
 .nav-md .container.body .col-md-3.left_col {
-    min-height: 100%;
-    /*width: 360px; done 230px*/
-    width: $menu-width-md;
-    padding: 0;
-    position: absolute;
-    display: -ms-flexbox;
-    display: flex;
-    z-index: 1
+    @include left_col_style($menu-width-md);
 }
+
 .nav-md .container.body .col-md-3.left_col.menu_fixed {
     height: 100%;
     position: fixed
@@ -310,20 +306,6 @@ a:focus {
 .nav>li>a:focus {
     background-color: transparent
 }
-.toggle {
-    float: left;
-    margin: 0;
-    padding-top: 16px;
-    width: 70px
-}
-.toggle a {
-    padding: 15px 15px 0;
-    margin: 0;
-    cursor: pointer
-}
-.toggle a i {
-    font-size: 26px
-}
 .nav.child_menu>li>a {
     color: rgba(255, 255, 255, 0.75);
     font-size: 12px;
@@ -354,23 +336,11 @@ h2 {
     font-size: 30px;
     font-weight: 400
 }
-.right-arrow {
-    width: 10px;
-    float: right;
-    font-weight: bold;
-    font-size: 20px
-}
 td span {
     line-height: 28px
 }
 .col-middle {
     margin-top: 5%
-}
-.mid_center {
-    width: 370px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 10px 20px
 }
 table.display {
     margin: 0 auto;
@@ -557,20 +527,6 @@ a.btn-danger {
 .open .dropdown-toggle.btn-success {
     background: #169F85
 }
-.btn-dark {
-    color: #E9EDEF;
-    background-color: #4B5F71;
-    border-color: #364B5F
-}
-.btn-dark:hover,
-.btn-dark:focus,
-.btn-dark:active,
-.btn-dark.active,
-.open .dropdown-toggle.btn-dark {
-    color: #FFFFFF;
-    background-color: #394D5F;
-    border-color: #394D5F
-}
 .btn-round {
     border-radius: 30px
 }
@@ -615,23 +571,9 @@ ul.social li {
     top: 0;
     left: 0
 }
-.percent {
-    display: inline-block;
-    line-height: 110px;
-    z-index: 2;
-    font-size: 18px
-}
-.percent:after {
-    content: '%';
-    margin-left: 0.1em;
-    font-size: .8em
-}
 .divider {
     border-bottom: 1px solid #ddd;
     margin: 10px
-}
-.projects .list-inline {
-    margin: 0
 }
 .avatar img {
     border-radius: 50%;
@@ -950,65 +892,8 @@ BODY {
 }
 
 .tab_time {
-
     .bgShadow {
         background: $filter_tab-bgcolor;
-    }
-
-    .rdt {
-        width: 50%;
-        padding-left: 10px;
-        padding-right: 4px;
-        margin-bottom: 10px;
-        /* height TODO */
-    }
-
-    .rdtPicker thead tr:first-child th:hover {
-        background: $filter-hover-bgcolor;
-    }
-
-    .rdtPicker button:hover {
-        background: $filter-hover-bgcolor;
-    }
-
-    td.rdtMonth:hover,
-    td.rdtYear:hover {
-        background: $filter-hover-bgcolor;
-    }
-
-    .rdtCounter .rdtBtn:hover {
-        background: $filter-hover-bgcolor;
-    }
-
-    .rdtPicker td.rdtDay:hover,
-    .rdtPicker td.rdtHour:hover,
-    .rdtPicker td.rdtMinute:hover,
-    .rdtPicker td.rdtSecond:hover,
-    .rdtPicker .rdtTimeToggle:hover {
-        background: $filter-hover-bgcolor;
-    }
-
-    .rdtPicker {
-        width: 94%;
-        background-color: $filter-bgcolor;
-        font-size: 10px;
-        border: none;
-        margin-top: -35px;
-        margin-left: 98%;
-        padding: 0;
-    }
-
-    .rdtPicker td, .rdtPicker th {
-        height: 22px;
-        font-weight: normal;
-    }
-
-    .rdtPicker th {
-        border-bottom: none;
-    }
-
-    .rdtPicker tfoot {
-        border-top: none;
     }
 
     .form-control {
@@ -1044,8 +929,6 @@ BODY {
         }
 
     }
-
-    /* date range picker */
 }
 
 .logo {
@@ -1474,11 +1357,18 @@ BODY {
     }
 }
 
-
 .hidden {
     display: none;
 }
 
 label {
     font-weight: normal;
+}
+
+.fileList {
+    .spinner {
+        padding-top: 24px;
+        text-align: center;
+        color: #1A66D9;
+    }
 }

@@ -11,7 +11,7 @@ import Model from "../model/Model"
 import DataTransformer from './DataTransformer'
 import DefaultFilter from '../model/DefaultFilter'
 
-require('../build/scss/untitled.scss')
+require('../build/scss/app.scss')
 
 const DEBUG_MODE = false;
 

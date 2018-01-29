@@ -1,0 +1,57 @@
+.tab_time {
+    .rdt {
+        width: 50%;
+        padding-left: 10px;
+        padding-right: 4px;
+        margin-bottom: 10px;
+        /* height TODO */
+    }
+
+    .rdtPicker thead tr:first-child th:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    .rdtPicker button:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    td.rdtMonth:hover,
+    td.rdtYear:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    .rdtCounter .rdtBtn:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    .rdtPicker td.rdtDay:hover,
+    .rdtPicker td.rdtHour:hover,
+    .rdtPicker td.rdtMinute:hover,
+    .rdtPicker td.rdtSecond:hover,
+    .rdtPicker .rdtTimeToggle:hover {
+        background: $filter-hover-bgcolor;
+    }
+
+    .rdtPicker {
+        width: 94%;
+        background-color: $filter-bgcolor;
+        font-size: 10px;
+        border: none;
+        margin-top: -35px;
+        margin-left: 98%;
+        padding: 0;
+    }
+
+    .rdtPicker td, .rdtPicker th {
+        height: 22px;
+        font-weight: normal;
+    }
+
+    .rdtPicker th {
+        border-bottom: none;
+    }
+
+    .rdtPicker tfoot {
+        border-top: none;
+    }
+}
