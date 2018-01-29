@@ -343,16 +343,16 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         })
     }
 
-    var texts = ['Use the scroll wheel to zoom',
-                 'Hold the shift key to select nodes']
+    // var texts = ['Use the scroll wheel to zoom',
+    //              'Hold the shift key to select nodes']
 
-    svg.selectAll('text')
-        .data(texts)
-        .enter()
-        .append('text')
-        // .attr('x', 900)
-        // .attr('y', function(d,i) { return 470 + i * 18; })
-        .text(function(d) { return d; });
+    // svg.selectAll('text')
+    //     .data(texts)
+    //     .enter()
+    //     .append('text')
+    //     // .attr('x', 900)
+    //     // .attr('y', function(d,i) { return 470 + i * 18; })
+    //     .text(function(d) { return d; });
 
     return graph;
 };
