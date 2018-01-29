@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
 import ReactDataGrid from 'react-data-grid'
-import { Editors, Toolbar, Formatters } from 'react-data-grid-addons'
+import {Editors} from 'react-data-grid-addons'
 import GridBase from './GridBase'
-import ENUM from '../Enums'
+import ENUM from '../../Enums'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
 import HighlightFormatter from './HighlightFormatter'
 const {DropDownEditor} = Editors;

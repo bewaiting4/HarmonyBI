@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDataGrid from 'react-data-grid'
 import GridBase from './GridBase'
-import ENUM from '../Enums'
+import ENUM from '../../Enums'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
 import {Editors, Toolbar, Formatters} from 'react-data-grid-addons'
 const {DropDownEditor} = Editors;
@@ -42,6 +42,7 @@ class GridCallList extends React.Component {
 				key: "f_district",
 				name: "本方号码归属地",
 				resizable: true,
+				width: 140,
 				headerRenderer: <div className='widget-HeaderCell__value wraptext'>本方号码归属地</div>
 			},
 			{key: "f_host", name: "本方运营商", resizable: true},
@@ -50,7 +51,7 @@ class GridCallList extends React.Component {
 			{key: "f_addr", name: "本方地址", resizable: true},
 			{key: "f_long", name: "本方经度", resizable: true},
 			{key: "f_lat", name: "本方纬度", resizable: true},
-			{key: "call_start", name: "通讯时间", resizable: true},
+			{key: "call_start", name: "通讯时间", width: 140, resizable: true},
 			{key: "call_duration", name: "通讯时长", resizable: true},
 			{key: "t_number", name: "对方号码", width: 100, resizable: true}, 
 			{
@@ -79,6 +80,7 @@ class GridCallList extends React.Component {
 				key: "t_district",
 				name: "对方号码归属地",
 				resizable: true,
+				width: 140,
 				headerRenderer: <div className='widget-HeaderCell__value wraptext'>对方号码归属地</div>
 			},
 			{key: "t_host", name: "对方运营商", resizable: true},

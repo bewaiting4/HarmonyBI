@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDataGrid from 'react-data-grid'
-import ENUM from '../Enums'
+import ENUM from '../../Enums'
 import GridBase from './GridBase'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
 import HighlightFormatter from './HighlightFormatter'
@@ -34,7 +34,7 @@ class GridCandidateList extends React.Component {
 			{key: "idNumber", name: "身份证号", resizable: true},
 			{
 				key: "district", 
-				name: "电话号码归属地",
+				name: "电话号码归属地", 
 				resizable: true,
 				headerRenderer: <div className='widget-HeaderCell__value wraptext'>电话号码归属地</div>
 			},

@@ -1,8 +1,8 @@
 import React from 'react'
 import EChartsWrapper from './Viz/EChartsWrapper.js'
-import GridCallList from './Viz/GridCallList'
-import GridCandidateList from './Viz/GridCandidateList'
-import GridContactList from './Viz/GridContactList'
+import GridCallList from './Viz/Grid/GridCallList'
+import GridCandidateList from './Viz/Grid/GridCandidateList'
+import GridContactList from './Viz/Grid/GridContactList'
 import DataTransformer from './DataTransformer'
 
 let DEBUG_MODE = false;

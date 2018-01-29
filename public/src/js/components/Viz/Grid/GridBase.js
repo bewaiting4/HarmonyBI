@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ReactDataGrid from 'react-data-grid'
 import { Editors, Toolbar, Formatters } from 'react-data-grid-addons'
-import ENUM from '../Enums'
+import ENUM from '../../Enums'
 import SuspectTypeFormatter from './SuspectTypeFormatter'
 import HighlightFormatter from './HighlightFormatter'
 const {DropDownEditor} = Editors;
@@ -10,7 +10,7 @@ const { Row } = ReactDataGrid;
 
 const RowRenderer = React.createClass({
   propTypes: {
-    idx: React.PropTypes.string.isRequired
+    idx: React.PropTypes.number.isRequired
   },
 
   setScrollLeft(scrollBy) {
@@ -26,7 +26,7 @@ const RowRenderer = React.createClass({
     // here we are just changing the style
     // but we could replace this with anything we liked, cards, images, etc
     // usually though it will just be a matter of wrapping a div, and then calling back through to the grid
-    return (<div className={this.getRowClassName()}><Row ref={ node => this.row = node } {...this.props}/></div>);
+    return (<div className={this.getRowClassName()}><Row ref={ node => this.row = node } {...this.props} value={this.props.idx}/></div>);
   }
 });
 

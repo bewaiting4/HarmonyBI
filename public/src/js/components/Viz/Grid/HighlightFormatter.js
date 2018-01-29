@@ -1,6 +1,6 @@
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
-import ENUM from '../Enums'
+import ENUM from '../../Enums'
 
 class HighlightFormatter extends React.Component {
 	constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
-import ENUM from '../Enums'
+import ENUM from '../../Enums'
 
 class SuspectTypeFormatter extends React.Component {
 	constructor(props) {
@@ -15,7 +15,7 @@ class SuspectTypeFormatter extends React.Component {
 	}
 
 	render() {
-		return <div style={{'text-align': 'center'}}>
+		return <div style={{'textAlign': 'center'}}>
 			<FontAwesome name="user" style={{color: this.colorMap[ENUM.CATEGORY_MAP_REVERSE[this.props.value]] || this.COLOR_DEFAULT}}/>{this.props.value === "" ? ENUM.CATEGORY_MAP[0] : this.props.value}
 		</div>
 	}
