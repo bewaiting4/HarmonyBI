@@ -1,5 +1,7 @@
 import _ from 'lodash'
-import ThemeConfig from './EChartsThemeConfig'
+import EChartsConfig from './EChartsConfig'
+
+let ThemeConfig = EChartsConfig.theme;
 
 function getTCommOption(data, subtype, filter, data2) {
 	var clrIdx = HarmonyGlobal.clrIdx;
@@ -100,29 +102,27 @@ function getTCommOption(data, subtype, filter, data2) {
 	return {
 	    tooltip: {
 	    },
-	    xAxis: {
+	    xAxis: _.defaultsDeep({
 	        type: 'time',
 	        data: _.keys(hashTimeStamp),
 	        splitLine: {
 	        	show: false
 	        }
-	    },
-	    yAxis: {
+	    }, EChartsConfig.tickStyle),
+	    yAxis: _.defaultsDeep({
 	    	type: 'category',
 	    	data: _.reverse(yTicks),
 	    	splitLine: {
 	        	show: true
 	        },
 	        boundaryGap: false
-	    },
+	    }, EChartsConfig.tickStyle),
 		dataZoom: [
-			{
+			_.defaultsDeep({
 				type: 'slider',
-				show: true,
 				start: 0,
 				end: 100,
-				handleSize: 20
-			}
+			}, EChartsConfig.dataZoomStyle)
 		],
 		grid: {
 			top: '20',

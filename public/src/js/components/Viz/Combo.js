@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import DefaultSetting from './ComboSettingsDefault';
+import EChartsConfig from './EChartsConfig';
 
 function getBarInitialOption(number, subType) {
 	return {
@@ -103,7 +104,6 @@ function parseData(data, subType, filter, data2) {
 		});
 
 		return _.concat(_.values(durationSeries), _.values(countSeries));
-	//			return _.values(durationSeries);
 	}
 
 
@@ -123,7 +123,9 @@ function parseData(data, subType, filter, data2) {
 }
 
 function getComboOption(data, subType, filter) {
-	var traces = parseData(data, subType, filter);
+	var traces = parseData(data, subType, filter),
+		tickStyle = EChartsConfig.tickStyle,
+		dataZoomStyle = EChartsConfig.dataZoomStyle; 
 
 	return _.defaultsDeep({
 		legend:[{
@@ -137,15 +139,18 @@ function getComboOption(data, subType, filter) {
 			left: 'center',
 			data: getLegend1Data()
 		}],
-		xAxis: [{
-			data: traces.axis
-		}],
+		xAxis: [_.assign({
+			data: traces.axis,
+		}, _.defaultsDeep({}, tickStyle))],
+		yAxis: [
+			_.defaultsDeep({}, tickStyle),
+			_.defaultsDeep({}, tickStyle)
+		],
 		dataZoom: [
-			{
+			_.defaultsDeep({
 				start: traces.zoomRange.start, 
-				end: traces.zoomRange.end,
-				handleSize: 20
-			}
+				end: traces.zoomRange.end
+			}, _.defaultsDeep({}, dataZoomStyle))
 		],
 		series: traces.series
 	}, DefaultSetting.getDefaultSettings());

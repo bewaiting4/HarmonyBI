@@ -1,7 +1,8 @@
-import Theme from './EChartsThemeConfig'
+import EChartsConfig from './EChartsConfig'
 import Enum from '../Enums'
 
 window.network = window.network || {};
+var Theme = EChartsConfig.theme;
 
 class Network2 {
 	resize() {

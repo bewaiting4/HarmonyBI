@@ -1,7 +1,8 @@
-import Theme from './EChartsThemeConfig'
+import EChartsConfig from './EChartsConfig'
 import Enum from '../Enums'
 import DataModel from '../../model/Model'
 
+var Theme = EChartsConfig.theme;
 var dataModel = DataModel();
 var staticUrl = "http://api.map.baidu.com/staticimage?";
 window.mapData = window.mapData || {};
@@ -142,7 +143,6 @@ function createStaticMap(config, dots, lines) {
 		markerUrl = "",
 		imageUrl = staticUrl+dimUrl+centerUrl+markerUrl+scaleUrl;
 
-	console.log(imageUrl);
 	dataModel.getImageUrl(imageUrl, function(data) {
 		window.mapData[id] = {
 			image: data.dataUri,
@@ -267,7 +267,6 @@ function renderMap(id, data, config, data2) {
 						centerUrl = '&center='+center.lng+','+center.lat+'&zoom=' + '14';
 
 					var imageUrl = staticUrl+dimUrl+centerUrl+markerUrl;
-					console.log(imageUrl);
 					dataModel.getImageUrl(imageUrl, function(data) {
 						window.mapData[id] = {
 							image: data.dataUri,
@@ -493,7 +492,6 @@ function renderMap(id, data, config, data2) {
 			}
 
 			function drawConnection() {
-				console.log('draw connections');
 				var lines = [];
 				_.forEach(connection, function(value, key) {
 					var ks = key.split(':');

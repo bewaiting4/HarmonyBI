@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import themeCfg from './EChartsThemeConfig';
+import EChartsConfig from './EChartsConfig';
 import Combo from './Combo';
 import Map from './Map';
 import Network from './Network';
@@ -18,7 +18,7 @@ class EChartsWrapper {
 			return ;
 		}
 
-		this.theme = themeCfg;
+		this.theme = EChartsConfig.theme;
 	}
 
 	resetChart(id, type, chartInstance, data, config, data2) {
