@@ -26,6 +26,7 @@ class FilterPanel extends React.Component {
 			onTimeFilter: false,
 			onLocationFilter: false,
 			onIdNumberFilter: false,
+            isLocationSet: false
 		};
 		this.filters = [];
 		this.state = _.assignIn({}, this.dftState);
@@ -41,6 +42,7 @@ class FilterPanel extends React.Component {
 
     handleUpdateLocation(filter) {
     	this.props.onUpdateLocation(filter);
+        this.setState({isLocationSet: true});
     }
 
     handleUpdateSuspect(list) {
@@ -78,6 +80,7 @@ class FilterPanel extends React.Component {
 
     resetLocFilter() {
         this.refs.locFilter.resetFilter();
+        this.setState({isLocationSet: false});
     }
 
     resetSusFilter() {
@@ -89,7 +92,11 @@ class FilterPanel extends React.Component {
     }
 
     getCurrentDateRange() {
-        return this.props.currFilter.date_from.toLocaleString('zh') + '-' + this.props.currFilter.date_to.toLocaleString('zh')
+        return moment(this.props.currFilter.date_from).format("YYYY/MM/DD H:mm") + ' - ' + moment(this.props.currFilter.date_to).format("YYYY/MM/DD H:mm")
+    }
+
+    getCurrentLocation() {
+        return this.state.isLocationSet ? <span>已设置</span> : "";
     }
 
 	render() {
@@ -121,6 +128,7 @@ class FilterPanel extends React.Component {
                         <FilterPortlet
                             name="Location"
                             text="案发地点"
+                            currSel={this.getCurrentLocation()}
                             isUnfold={isUnfold}
                             onOpenFilter={this.handleOpenFilter}
                             icon={onLocationFilter ? "map-set": "map-unset"}

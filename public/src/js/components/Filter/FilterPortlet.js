@@ -9,8 +9,8 @@ class FilterPortlet extends React.Component {
 		super();
 
 		this.openFilter = this.openFilter.bind(this);
-		this.handleChange = this.handleChange.bind(this);
 		this.handleSave = this.handleSave.bind(this);
+		this.handleResetFilter = this.handleResetFilter.bind(this);
 		this.state = {
 			m: moment()
 		};
@@ -30,6 +30,10 @@ class FilterPortlet extends React.Component {
 		console.log("saved", this.state.m.format("llll"));
 	}
 
+	handleResetFilter() {
+		this.props.onResetFilter();
+	}
+
 	render() {
 		return (
 			<li>
@@ -39,7 +43,7 @@ class FilterPortlet extends React.Component {
 					<div className={"filter_title" + (this.props.onFilter ? " unfold" : "")}>
 						<FontAwesome name={"chevron-" + (this.props.onFilter ? "down" : "right")} className="chevron-icon" onClick={this.openFilter}/>
 						<span className="name">{this.props.text}</span>
-						<FontAwesome name="undo" className="undo-icon" onClick={this.props.onResetFilter}/>
+						<FontAwesome name="undo" className="undo-icon" onClick={this.handleResetFilter}/>
 						<span className="current">{this.props.currSel}</span>						
 					</div>
 				</a>

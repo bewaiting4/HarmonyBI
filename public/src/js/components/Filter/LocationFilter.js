@@ -27,10 +27,13 @@ class LocationFilter extends React.Component {
 
 		this.optionsCI = _.map(CIList, function(o) {return {value: o, label: o}});
 
-		this.state = {
+		this.dftState = {
+			activeTab: 2,
 			fromCI: DefaultFilter.ci_from,
 			toCI: DefaultFilter.ci_to
 		};
+
+		this.state = _.assign({}, this.dftState);
 
 		this.district1 = {};
 		this.district2 = {};
@@ -100,10 +103,7 @@ class LocationFilter extends React.Component {
 
     resetFilter() {
     	// reset CI filter
-    	this.setState({
-    		fromCI: DefaultFilter.ci_from,
-    		toCI: DefaultFilter.ci_to
-    	});
+    	this.setState(this.dftState);
 
     	// reset Administration filter
     	this.refs.location1.resetFilter();
@@ -122,10 +122,10 @@ class LocationFilter extends React.Component {
     }
 
 	render() {
-		let optionsCI = this.optionsCI;//_.map(this.props.CIData, function(value, key) {return {value: key, label: key}});
+		let optionsCI = (this.state.fromCI.split(",") || []).map((v) => {return {value: v, label: v}});//this.optionsCI;//_.map(this.props.CIData, function(value, key) {return {value: key, label: key}});
 
 		return (
-			<Tabs defaultActiveKey={2} id="loc_filter" justified className="tab_loc filter_nav">
+			<Tabs activeKey={this.state.activeTab} id="loc_filter" justified className="tab_loc filter_nav" onSelect={(key) => {this.setState({activeTab: key})}}>
 				<Tab eventKey={1} title="地图定位" className="tab_map">
 					<div className="map_container">
 						<label>案发地点及敏感区</label>
@@ -135,12 +135,12 @@ class LocationFilter extends React.Component {
 				<Tab eventKey={2} title="CI基站定位" className="tab_CI">
 					<div className="CI_container">
 						<label>主叫方</label>
-						<Select multi simpleValue name="fromCI" options={optionsCI} placeholder="搜索CI基站" value={this.state.fromCI} onChange={this.onFromCIChange} />	
+						<Select.Creatable multi simpleValue name="fromCI" options={optionsCI} placeholder="搜索CI基站" value={this.state.fromCI} onChange={this.onFromCIChange} className="hide-options"/>	
 
     					<div className="separator"><span>并且</span></div>
 
     					<label>被叫方</label>
-    					<Select multi simpleValue name="toCI" options={optionsCI} placeholder="搜索CI基站" value={this.state.toCI} onChange={this.onToCIChange} />
+    					<Select.Creatable multi simpleValue name="toCI" options={optionsCI} placeholder="搜索CI基站" value={this.state.toCI} onChange={this.onToCIChange} className="hide-options"/>
 					</div>
 				</Tab>
 				<Tab eventKey={3} title="行政区划定位" className="tab_region">
