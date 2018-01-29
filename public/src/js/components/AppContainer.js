@@ -9,7 +9,6 @@ import ExportDialog from "./ExportDialog"
 import PDFExporter from "./PDFExporter"
 import Model from "../model/Model"
 import DataTransformer from './DataTransformer'
-import DefaultData from '../model/DefaultData'
 import DefaultFilter from '../model/DefaultFilter'
 
 require('../build/scss/untitled.scss')
@@ -50,7 +49,7 @@ class AppContainer extends React.Component {
 
 		this.state = {
 			isLoading: true,
-			docData: DEBUG_MODE ? DefaultData : null,
+			docData: null,
 			isUnfold: true,
 			activeTab: 0,
 			width: '0',

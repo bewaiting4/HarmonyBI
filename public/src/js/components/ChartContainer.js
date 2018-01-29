@@ -3,7 +3,6 @@ import EChartsWrapper from './Viz/EChartsWrapper.js'
 import GridCallList from './Viz/GridCallList'
 import GridCandidateList from './Viz/GridCandidateList'
 import GridContactList from './Viz/GridContactList'
-import DefaultData from '../model/DefaultData'
 import DataTransformer from './DataTransformer'
 
 let DEBUG_MODE = false;
@@ -38,11 +37,11 @@ class ChartContainer extends React.Component {
 		var vizContent;
 
 		if (this.props.type === "tableCallList") {
-			vizContent = <GridCallList data={DEBUG_MODE ? DataTransformer.transform(DefaultData).vizData : this.props.data} height={chart_height}/>
+			vizContent = <GridCallList data={this.props.data} height={chart_height}/>
 		} else if (this.props.type === "tableSuspectList") {
-			vizContent = <GridCandidateList data={DEBUG_MODE ? DataTransformer.transform(DefaultData).suspectTable : this.props.data} height={chart_height}/>
+			vizContent = <GridCandidateList data={this.props.data} height={chart_height}/>
 		} else if (this.props.type === "tableContactList") {
-			vizContent = <GridContactList data={DEBUG_MODE ? DataTransformer.transform(DefaultData).contactTable: this.props.data} height={chart_height}/>
+			vizContent = <GridContactList data={this.props.data} height={chart_height}/>
 		} else {
 			vizContent = <div id={myId} style={{ height: chart_height + 'px'}} ><svg/> </div>;
 		}
