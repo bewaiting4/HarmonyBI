@@ -177,6 +177,20 @@ class Model {
         });
     }
 
+    logout(callback) {
+        fetch('/api/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(resData => {
+            window.location = resData.url;
+        }).catch(ex => {
+            console.log('Logout ', ex);
+        });        
+    }
+
     getVizData(callback) {
 
         var filter = this.getFilter(),
