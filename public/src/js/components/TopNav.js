@@ -8,6 +8,7 @@ class TopNav extends React.Component {
 		super();
 
 		this.handleExpandMenu = this.handleExpandMenu.bind(this);
+		this.handleOpenFilter = this.handleOpenFilter.bind(this);
 		this.state = {on: "" };
 	}
 
@@ -18,6 +19,10 @@ class TopNav extends React.Component {
 				on: prevState.on === name ? ""  : name
 			};
 		});
+	}
+
+	handleOpenFilter(resData) {
+		this.props.onOpenFilter(resData);
 	}
 
 	render() {
@@ -42,6 +47,7 @@ class TopNav extends React.Component {
 								icon="cog"
 								menuItem="打开"
 								handleExpandMenu={this.handleExpandMenu}
+								onOpenFilter={this.handleOpenFilter}
 								selected={selected}
 							/>
 
@@ -52,6 +58,7 @@ class TopNav extends React.Component {
 								icon="save"
 								menuItem="保存"
 								handleExpandMenu={this.handleExpandMenu}
+								onOpenFilter={this.handleOpenFilter}
 								selected={selected}
 							/>
 						</ul>

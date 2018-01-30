@@ -27,7 +27,13 @@ class Model {
                 'content-Type': 'application/json'
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -35,7 +41,7 @@ class Model {
         })
     }
 
-    openFilter(id) {
+    openFilter(id, callback) {
         fetch('/api/filter/' + id, {
             method: 'GET',
             credentials: 'include',

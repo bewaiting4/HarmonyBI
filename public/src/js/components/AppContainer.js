@@ -37,6 +37,7 @@ class AppContainer extends React.Component {
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleTabSwitch = this.handleTabSwitch.bind(this);
 		this.handleApplyFilter = this.handleApplyFilter.bind(this);
+		this.handleOpenFilter = this.handleOpenFilter.bind(this);
 
 		this.updateVizDataModel = this.updateVizDataModel.bind(this);
 		this.openExport = this.openExport.bind(this);
@@ -123,6 +124,10 @@ class AppContainer extends React.Component {
 		}
 	}
 
+	handleOpenFilter(resData) {
+		this.updateVizDataModel(resData);
+	}
+
 	openExport() {
     	this.refs.expDlg.setState({
             showExport: true
@@ -188,7 +193,7 @@ class AppContainer extends React.Component {
 							CIData={this.CIData}
 							onOpenExport={this.openExport}
 						/>
-						<TopNav />
+						<TopNav onOpenFilter={this.handleOpenFilter}/>
 						<DocumentView
 							ref='docView'
 							data={myData}
