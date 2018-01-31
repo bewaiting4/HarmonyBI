@@ -12,7 +12,6 @@ class Menu extends React.Component {
 
         this.handleUpdateFP = this.handleUpdateFP.bind(this);
 
-        this.handleOpenFilter = this.handleOpenFilter.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
 
         this.handleSetTime = this.handleSetTime.bind(this);
@@ -48,12 +47,6 @@ class Menu extends React.Component {
 
     handleDownload() {
         this.props.onOpenExport();
-    }
-
-    handleOpenFilter(name) {
-        if (!this.props.isUnfold) {
-            this.props.onToggleChange();
-        }
     }
 
     handleSetTime(time) {
@@ -168,7 +161,6 @@ class Menu extends React.Component {
                         currFilter={this.state.filter}
                         suspects={this.props.suspects}
                         isUnfold={isUnfold} 
-                        onOpenFilter={this.handleOpenFilter}
                         onUpdateTime={this.handleSetTime}
                         onUpdateLocation={this.handleSetLocation}
                         onUpdateSuspect={this.handleSetPersonnel}

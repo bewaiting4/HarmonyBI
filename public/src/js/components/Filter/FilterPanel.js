@@ -13,8 +13,6 @@ class FilterPanel extends React.Component {
 		this.handleUpdateSuspect = this.handleUpdateSuspect.bind(this);
 		this.handleUpdateLocation = this.handleUpdateLocation.bind(this);
 
-		this.handleOpenFilter = this.handleOpenFilter.bind(this);
-
         this.resetAllFilters = this.resetAllFilters.bind(this);
         this.resetTimeFilter = this.resetTimeFilter.bind(this);
         this.resetLocFilter = this.resetLocFilter.bind(this);
@@ -23,9 +21,6 @@ class FilterPanel extends React.Component {
         this.getTimeFilterContent = this.getTimeFilterContent.bind(this);
 
 		this.dftState = {
-			onTimeFilter: false,
-			onLocationFilter: false,
-			onIdNumberFilter: false,
             isLocationSet: false
 		};
 		this.filters = [];
@@ -53,18 +48,6 @@ class FilterPanel extends React.Component {
         if (!this.props.isUnfold) {
             this.setState(_.assign({}, this.dftState));
         }
-    }
-
-    handleOpenFilter(name) {
-        this.setState(function(prevState, props) {
-            let res = {}; 
-            const prop = "on" + name + "Filter";
-            res[prop] = !prevState[prop];
-
-            return res;
-        });
-
-        this.props.onOpenFilter();
     }
 
     // TODO rewrite with Flux
@@ -117,9 +100,6 @@ class FilterPanel extends React.Component {
                             text="案发时间"
                             currSel={this.getCurrentDateRange()}
                             isUnfold={isUnfold}
-                            onOpenFilter={this.handleOpenFilter}
-                            icon={onTimeFilter ? "date-set": "date-unset"}
-                            onFilter={onTimeFilter}
                             onResetFilter={this.resetTimeFilter}
                         >
                             <TimeFilter ref="timeFilter" onUpdateTime={this.handleUpdateTime}/>
@@ -130,9 +110,6 @@ class FilterPanel extends React.Component {
                             text="案发地点"
                             currSel={this.getCurrentLocation()}
                             isUnfold={isUnfold}
-                            onOpenFilter={this.handleOpenFilter}
-                            icon={onLocationFilter ? "map-set": "map-unset"}
-                            onFilter={onLocationFilter}
                             onResetFilter={this.resetLocFilter}                           
                         >
                             <LocationFilter ref="locFilter" onUpdateLocation={this.handleUpdateLocation}/>
@@ -142,9 +119,6 @@ class FilterPanel extends React.Component {
                             name="IdNumber"
                             text="案发相关人员"
                             isUnfold={isUnfold}
-                            onOpenFilter={this.handleOpenFilter}
-                            icon={onIdNumberFilter ? "id-set": "id-unset"}
-                            onFilter={onIdNumberFilter}
                             onResetFilter={this.resetSusFilter}
                         >
                         	<SuspectFilter ref="susFilter" suspects={this.props.suspects} onUpdateSuspect={this.handleUpdateSuspect}/>
