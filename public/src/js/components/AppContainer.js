@@ -35,7 +35,6 @@ class AppContainer extends React.Component {
 	constructor() {
 		super();
 
-		this.handleToggle = this.handleToggle.bind(this);
 		this.handleTabSwitch = this.handleTabSwitch.bind(this);
 		this.handleApplyFilter = this.handleApplyFilter.bind(this);
 		this.handleOpenFilter = this.handleOpenFilter.bind(this);
@@ -208,11 +207,11 @@ class AppContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		isUnfold: state.filter.isExpand
+		isUnfold: state.filter.isUnfold
 	}
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {{}}
+const mapDispatchToProps = (dispatch, ownProps) => {return {}}
 
 AppContainer = connect(mapStateToProps, mapDispatchToProps)(AppContainer)
 

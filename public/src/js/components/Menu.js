@@ -119,10 +119,10 @@ class Menu extends React.Component {
                     >
                         <a 
                             className="site_title" 
-                            onClick= e => {
+                            onClick= {(e) => {
                                 e.preventDefault();
                                 this.props.onToggleMenu();
-                            }
+                            }}
                         >
                             {/*<FontAwesome name="filter"/>*/}
 
