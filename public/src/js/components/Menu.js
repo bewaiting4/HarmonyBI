@@ -1,8 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
+import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
 import FilterPanel from './Filter/FilterPanel'
 import DefaultFilter from '../model/DefaultFilter'
+import { toggleMenu } from '../actions'
 
 class Menu extends React.Component {
     constructor() {
@@ -10,7 +12,6 @@ class Menu extends React.Component {
 
         this.handleUpdateFP = this.handleUpdateFP.bind(this);
 
-        this.handleClick = this.handleClick.bind(this);
         this.handleOpenFilter = this.handleOpenFilter.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
 
@@ -43,11 +44,6 @@ class Menu extends React.Component {
     handleUpdateFP() {
         // sync side bar with main content
         this.refs.sideBar.style.height = this.refs.main.scrollHeight + "px";   
-    }
-
-    handleClick(e) {
-        e.preventDefault();
-        this.props.onToggleChange();
     }
 
     handleDownload() {
@@ -121,7 +117,13 @@ class Menu extends React.Component {
                     <div
                         className="navbar nav_title"
                     >
-                        <a className="site_title" onClick={this.handleClick}>
+                        <a 
+                            className="site_title" 
+                            onClick= e => {
+                                e.preventDefault();
+                                this.props.onToggleMenu();
+                            }
+                        >
                             {/*<FontAwesome name="filter"/>*/}
 
                             <img src={"../icons/svg/filtericon/" + (isUnfold? "unfold" : "fold") + "@1x.svg"} className="logo"/>
@@ -183,5 +185,21 @@ class Menu extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        isUnfold: state.filter.isUnfold
+    }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        onToggleMenu: () => {
+            dispatch(toggleMenu())
+        }
+    }
+}
+
+Menu = connect(mapStateToProps, mapDispatchToProps)(Menu)
 
 module.exports = Menu;

@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import _ from "lodash"
+import { connect } from 'react-redux'
 import Menu from "./Menu"
 import TopNav from "./TopNav"
 import DocumentView from "./DocumentView"
@@ -51,7 +52,6 @@ class AppContainer extends React.Component {
 		this.state = {
 			isLoading: true,
 			docData: null,
-			isUnfold: true,
 			activeTab: 0,
 			width: '0',
 			height: '0',
@@ -89,14 +89,6 @@ class AppContainer extends React.Component {
 		this.setState({
 			docData: DataTransformer.transform(data, this.dataModel.getFilter()),
 			isLoading: false
-		});
-	}
-
-	handleToggle() {
-		this.setState(function(prevState, props) {
-			return {
-				isUnfold: !prevState.isUnfold
-			};
 		});
 	}
 
@@ -158,7 +150,7 @@ class AppContainer extends React.Component {
 			console.log('AppContainer render');
 		}
 		const myData = this.state.docData || {vizData: [], suspectTable: [], contactTable: [], threeMonthCalls: []};
-		const isUnfold = this.state.isUnfold;
+		const isUnfold = this.props.isUnfold;
 		let suspects = {};
 
 		if (this.dataModel.getFilter()) {
@@ -185,8 +177,6 @@ class AppContainer extends React.Component {
 						<Menu
 							ref='menu'
 							suspects={suspects}
-							onToggleChange={this.handleToggle}
-							isUnfold={isUnfold}
 							onExport={this.handleExport}
 							dim={{height: this.state.height}}
 							onApplyFilter={this.handleApplyFilter}
@@ -199,7 +189,7 @@ class AppContainer extends React.Component {
 							data={myData}
 							tab={this.state.activeTab} 
 							dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} 
-							isUnfold={this.state.isUnfold}
+							isUnfold={isUnfold}
 							suspects={suspects}
 							conditin={this.dataModel.condition}
 						/>
@@ -215,4 +205,15 @@ class AppContainer extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		isUnfold: state.filter.isExpand
+	}
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {{}}
+
+AppContainer = connect(mapStateToProps, mapDispatchToProps)(AppContainer)
+
 module.exports = AppContainer;

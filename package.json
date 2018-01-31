@@ -39,7 +39,10 @@
     "react-datetime-range-picker": "^1.0.2",
     "react-dom": "^15.6.1",
     "react-fontawesome": "^1.6.1",
+    "react-redux": "^5.0.6",
     "react-select": "^1.0.0-rc.5",
+    "react-spinners": "^0.2.5",
+    "redux": "^3.7.2",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
