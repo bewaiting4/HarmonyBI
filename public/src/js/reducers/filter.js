@@ -1,21 +1,23 @@
 import _ from 'lodash'
+import { combineReducers } from 'redux'
+import Time from './timeFilter'
+import Location from './locationFilter'
+import IdNumber from './idNumberFilter'
 
-const filter = (state = {isUnfold: true}, action) => {
+const isUnfold = (state = true, action = {}) => {
 	switch (action.type) {
 		case 'TOGGLE_MENU':
-			return _.assign({}, state, {isUnfold: !state.isUnfold})
+			return !state
 		case 'TOGGLE_FILTER':
-			let prop = 'on' + action.name + 'Filter',
-				update = {};
-			
-			update[prop] = !state[prop]
-			if (!state.isUnfold && !state[prop]) {
-				update.isUnfold = !state.isUnfold
-			}
-			return _.assign({}, state, update)
+			return true
 		default:
 			return state
 	}
 }
 
-export default filter
+export default combineReducers({
+	isUnfold,
+	Time,
+	Location,
+	IdNumber
+})

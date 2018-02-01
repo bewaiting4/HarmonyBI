@@ -65,11 +65,9 @@ const MAP_ICON = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	const fprop = 'on' + ownProps.name + 'Filter'
-
 	return {
-		onFilter: state.filter[fprop],
-		icon: MAP_ICON[ownProps.name] + '-' + (state.filter[fprop] ? 'set' : 'unset')
+		onFilter: state.filter[ownProps.name].isOn,
+		icon: MAP_ICON[ownProps.name] + '-' + (state.filter[ownProps.name].isOn ? 'set' : 'unset')
 	}
 }
 
