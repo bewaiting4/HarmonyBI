@@ -9,7 +9,6 @@ class FilterPanel extends React.Component {
 	constructor(props) {
 		super(props)
 
-        this.handleUpdateTime = this.handleUpdateTime.bind(this);
 		this.handleUpdateSuspect = this.handleUpdateSuspect.bind(this);
 		this.handleUpdateLocation = this.handleUpdateLocation.bind(this);
 
@@ -30,10 +29,6 @@ class FilterPanel extends React.Component {
 	componentDidUpdate() {
 		this.props.onUpdateFP();
 	}
-
-    handleUpdateTime(filter) {
-        this.props.onUpdateTime(filter);
-    }
 
     handleUpdateLocation(filter) {
     	this.props.onUpdateLocation(filter);
@@ -102,7 +97,7 @@ class FilterPanel extends React.Component {
                             isUnfold={isUnfold}
                             onResetFilter={this.resetTimeFilter}
                         >
-                            <TimeFilter ref="timeFilter" onUpdateTime={this.handleUpdateTime}/>
+                            <TimeFilter ref="timeFilter"/>
                         </FilterPortlet>
 
                         <FilterPortlet

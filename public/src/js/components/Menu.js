@@ -14,6 +14,7 @@ class Menu extends React.Component {
 
         this.handleDownload = this.handleDownload.bind(this);
 
+        this._transformTime = this._transformTime.bind(this);
         this.handleSetTime = this.handleSetTime.bind(this);
         this.handleSetPersonnel = this.handleSetPersonnel.bind(this);
         this.handleSetLocation = this.handleSetLocation.bind(this);
@@ -161,7 +162,6 @@ class Menu extends React.Component {
                         currFilter={this.state.filter}
                         suspects={this.props.suspects}
                         isUnfold={isUnfold} 
-                        onUpdateTime={this.handleSetTime}
                         onUpdateLocation={this.handleSetLocation}
                         onUpdateSuspect={this.handleSetPersonnel}
                         onUpdateFP={this.handleUpdateFP}
@@ -180,7 +180,8 @@ class Menu extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        isUnfold: state.filter.isUnfold
+        isUnfold: state.filter.isUnfold,
+        timeFilter: state.filter.Time.outputTime
     }
 }
 

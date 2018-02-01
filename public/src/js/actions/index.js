@@ -10,3 +10,10 @@ export const toggleFilter = (name) => {
 		name
 	}
 }
+
+export const updateTime = (time) => {
+	return {
+		type: 'UPDATE_TIME',
+		time
+	}
+}

@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { updateTime } from '../../actions'
 import {Tabs, Tab, TabPane} from 'react-bootstrap'
 import moment from 'moment'
 import InputMoment from 'input-moment'
@@ -152,5 +154,26 @@ class TimeFilter extends React.Component {
 		return navRange
 	}
 }
+
+const mapStateToProps = (state, ownProps) => {
+	let filter = state.filter.Time
+
+	return {
+		activeTab: filter.activeTab,
+		preHours: filter.preHours,
+		postHours: filter.postHours,
+		caseDate: moment(filter.date_to).subtract(1, 'day')
+	}
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {
+		onUpdateTime: (time) => {
+			dispatch(updateTime(time))
+		}
+	}
+}
+
+TimeFilter = connect(mapStateToProps, mapDispatchToProps)(TimeFilter)
 
 module.exports = TimeFilter;

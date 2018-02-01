@@ -65,9 +65,15 @@ const MAP_ICON = {
 }
 
 const mapStateToProps = (state, ownProps) => {
+	let currFilter = state.filter[ownProps.name],
+		currSel;
+	if (currFilter.outputTime && currFilter.outputTime.date_from) {
+		currSel = moment(currFilter.outputTime.date_from).format("YYYY/MM/DD H:mm") + ' - ' + moment(currFilter.outputTime.date_to).format("YYYY/MM/DD H:mm")
+	}
 	return {
-		onFilter: state.filter[ownProps.name].isOn,
-		icon: MAP_ICON[ownProps.name] + '-' + (state.filter[ownProps.name].isOn ? 'set' : 'unset')
+		onFilter: currFilter.isOn,
+		icon: MAP_ICON[ownProps.name] + '-' + (currFilter.isOn ? 'set' : 'unset'),
+		currSel,
 	}
 }
 
