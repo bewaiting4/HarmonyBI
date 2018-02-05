@@ -5,6 +5,21 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
     if (typeof d3v4 == 'undefined')
         d3v4 = d3;
 
+    // https://github.com/wbkd/d3-extended
+    d3v4.selection.prototype.moveToFront = function() {  
+      return this.each(function(){
+        this.parentNode.appendChild(this);
+      });
+    };
+    d3v4.selection.prototype.moveToBack = function() {  
+        return this.each(function() { 
+            var firstChild = this.parentNode.firstChild; 
+            if (firstChild) { 
+                this.parentNode.insertBefore(this, firstChild); 
+            } 
+        });
+    };
+
     var width = +svg.attr("width"),
         height = +svg.attr("height");
 
@@ -59,22 +74,16 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         //circle.style("stroke-width",stroke);
            
         var base_radius = nominal_base_node_size;
-        // if (nominal_base_node_size*currScale>max_base_node_size) base_radius = max_base_node_size/currScale;
-        //     circle.attr("d", d3.svg.symbol()
-        //     .size(function(d) { return Math.PI*Math.pow(size(d.size)*base_radius/nominal_base_node_size||base_radius,2); })
-        //     .type(function(d) { return d.type; }))
-            
-        //circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
-        if (!text_center) label.attr("dx", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); });
+        if (!text_center) {
+            label.attr("dx", function(d) { 
+                return (size(d.size)*base_radius/nominal_base_node_size||base_radius); 
+            });
+        }
         
         var text_size = nominal_text_size;
         if (nominal_text_size*currScale>max_text_size) text_size = max_text_size/currScale;
         label.style("font-size",text_size + "px");
-
         gDraw.attr('transform', d3v4.event.transform);
-        label.attr('transform', d3v4.event.transform);
-        //gDraw.attr("transform", "translate(" + d3v4.event.translate + ")scale(" + d3.event.scale + ")");
-
     }
 
 
@@ -98,6 +107,8 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
     var gBrushHolder = gDraw.append('g');
     var gBrush = null;
 
+    var arrMove = [];
+
     var link = gDraw.append("g")
         .attr("class", "link")
         .style("stroke", "#999")
@@ -106,12 +117,32 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         .enter().append("line")
         .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
+    var label = gDraw.append("g")
+        .attr("class", "labels")
+        .selectAll("text")
+        .data(graph.nodes)
+        .enter().append("text")
+        .attr("class", "label")
+        .style("z-index", function(d) {
+            if (d['z-index']) {
+                arrMove[d['z-index']] = arrMove[d['z-index']] || []
+                arrMove[d['z-index']].push(this);
+            }
+        })
+        .text(function(d) { return d.id; });
+
     var node = gDraw.append("g")
         .attr("class", "node")
         .selectAll("circle")
         .data(graph.nodes)
         .enter().append("circle")
-        .attr("r", 5)
+        .attr("r", function(d) {
+            if ('r' in d) {
+                return d.r
+            } else {
+                return 5
+            }
+        })
         .attr("fill", function(d) { 
             if ('color' in d)
                 return d.color;
@@ -123,27 +154,19 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         .on("drag", dragged)
         .on("end", dragended));
 
-      
+    arrMove.forEach(function(arr) {
+        (arr || []).forEach(function(node) {
+            d3v4.select(node).moveToFront()
+        })
+    })      
     // add titles for mouseover blurbs
     node.append("title")
-        .text(function(d) { 
+        .text(function(d) {
             if ('name' in d)
                 return d.name;
             else
                 return d.id; 
         });
-
-      // node.append("text")
-      //     .attr("dx", 12)
-      //     .attr("dy", ".35em")
-      //     .text(function(d) { return d.id });       
-  var label = svg.append("g")
-      .attr("class", "labels")
-      .selectAll("text")
-      .data(graph.nodes)
-      .enter().append("text")
-        .attr("class", "label")
-        .text(function(d) { return d.id; });
 
     var manyBody = d3v4.forceManyBody()
             .strength(-30);
@@ -173,6 +196,9 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         .links(graph.links);
 
     function ticked() {
+        label.attr("x", function(d) { return d.x-5; })
+            .attr("y", function (d) { return d.y-5; })
+            .style("font-size", "12px").style("fill", function(d) {return d.color});
         // update node and line positions at every step of 
         // the force simulation
         link.attr("x1", function(d) { return d.source.x; })
@@ -182,30 +208,6 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
 
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
-
-        label.attr("x", function(d) { return d.x-5; })
-            .attr("y", function (d) { return d.y-5; })
-            .style("font-size", "12px").style("fill", function(d) {return d.color});    
-
-
-        // label.each(function(d, i) {
-        //     // if(i % 2 == 0) {
-        //         d.x = d.node.x;
-        //         d.y = d.node.y;
-        //     // } else {
-        //     //     var b = this.childNodes[0].parentElement.getBBox();
-
-        //     //     var diffX = d.x - d.node.x;
-        //     //     var diffY = d.y - d.node.y;
-
-        //     //     var dist = Math.sqrt(diffX * diffX + diffY * diffY);
-
-        //     //     var shiftX = b.width * (diffX - dist) / (dist * 2);
-        //     //     shiftX = Math.max(-b.width, Math.min(0, shiftX));
-        //     //     var shiftY = 5;
-        //     //     this.childNodes[0].parentElement.setAttribute("transform", "translate(" + shiftX + "," + shiftY + ")");
-        //     // }
-        // });                    
     }
 
     var brushMode = false;
@@ -312,20 +314,17 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
 
         node.filter(function(d) { return d.selected; })
         .each(function(d) { //d.fixed |= 2; 
-          d.fx = d.x;
-          d.fy = d.y;
+            d.fx = d.x;
+            d.fy = d.y;
         })
-
     }
 
     function dragged(d) {
-      //d.fx = d3v4.event.x;
-      //d.fy = d3v4.event.y;
-            node.filter(function(d) { return d.selected; })
-            .each(function(d) { 
-                d.fx += d3v4.event.dx;
-                d.fy += d3v4.event.dy;
-            })
+        node.filter(function(d) { return d.selected; })
+        .each(function(d) { 
+            d.fx += d3v4.event.dx;
+            d.fy += d3v4.event.dy;
+        })
     }
 
     function dragended(d) {
@@ -333,14 +332,15 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         //simulation.resume();
 
         return ;
-      if (!d3v4.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-        node.filter(function(d) { return d.selected; })
-        .each(function(d) { //d.fixed &= ~6; 
-            d.fx = null;
-            d.fy = null;
-        })
+
+        // if (!d3v4.event.active) simulation.alphaTarget(0);
+        // d.fx = null;
+        // d.fy = null;
+        // node.filter(function(d) { return d.selected; })
+        // .each(function(d) { //d.fixed &= ~6; 
+        //     d.fx = null;
+        //     d.fy = null;
+        // })
     }
 
     // var texts = ['Use the scroll wheel to zoom',

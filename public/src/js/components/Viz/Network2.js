@@ -73,7 +73,16 @@ class Network2 {
 			}
 
 			return {
-				nodes: _.map(nodes, function(node, key) {return {id: key, weight: node.value, color: hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT ? hashColor[key] : 'grey'}}),
+				nodes: _.map(nodes, function(node, key) {
+					let isSuspect = hashData2[key] && hashData2[key].type === Enum.CATEGORY_KEY.SUSPECT;
+					return {
+						id: key,
+						weight: node.value,
+						color: isSuspect ? hashColor[key] : 'grey',
+						r: isSuspect ? 6 : 3,
+						'z-index': isSuspect ? 20: 0
+					}
+				}),
 				links: links
 			}
 		}
