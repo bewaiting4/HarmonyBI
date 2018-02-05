@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import ENUM from './Enums'
+import Map from './Viz/Map'
 
-function getChartImage(id) {
+function getEChartsImage(id) {
 	var chartNd = document.getElementById(id);
 	var canvas = chartNd.getElementsByTagName("canvas")[0];
 	var cvsWidth = canvas.width;
@@ -42,78 +43,134 @@ function getNetworkImage(id) {
     };
 }
 
+
+function getChartsImages(configCharts) {
+    return new Promise(function(resolve, reject) {
+        function getChartImage(i, callback) {
+            return function (callback) {
+                let idx = i,
+                    chart = configCharts[idx];
+
+                if (chart.category === 'echarts' && chart.type !== 'map' && chart.type !== 'network') {
+                    charts[idx] = getEChartsImage(chart.id);
+                    callback(charts);
+                } else if (chart.type === 'map') {
+                    Map.createStaticImage(chart.id)
+                    .then(function (map) {
+                        charts[idx] = getMapImage(map.id);
+                        callback(charts);
+                    });
+                } else if (chart.type === 'network') {
+                    charts[idx] = getNetworkImage(chart.id);
+                    callback(charts);
+                } else {
+                    callback(charts);
+                }            
+            }
+        }
+        var charts = [];
+        var promisify = function(func){
+          return function(){
+            return new Promise(function(resolve){
+              func(resolve);
+            });
+          }
+        }
+        configCharts.reduce(function(cur, next, idx) {
+            return cur.then(promisify(getChartImage(idx)));
+        }, Promise.resolve()).then(function(res) {
+            resolve(res);
+        });
+    })
+}
+
 class PDFExporter {
 
 	export(config) {
-		this.download(this.getConfig(config));
+        this.getConfig(config)
+        .then(function(res) {
+            this.download(res);
+
+            if (config.callback) {
+                config.callback()
+            }
+        }.bind(this))
 	}
 
 	getConfig(config) {
-		var sus = _.filter(config.suspectTable, ['type', ENUM.CATEGORY_KEY.SUSPECT]);
-		var charts = [];
 
-		_.forEach(config.charts, function(chart, idx){
-			if (chart.category === 'echarts' && chart.type !== 'map' && chart.type !== 'network') {
-				charts[idx] = getChartImage(chart.id);
-			} else if (chart.type === 'map') {
-				charts[idx] = getMapImage(chart.id);
-			} else if (chart.type === 'network') {
-                charts[idx] = getNetworkImage(chart.id);
-            }
-		});
+        return new Promise(function(resolve, reject) {
+            var sus = _.filter(config.suspectTable, ['type', ENUM.CATEGORY_KEY.SUSPECT]);
 
-		var res = {
-			title: config.title,
-			susNumbers: _.map(sus, 'number'),
-			susIdNumbers: null,//_.map(sus, 'idNubmer'),
-			caseCI: config.filter.ci_from,
-			charts: charts,
-			contactTable: _.map(config.contactTable, function(p, idx) {
-				return {
-					'序号': idx+1,
-					'身份判别': ENUM.CATEGORY_MAP[p.type] || "",
-					'电话号码': p.number,
-					'身份证号': "",
-					'电话号码归属地': p.district || "",
-					'语种': p.lang || "",
-					'电话机型': ENUM.SERVICE_TYPE_MAP[p.IMEI] || "",
-					'通话次数': p.callCount,
-					'通话时长(分钟)': p.callTime,
-					'紧密度': ENUM.CONNECTION_MAP[p.closeScore] || "",
-//					'备注': p.notes|| "",				};
-				};
-			}),
-			suspectTable: _.map(config.suspectTable, function(p, idx) {
-				return {
-					'序号': idx+1,
-					'身份判别': ENUM.CATEGORY_MAP[p.type] || "",
-					'电话号码': p.number,
-					'身份证号': "",
-					'电话号码归属地': p.district || "",
-					'语种': p.lang || "",
-					'续网能力': ENUM.SERVICE_TYPE_MAP[p.serviceType] || "",
-					'靓号度': p.isSpecialNumber && ((p.isSpecialNumber === ENUM.SPECIAL_NUMBER_KEY.NOT) ? ENUM.SPECIAL_NUMBER_MAP[0] : ENUM.SPECIAL_NUMBER_MAP[1]) || "",					
-					'案发前后紧密度': ENUM.CLOSE_MAP[p.closeScore] || "",
-					'案发前后联系状况': ENUM.CONNECTION_MAP[p.connectionStatus] || "",
-					'案发前后活动轨迹': ENUM.INTERSECT_MAP[p.isIntersect] || "",
-					'案发前后是否在场': ENUM.PRESENT_MAP[p.isPresent] || ""
-//					'备注': p.notes || "",				
-				};
-			}),
-			filterSuspects: config.filterSuspects || []
-		};
+            // _.forEach(config.charts, function(chart, idx){
+            //  if (chart.category === 'echarts' && chart.type !== 'map' && chart.type !== 'network') {
+            //      charts[idx] = getChartImage(chart.id);
+            //  } else if (chart.type === 'map') {
+            //      charts[idx] = getMapImage(chart.id);
+            //  } else if (chart.type === 'network') {
+      //               charts[idx] = getNetworkImage(chart.id);
+      //           }
+            // });
 
-		if (config.timeFilter) {
-			res.caseDate = config.timeFilter.caseDate;
-			res.preHours = config.timeFilter.preHours;
-			res.postHours = config.timeFilter.postHours;
-		} else {
-			res.caseDate = config.date_to;
-			res.preHours = 48;
-			res.postHours = 24;
-		}		
+            config.charts.push({type: 'map', id: 'locMap'});
+            getChartsImages(config.charts)
+            .then(function(charts) {
+                var res = {
+                    title: config.title,
+                    susNumbers: _.map(sus, 'number'),
+                    susIdNumbers: null,//_.map(sus, 'idNubmer'),
+                    caseCI: config.filter.ci_from,
+                    charts: charts,
+                    contactTable: _.map(config.contactTable, function(p, idx) {
+                        return {
+                            '序号': idx+1,
+                            '身份判别': ENUM.CATEGORY_MAP[p.type] || "",
+                            '电话号码': p.number,
+                            '身份证号': "",
+                            '电话号码归属地': p.district || "",
+                            '语种': p.lang || "",
+                            '电话机型': ENUM.SERVICE_TYPE_MAP[p.IMEI] || "",
+                            '通话次数': p.callCount,
+                            '通话时长(分钟)': p.callTime,
+                            '紧密度': ENUM.CONNECTION_MAP[p.closeScore] || "",
+        //                  '备注': p.notes|| "",             };
+                        };
+                    }),
+                    suspectTable: _.map(config.suspectTable, function(p, idx) {
+                        return {
+                            '序号': idx+1,
+                            '身份判别': ENUM.CATEGORY_MAP[p.type] || "",
+                            '电话号码': p.number,
+                            '身份证号': "",
+                            '电话号码归属地': p.district || "",
+                            '语种': p.lang || "",
+                            '续网能力': ENUM.SERVICE_TYPE_MAP[p.serviceType] || "",
+                            '靓号度': p.isSpecialNumber && ((p.isSpecialNumber === ENUM.SPECIAL_NUMBER_KEY.NOT) ? ENUM.SPECIAL_NUMBER_MAP[0] : ENUM.SPECIAL_NUMBER_MAP[1]) || "",                  
+                            '案发前后紧密度': ENUM.CLOSE_MAP[p.closeScore] || "",
+                            '案发前后联系状况': ENUM.CONNECTION_MAP[p.connectionStatus] || "",
+                            '案发前后活动轨迹': ENUM.INTERSECT_MAP[p.isIntersect] || "",
+                            '案发前后是否在场': ENUM.PRESENT_MAP[p.isPresent] || ""
+        //                  '备注': p.notes || "",                
+                        };
+                    }),
+                    filterSuspects: config.filterSuspects || []
+                };
 
-		return res;
+                if (config.timeFilter) {
+                    res.caseDate = config.timeFilter.caseDate;
+                    res.preHours = config.timeFilter.preHours;
+                    res.postHours = config.timeFilter.postHours;
+                } else {
+                    res.caseDate = config.date_to;
+                    res.preHours = 48;
+                    res.postHours = 24;
+                }       
+
+                resolve(res)
+
+            })
+
+        })
 	}
 
     download(config) {
@@ -301,9 +358,9 @@ class PDFExporter {
                     ],
                     style: 'paragraph'
                 }, {
-                    image: window.mapData['locMap'].image,
-                    width: window.mapData['locMap'].width || 300,
-                    height: window.mapData['locMap'].width || 300,
+                    image: charts[12].image,
+                    width: charts[12].width || 300,
+                    height: charts[12].width || 300,
                     margin: [0, singleLineSpacing, 0, singleLineSpacing]
                 }, {
                     text: '   ',

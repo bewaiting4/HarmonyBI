@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import EChartsConfig from './EChartsConfig'
 import Enum from '../Enums'
 import DataModel from '../../model/Model'
@@ -117,38 +118,46 @@ function refinePolyLine(map, linePoint) {
 	return [ptStart, ptEnd];
 }
 
-function createStaticMap(config, dots, lines) {
+function saveMapInfo(id, dots, lines) {
+	window.mapData[id] = {
+		id: id,
+		dots, dots,
+		lines, lines
+	};
+}
 
-	if  (!config || !config.map || !config.id) {
+function createStaticMap(id, dots, lines, callback) {
+
+	var myMap = window['map' + id];
+	if  (!myMap) {
 		return ;
 	}
 
-	var myMap = config.map,
-		id = config.id,
-		viewCenter = myMap.getCenter(),
+	var viewCenter = myMap.getCenter(),
 		viewZoom = myMap.getZoom() - 1,
 		viewSize = myMap.getSize();
 
-	// if (points.length > 0) {
-	// 	markerUrl = '&markers=';
-	// }
-	// _.forEach(points, function(pt) {
-	// 	markerUrl += '|' + pt.lng + ',' + pt.lat;
-	// });
-
 	var scale = 2,
 		scaleUrl = '&scale=' + scale,
-		dimUrl = 'width=' + viewSize.width + '&height=' + viewSize.height,
+		dimUrl = 'width=' + (viewSize.width || 300) + '&height=' + (viewSize.height || 300),
 		centerUrl = '&center=' + viewCenter.lng + ',' + viewCenter.lat + '&zoom=' + viewZoom,
-		markerUrl = "",
-		imageUrl = staticUrl+dimUrl+centerUrl+markerUrl+scaleUrl;
+		markerUrl = '';
+
+	if (window.mapData[id] && window.mapData[id].dftMarker) {
+		markerUrl = '&markers='; 
+		_.forEach(dots, function(pt) {
+			markerUrl += '|' + pt.lng + ',' + pt.lat;
+		});	
+	}
+
+	var imageUrl = staticUrl+dimUrl+centerUrl+markerUrl+scaleUrl;
 
 	dataModel.getImageUrl(imageUrl, function(data) {
-		window.mapData[id] = {
+		window.mapData[id] = _.assign(window.mapData[id], {
 			image: data.dataUri,
 			width: viewSize.width,
 			height: viewSize.height
-		};
+		});
 
 		var canvas = document.createElement('canvas');
 		var ctx = canvas.getContext('2d');
@@ -200,11 +209,12 @@ function createStaticMap(config, dots, lines) {
 				ctx.fill();
 			});
 
-			window.mapData[id] = {
+			window.mapData[id] = _.assign(window.mapData[id], {
 				image: canvas.toDataURL(),
 				width: canvas.width,
 				height: canvas.height
-			};
+			});
+			callback(window.mapData[id]);
 		};
 
 		img.src = data.dataUri;
@@ -268,17 +278,20 @@ function renderMap(id, data, config, data2) {
 
 					var imageUrl = staticUrl+dimUrl+centerUrl+markerUrl;
 					dataModel.getImageUrl(imageUrl, function(data) {
-						window.mapData[id] = {
+						window.mapData[id] = _.assign(window.mapData[id], {
+							dftMarker: true,
 							image: data.dataUri,
 							width: 300,
 							height: 300
-						};
+						});
 					});
 					clearInterval(zoomHandler);
 				}
 				map.centerAndZoom(point,14);
 				resetCnt++;
-			}, 1000);			
+			}, 1000);	
+
+			saveMapInfo(id, [point], []);		
 		}
 
 
@@ -449,7 +462,7 @@ function renderMap(id, data, config, data2) {
 
 			myMap.setViewport(points);
 
-			createStaticMap({map: myMap, id: id}, points, lines);
+			saveMapInfo(id, points, lines);
 
 			return ;
 
@@ -517,7 +530,7 @@ function renderMap(id, data, config, data2) {
 				var viewTimeoutHandler = setInterval(function() {
 					if (myMap.getCenter().lat !== 0 && myMap.getCenter().lng !== 0) {
 						clearInterval(viewTimeoutHandler);
-						createStaticMap({map: myMap, id: id}, dots, lines);
+						saveMapInfo(id, dots, lines);
 					}
 
 					// 超过重测次数阈值，停止尝试
@@ -571,7 +584,7 @@ function renderMap(id, data, config, data2) {
 
 		myMap.setViewport(points);
 
-		createStaticMap({map: myMap, id: id}, points);
+		saveMapInfo(id, points);
 
 	}
 
@@ -653,10 +666,22 @@ function resetMap(id, data, config, data2) {
 		var marker = new BMap.Marker(new BMap.Point(config.long, config.lat));
 		map.addOverlay(marker);
 
-	} 
+	}
+}
+
+function createStaticImage(id) {
+
+	return new Promise(function(resolve, reject) {
+		var myMap = window.mapData[id]
+
+		createStaticMap(id, myMap.dots, myMap.lines, function(map) {
+			resolve(map)
+		})
+	})
 }
 
 module.exports = {
 	renderMap: renderMap,
-	resetMap: resetMap
+	resetMap: resetMap,
+	createStaticImage: createStaticImage
 }

@@ -38,12 +38,15 @@ class AppContainer extends React.Component {
 		this.handleTabSwitch = this.handleTabSwitch.bind(this);
 		this.handleApplyFilter = this.handleApplyFilter.bind(this);
 		this.handleOpenFilter = this.handleOpenFilter.bind(this);
+		this.handleExpandCollapse = this.handleExpandCollapse.bind(this);
 
 		this.updateVizDataModel = this.updateVizDataModel.bind(this);
 		this.openExport = this.openExport.bind(this);
 		this.closeExport = this.closeExport.bind(this);
 
 		this.handleExport = this.handleExport.bind(this);
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+
 		this.Exporter = PDFExporter();
 
 		this.dataModel = Model();
@@ -58,7 +61,8 @@ class AppContainer extends React.Component {
             showExport: false
 		};
 
-  		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+		this.fullScreen = ""
+
 
   		window.HarmonyGlobal = {};
 	}
@@ -100,6 +104,10 @@ class AppContainer extends React.Component {
 		});
 	}
 
+	handleExpandCollapse(fullScreen) {
+		this.fullScreen = fullScreen;
+	}
+
 	handleTabSwitch(tabIdx) {
 		this.setState({activeTab: tabIdx});
 	}
@@ -135,6 +143,11 @@ class AppContainer extends React.Component {
 	}
 
     handleExport(config) {
+    	if (this.state.activeTab !== 0) {
+    		this.handleTabSwitch(0);
+    	}    	
+
+		this.refs.docView.handleExpandCollapse(this.fullScreen, false);
 
 		this.Exporter.export({
 			title: config.title,
@@ -143,7 +156,8 @@ class AppContainer extends React.Component {
 			suspectTable: this.state.docData.suspectTable,
 			charts: this.refs.docView.charts,
 			filterSuspects: JSON.parse(this.dataModel.getFilter().numbers),
-			timeFilter: this.refs.menu.timeFilter
+			timeFilter: this.refs.menu.timeFilter,
+			callback: config.callback
 		});
     }
 
@@ -201,7 +215,8 @@ class AppContainer extends React.Component {
 							dim={{width: this.state.width - (isUnfold ? 480 : 54), height: this.state.height - 44 - 54}} 
 							isUnfold={this.state.isUnfold}
 							suspects={suspects}
-							conditin={this.dataModel.condition}
+							condition={this.dataModel.condition}
+							onExpandCollapse={this.handleExpandCollapse}
 						/>
 						<TabBar ref="tab" activeTab={this.state.activeTab} onTabChange={this.handleTabSwitch}/>
 					</div>
