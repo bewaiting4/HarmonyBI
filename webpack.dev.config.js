@@ -2,11 +2,14 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: ['./public/src/js/entry.jsx'],
+    entry: {
+        'bundle': './public/src/js/entry.jsx', 
+        'admin': './public/src/js/admin.jsx'
+    },
 
     output: {
         path: path.join(__dirname, 'public/dist/js'),
-        filename: 'bundle.js',
+        filename: '[name].js',
         publicPath: '/public/dist'
     },
 

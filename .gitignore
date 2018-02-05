@@ -1,6 +1,7 @@
 node_modules/
 logs/
 public/dist/js/bundle.js
+public/dist/js/admin.js
 npm-debug*
 npm-debug.log
 .idea

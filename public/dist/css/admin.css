@@ -1,0 +1,83 @@
+body.adminPage {
+	color: black;
+	background-color: #F7F7F7;
+}
+
+.adminPage .top_nav{
+	background-color: #5D6370;
+}
+
+.adminPage .top_nav .nav_menu,
+.adminPage .container {
+	margin: 0 auto;
+	border: 0;
+	float: none;
+	max-width: 1024px;
+}
+.adminPage .top_nav .nav_menu .menu_title {
+	padding: 11px 0 11px 24px;
+	margin: 0;
+}
+
+.adminPage .container .file_manager {
+	padding: 10px;
+	border: 1px solid #E6E9ED;
+}
+
+.adminPage .file_manager label{
+	font-size: 16px;
+	padding: 10px 0;
+	color: #73879C;
+}
+
+.adminPage .modal-content .modal-header {
+	background-color: #323947;
+}
+
+.adminPage .modal-title {
+	color: #FFF;
+}
+
+.adminPage .modal-content {
+	background-color: #323947;
+}
+
+.adminPage .modal-footer {
+	border-top: 0;
+}
+
+.adminPage .modal-footer .btn-primary {
+	background-color: #1A66D9;
+}
+
+.fileList_wrapper {
+	height: 500px;
+	overflow-y: auto;
+	border: 1px solid #E6E9ED;
+	border-radius: 4px;
+}
+
+.fileList_wrapper .fileList {
+	margin-bottom: 0;
+}
+
+.fileList_wrapper .fileList	.list-group-item {
+	border-top: solid #ddd;
+	border-width: 1px 0 0 0;
+}
+
+.fileList_wrapper .fileList	.list-group-item .selected {
+	background-color: #f5f5f5;
+}
+
+.fileList_wrapper .fileList	.list-group-item .fileInfo .user {
+	float: right;
+}
+
+.fileList_wrapper .fileList	.list-group-item .justify-content-between h5{
+	display: inline-block;
+}
+
+.fileList_wrapper .fileList	.list-group-item:first-child {
+	border-top: 0;
+}

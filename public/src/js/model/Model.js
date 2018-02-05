@@ -57,6 +57,22 @@ class Model {
         });        
     }
 
+    deleteFilter(id, callback) {
+        fetch('/api/filter/' + id, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(res => res.json())
+        .then(resData => {
+            callback(resData);
+        }).catch(ex => {
+            console.log('Getting suspect data failed', ex)
+        });        
+    }
+
     /**
      * @param info typedef{name, modelData}
      */

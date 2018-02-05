@@ -6,13 +6,34 @@
     <meta charset="UTF-8">
     <title>Harmony BI - Admin</title>
     <link type="text/css" rel="stylesheet" href="css/font-awesome.css">
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.css">   
+	<link type="text/css" rel="stylesheet" href="css/admin.css">
 </head>
 
-<body>
-    <div>
-        Not Implemented.
+<body class="adminPage">
+<!--     <div class="header">
+    	<div class="title"/>
+    		<h3>管理员页面</h3>
+    	<div class="menu">
+			<span class="fa-stack fa-lg">
+				<span aria-hidden="true" class="fa fa-circle fa-stack-2x"></span>
+				<span aria-hidden="true" class="fa fa-user fa-stack-1x" style="left: -2px;"></span>
+				<span aria-hidden="true" class="fa fa-angle-down fa-stack-1x" style="left: 6px; font-size: 10px;"></span>
+			</span>
+    	</div>
     </div>
+ -->
+     <script type="text/javascript">
+	    window.appConfig = {
+	        user: <% if (locals.user) { %> "<%= locals.user.name %>" <% } else { %>"匿名用户"<% } %>
+	    };
+    </script>    
+
+    <div id="admin"/>
+
     <script src="js/jquery.min.js"></script>
+    <script src="js/admin.js"></script>
+
 </body>
 
 </html>
