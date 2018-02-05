@@ -1,4 +1,5 @@
 import React from 'react'
+import { BeatLoader } from 'react-spinners'
 import {Modal, Button, Label, Grid, Row, Col, Thumbnail, Checkbox, FormControl} from 'react-bootstrap'
 
 class ExportDialog extends React.Component {
@@ -13,6 +14,7 @@ class ExportDialog extends React.Component {
 		this.handleCheckCallList = this.handleCheckCallList.bind(this);
 
 		this.state = {
+			isLoading: false,
 			showExport: false,
 			callList: false,
 			title: "皮山县2017年2.14暴恐案件话单分析报告"
@@ -30,8 +32,12 @@ class ExportDialog extends React.Component {
 	}
 
 	hanldeExport() {
-		this.props.onClose();
-		this.props.onExport({title: this.state.title});
+		this.props.onExport({title: this.state.title, callback: function() {
+			this.setState({isLoading: false})
+			this.props.onClose()
+		}.bind(this)})
+
+		this.setState({isLoading: true})
 	}
 
 	handleCheckCallList(e) {
@@ -41,6 +47,8 @@ class ExportDialog extends React.Component {
 	}
 
 	render() {
+		const isLoading = this.state.isLoading
+
 		return (
 			<div>
 			<Modal
@@ -86,8 +94,12 @@ class ExportDialog extends React.Component {
     							</Checkbox>						      	
 						    </Col>
 					    </Row>
-					</Grid>			        
-					<Button className="success" onClick={this.hanldeExport}>保存并输出</Button>
+					</Grid>
+					{isLoading ? <div className='spinner'><BeatLoader
+                            color={'#1A66D9'} 
+                            loading={isLoading}
+                        />文件生成中</div>     
+					: <Button className="success" onClick={this.hanldeExport}>保存并输出</Button>}
 				</Modal.Body>
 			</Modal>
 			</div>
