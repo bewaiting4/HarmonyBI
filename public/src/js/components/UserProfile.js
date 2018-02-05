@@ -40,7 +40,7 @@ class UserProfile extends React.Component {
 */}                
                 <ButtonToolbar>
                     <DropdownButton
-                        title={                    <span className='fa-stack fa-lg'>
+                        title={<span className='fa-stack fa-lg'>
                         <FontAwesome name='circle' stack='2x'/>
                         <FontAwesome name="user" stack='1x' style={{left: '-2px'}}/>
                         <FontAwesome name="angle-down" stack='1x'style={{left: '6px', "fontSize": '10px'}}/>

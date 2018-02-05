@@ -42,7 +42,7 @@ class Menu extends React.Component {
 
     handleUpdateFP() {
         // sync side bar with main content
-        this.refs.sideBar.style.height = this.refs.main.scrollHeight + "px";   
+        this.refs.sideBar.style.height = Math.max(this.props.dim.height, this.refs.main.scrollHeight) + "px";   
     }
 
     handleClick(e) {
@@ -113,7 +113,7 @@ class Menu extends React.Component {
 
         return (
             <div className="col-md-3 left_col" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
-                <div className="side_bar" ref="sideBar"/>
+                <div className="side_bar" ref="sideBar" style={{height: this.props.dim.height+'px'}}/>
                 <div className="filter_bg"/>
                 <div className="left_col scroll-view" ref="main">
 
