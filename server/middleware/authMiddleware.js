@@ -63,6 +63,12 @@ module.exports = function(app) {
                         });
                     } else {
                         logger.log(user.name + ' has logged in as admin.');
+                        if (!res.req.session.auth) {
+                            res.req.session.auth = {
+                                userId: user.id,
+                                loggedIn: true
+                            }
+                        }
 
                         res.redirect('/admin');
                     }

@@ -194,8 +194,9 @@ class Model {
     }
 
     logout(callback) {
-        fetch('/api/', {
+        fetch('/logout', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },

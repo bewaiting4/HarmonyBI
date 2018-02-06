@@ -16,6 +16,10 @@ app.get('/', function(req, res) {
     res.render('index', { title: 'Express' });
 });
 
+app.post('/logout', function (req, res) {
+	req.logout();
+    res.redirect('/login');
+});
 // Setup the api.
 var api = require('./routes/api/api');
 app.use('/api', api);
