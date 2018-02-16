@@ -161,7 +161,7 @@ class DocumentView extends React.Component {
 			/>);
 
 		return (
-			<div className="right_col" role="main" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
+			<div className="right_col hui-scroll" role="main" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
 				<div className="">
 					<div className="clearfix" />
 					<div className="row">

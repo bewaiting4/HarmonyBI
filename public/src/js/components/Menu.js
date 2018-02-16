@@ -112,7 +112,7 @@ class Menu extends React.Component {
         const isUnfold = this.props.isUnfold;
 
         return (
-            <div className="col-md-3 left_col" style={{height: this.props.dim.height+'px', 'overflow': 'auto'}}>
+            <div className="col-md-3 left_col hui-scroll" style={{height: this.props.dim.height+'px'}}>
                 <div className="side_bar" ref="sideBar" style={{height: this.props.dim.height+'px'}}/>
                 <div className="filter_bg"/>
                 <div className="left_col scroll-view" ref="main">
