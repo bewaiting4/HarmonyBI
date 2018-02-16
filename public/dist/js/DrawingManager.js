@@ -984,7 +984,6 @@ var BMAP_DRAWING_MARKER    = "marker",     // é¼ æ ‡ç”»ç‚¹æ¨¡å�
                     map.removeOverlay(overlay);
                 }
             });
-            console.log('dddd');
             centerPoint = e.point;
             var marker = new BMap.Marker(centerPoint, me.markerOptions);
             map.addOverlay(marker);
@@ -1544,9 +1543,9 @@ var BMAP_DRAWING_MARKER    = "marker",     // é¼ æ ‡ç”»ç‚¹æ¨¡å�
 
         //é¼ æ ‡ç»è¿‡å·¥å…·æ ä¸Šçš„æç¤ºä¿¡æ¯
         var tips = {};
-        tips["hander"]               = "æ‹–åŠ¨åœ°å›¾";
-        tips[BMAP_DRAWING_MARKER]    = "ç”»ç‚¹";
-        tips[BMAP_DRAWING_CIRCLE]    = "ç”»åœ†";
+        tips["hander"]               = "锁定选择";
+        tips[BMAP_DRAWING_MARKER]    = "坐标选择";
+        tips[BMAP_DRAWING_CIRCLE]    = "区域选择";
         tips[BMAP_DRAWING_POLYLINE]  = "ç”»æŠ˜çº¿";
         tips[BMAP_DRAWING_POLYGON]   = "ç”»å¤šè¾¹å½¢";
         tips[BMAP_DRAWING_RECTANGLE] = "ç”»çŸ©å½¢";

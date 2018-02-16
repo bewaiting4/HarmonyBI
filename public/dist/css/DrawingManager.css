@@ -22,11 +22,13 @@
 }
 
 .BMapLib_Drawing .BMapLib_hander {
-    background-image: url(../icons/svg/maptool/pin@1x.svg);
+    background-image: url(../icons/svg/maptool/pin@1x.svg) !important;
+    background-size: contain !important;
 }
 
 .BMapLib_Drawing .BMapLib_hander_hover {
-    background-image: url(../icons/svg/maptool/pin@1x.svg);
+    background-image: url(../icons/svg/maptool/pin@1x.svg) !important;
+    background-size: contain !important;
 }
 
 .BMapLib_Drawing .BMapLib_marker {
@@ -38,11 +40,14 @@
 }
 
 .BMapLib_Drawing .BMapLib_circle {
-    background-image: url(../icons/svg/maptool/radius-normal@1x.svg);
+    background-image: url(../icons/svg/maptool/radius-normal@1x.svg) !important;
+    background-size: contain !important;
 }
 
 .BMapLib_Drawing .BMapLib_circle_hover {
-    background-image: url(../icons/svg/maptool/radius-normal@1x.svg);
+    background-image: url(../icons/svg/maptool/radius-normal@1x.svg) !important;
+    background-size: contain !important;
+    opacity: 0.5;
 }
 
 .BMapLib_Drawing .BMapLib_polyline {
