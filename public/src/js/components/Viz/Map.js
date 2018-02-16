@@ -636,10 +636,10 @@ function renderMap(id, data, config, data2) {
 			            BMAP_DRAWING_CIRCLE
 			        ]
 		        },
-		        circleOptions: styleOptions, //圆的样式
-		        closeCallback: function() {
-			        myMap.clearOverlays();
-		        }
+		        circleOptions: styleOptions//, //圆的样式
+		        // closeCallback: function() {
+			       //  myMap.clearOverlays();
+		        // }
 		    });  
 			 //添加鼠标绘制工具监听事件，用于获取绘制结果
 		    drawingManager.addEventListener('overlaycomplete', overlaycomplete);

@@ -12,10 +12,6 @@ class GridCandidateList extends React.Component {
 		super(props);
 	}
 
-	getCellWidth() {
-
-	}
-
 	getColumns() {
 		let lvlMapping_sn = {}
 		lvlMapping_sn[ENUM.SPECIAL_NUMBER_KEY.YES] = 0;

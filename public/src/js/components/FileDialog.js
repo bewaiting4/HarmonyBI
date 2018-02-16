@@ -50,16 +50,16 @@ class FileDialog extends React.Component {
 
 	handleSave() {
 		if (this.fileName) {
-			if (this.state.selected >= 0) {
+			// if (this.state.selected >= 0) {
 
-			} else {
+			// } else {
 				Model().saveNewFilter({
 					name: this.fileName
 				}, function() {
 					this.props.onClose();
 					//TODO pop up save successful dialog
 				}.bind(this));				
-			}
+			// }
 		}
 	}
 
