@@ -49,7 +49,13 @@ class Model {
                 'Content-Type': 'application/json'
             },
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -65,7 +71,13 @@ class Model {
                 'Content-Type': 'application/json'
             },
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -85,12 +97,41 @@ class Model {
             },
             body: JSON.stringify(info)
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
             console.log('save new filter failed', ex);
         })
+    }
+
+    updateFilter(id, info, callback) {
+        fetch('/api/filter/:' + id, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(info)
+        })
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
+        .then(resData => {
+            callback(resData);
+        }).catch(ex => {
+            console.log('Getting suspect data failed', ex)
+        });
     }
 
     getSuspectData(callback) {
@@ -101,7 +142,13 @@ class Model {
                 'Content-Type': 'application/json'
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -117,7 +164,13 @@ class Model {
                 'Content-Type': 'application/json'
             },
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -135,7 +188,13 @@ class Model {
             },
             body: JSON.stringify(info)
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -152,7 +211,13 @@ class Model {
             },
             body: JSON.stringify(info)
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -169,7 +234,13 @@ class Model {
             },
             body: JSON.stringify(info)
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -185,7 +256,13 @@ class Model {
                 'Content-Type': 'jpeg/png'
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.redirected) {
+                window.location = res.url;
+            }
+            
+            return res.json();
+        })
         .then(resData => {
             callback(resData);
         }).catch(ex => {
@@ -234,7 +311,13 @@ class Model {
                 },
                 body: JSON.stringify(filter)
             })
-            .then(res => res.json())
+            .then(res => {
+                if (res.redirected) {
+                    window.location = res.url;
+                }
+                
+                return res.json();
+            })
             .then(resData => {
 
                 callbacks.forEach(function (callback) {
