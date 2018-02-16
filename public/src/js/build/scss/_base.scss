@@ -113,6 +113,8 @@
     position: absolute;
     display: -ms-flexbox;
     display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
     z-index: 1    
 }
 
@@ -1118,6 +1120,10 @@ BODY {
                 .Select-clear-zone {
                     display: none;
                 }
+
+                .Select-value {
+                    text-align: center;
+                }
             }
             input {
                 background-color: $color3;
@@ -1126,10 +1132,11 @@ BODY {
 
         & > .phone_search {
             width: 128px;
+            text-align: center;
             min-height: 32px;
             margin-right: 12px;
             padding: 0 0 0 5px;
-            line-height: 30px;
+            line-height: 32px;
             border: 0;
             border-radius: 4px;
             background-color: $color3;
@@ -1270,7 +1277,7 @@ BODY {
     h3 {
         font-size: 22px;
         text-align: center;
-        width: 426px;
+        width: $menu-width-md - $menu-width-sm;
         line-height: 32px;
         padding: 0;
         margin: 0;

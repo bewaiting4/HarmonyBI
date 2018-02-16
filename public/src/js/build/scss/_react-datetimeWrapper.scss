@@ -6,6 +6,9 @@
         margin-bottom: 10px;
         /* height TODO */
     }
+    .rdtPicker {
+        z-index: 0 !important;
+    }
 
     .rdtPicker thead tr:first-child th:hover {
         background: $filter-hover-bgcolor;
