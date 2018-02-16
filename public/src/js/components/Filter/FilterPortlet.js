@@ -35,6 +35,7 @@ class FilterPortlet extends React.Component {
 	}
 
 	render() {
+		let isOn = this.props.onFilter && this.props.isUnfold;
 		return (
 			<li>
 				<a className="site_title">
@@ -49,15 +50,7 @@ class FilterPortlet extends React.Component {
 				</a>
 				<ul
 					className="nav child_menu"
-					style={
-						this.props.onFilter
-							? {
-									display: "block"
-								}
-							: {
-									display: "none"
-								}
-					}
+					style={{display: isOn ? "block" : "none"}}
 				>
 					{this.props.children}
 				</ul>

@@ -26,7 +26,8 @@ class FilterPanel extends React.Component {
 			onTimeFilter: false,
 			onLocationFilter: false,
 			onIdNumberFilter: false,
-            isLocationSet: false
+            isLocationSet: false,
+            numPersonelSet: 0
 		};
 		this.filters = [];
 		this.state = _.assignIn({}, this.dftState);
@@ -47,6 +48,7 @@ class FilterPanel extends React.Component {
 
     handleUpdateSuspect(list) {
     	this.props.onUpdateSuspect(list);
+        this.setState({numPersonelSet: (list && list.length || 0)});
     }
 
     componentDidMount() {
@@ -85,6 +87,7 @@ class FilterPanel extends React.Component {
 
     resetSusFilter() {
         this.refs.susFilter.resetFilter();
+        this.setState({numPersonelSet: 0});
     }
 
     getTimeFilterContent() {
@@ -98,6 +101,11 @@ class FilterPanel extends React.Component {
     getCurrentLocation() {
         return this.state.isLocationSet ? <span>已设置</span> : "";
     }
+
+    getCurrentPersonel() {
+        return this.state.numPersonelSet ? <span>{this.state.numPersonelSet.length + "个"}</span> : "";
+    }
+
 
 	render() {
         const onTimeFilter = this.state.onTimeFilter;
@@ -141,6 +149,7 @@ class FilterPanel extends React.Component {
                         <FilterPortlet
                             name="IdNumber"
                             text="案发相关人员"
+                            currSel={this.getCurrentPersonel()}
                             isUnfold={isUnfold}
                             onOpenFilter={this.handleOpenFilter}
                             icon={onIdNumberFilter ? "id-set": "id-unset"}
