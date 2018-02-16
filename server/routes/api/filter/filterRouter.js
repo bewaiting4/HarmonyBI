@@ -121,6 +121,25 @@ router.route('/:id')
             contactTable: modelData.contactTable
         });
     })
+    .put(function (req, res, next) {
+        var filter = req.filter,
+            update = req.body;
+        
+        filter.modelData = req.session.modelData;
+        if (req.session.auth) {
+            filter.user = req.user;
+        }        
+
+        filter.save(function (err, filter) {
+            if (err) {
+                next(err);
+            }
+
+            res.json({
+                _id: filter._id
+            });
+        });
+    })    
     .delete(function (req, res, next) {
         req.filter.remove(function (err, removed) {
             if (err) {
