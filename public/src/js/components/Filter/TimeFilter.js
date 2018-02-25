@@ -86,7 +86,7 @@ class TimeFilter extends React.Component {
 		});
 
 		this.updateDateRange({
-			caseDate: date,
+			caseDate: date.replace("年","/").replace("月","/").replace("日", " "),
 			preHours: this.state.preHours,
 			postHours: this.state.postHours
 		});
