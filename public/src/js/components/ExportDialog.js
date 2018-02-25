@@ -28,13 +28,13 @@ class ExportDialog extends React.Component {
 	}
 
 	handleClose() {
-		this.props.onClose();
+		this.setState({isLoading: false})
+		this.props.onClose()
 	}
 
 	hanldeExport() {
 		this.props.onExport({title: this.state.title, callback: function() {
-			this.setState({isLoading: false})
-			this.props.onClose()
+			this.handleClose()
 		}.bind(this)})
 
 		this.setState({isLoading: true})
