@@ -152,6 +152,7 @@ class AppContainer extends React.Component {
 		this.Exporter.export({
 			title: config.title,
 			filter: this.dataModel.getFilter(),
+			docData: this.state.docData,
 			contactTable: this.state.docData.contactTable,
 			suspectTable: this.state.docData.suspectTable,
 			charts: this.refs.docView.charts,

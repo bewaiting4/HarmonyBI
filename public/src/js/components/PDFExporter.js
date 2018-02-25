@@ -102,16 +102,49 @@ class PDFExporter {
         return new Promise(function(resolve, reject) {
             var sus = _.filter(config.suspectTable, ['type', ENUM.CATEGORY_KEY.SUSPECT]);
 
-            // _.forEach(config.charts, function(chart, idx){
-            //  if (chart.category === 'echarts' && chart.type !== 'map' && chart.type !== 'network') {
-            //      charts[idx] = getChartImage(chart.id);
-            //  } else if (chart.type === 'map') {
-            //      charts[idx] = getMapImage(chart.id);
-            //  } else if (chart.type === 'network') {
-      //               charts[idx] = getNetworkImage(chart.id);
-      //           }
-            // });
+            function getLocationConfig(config) {
+                var ci_from = config.filter.ci_from,
+                    ci_to = config.filter.ci_to,
+                    res = {
+                        caseLoc: undefined,
+                        caseLat: undefined,
+                        caseLong: undefined
+                    };
 
+                if (ci_from || ci_to) {
+                    _.some((config.docData && config.docData.threeMonthCalls || []), function(item) {
+                        if (item['f_CI'] === ci_from || item['f_CI'] === ci_to) {
+                            res = {
+                                caseLoc: item.f_addr,
+                                caseLat: item.f_lat,
+                                caseLong: item.f_long
+                            };
+                            return true;
+                        }
+
+                        if (item['t_CI'] === ci_to || item['t_CI'] === ci_from) {
+                            res = {
+                                caseLoc: item.t_addr,
+                                caseLat: item.t_lat,
+                                caseLong: item.t_long
+                            }
+
+                            return true;
+                        }
+                    });
+                }
+
+                if (config.filter.lat !== undefined && config.filter.long !== undefined) {
+                    res = {
+                        caseLoc: undefined,
+                        caseLat: config.filter.lat,
+                        caseLong: config.filter.long
+                    };
+                }
+
+                return res;
+            }
+           
             config.charts.push({type: 'map', id: 'locMap'});
             getChartsImages(config.charts)
             .then(function(charts) {
@@ -164,7 +197,9 @@ class PDFExporter {
                     res.caseDate = config.date_to;
                     res.preHours = 48;
                     res.postHours = 24;
-                }       
+                }
+
+                _.assign(res, getLocationConfig(config));
 
                 resolve(res)
 
@@ -180,9 +215,9 @@ class PDFExporter {
         var preHours = config.preHours;
         var postHours = config.postHours;
         var caseCI = config.caseCI;
-        var caseLoc = config.caseLoc || '和田（0903）皮山农科所（皮山农科所）';
-        var caseLat = 78.274895;
-        var caseLong = 37.617298;
+        var caseLoc = config.caseLoc;// || '和田（0903）皮山农科所（皮山农科所）';
+        var caseLat = config.caseLat;// || 78.274895;
+        var caseLong = config.caseLong;// || 37.617298;
         var contactTable = config.contactTable;
         var suspectTable = config.suspectTable;
         var filterSuspects = config.filterSuspects;
@@ -214,6 +249,56 @@ class PDFExporter {
             return res;
         }
 
+        function getLatLongBlock() {
+            if (caseLat || caseLong) {
+                return {
+                    text: [
+                        '经纬度:', 
+                        {
+                            text: caseLat,
+                            style: 'underlineParagraph'
+                        },
+                        '，',
+                        {
+                            text: caseLong,
+                            style: 'underlineParagraph'
+                        }
+                    ],
+                    style: 'paragraph'
+                };                
+            } else {
+                return {};
+            }
+
+        }
+
+        function getLocationBlock () {
+            if (caseLoc) {
+                return {
+                    text: caseLoc,
+                    style: 'underlineParagraph'
+                };                
+            } else {
+                return {};
+            }
+        }
+
+        function getCIBlock() {
+            if (caseCI) {
+                return {
+                    text: [
+                        'CI:', 
+                        {
+                            text: caseCI,
+                            style: 'underlineParagraph'
+                        }
+                    ],
+                    style: 'paragraph'
+                };                
+            } else {
+                return {};
+            }
+        }
 
         var dd = {
             // a string or { width: number, height: number }
@@ -331,33 +416,11 @@ class PDFExporter {
                 }, {
                     text: '案发地点:',
                     style: 'titleCover'
-                }, {
-                    text: caseLoc,
-                    style: 'underlineParagraph'
-                },{
-                    text: [
-                        'CI:', 
-                        {
-                            text: caseCI,
-                            style: 'underlineParagraph'
-                        }
-                    ],
-                    style: 'paragraph'
-                },{
-                    text: [
-                        '经纬度:', 
-                        {
-                            text: caseLat,
-                            style: 'underlineParagraph'
-                        },
-                        '，',
-                        {
-                            text: caseLong,
-                            style: 'underlineParagraph'
-                        }
-                    ],
-                    style: 'paragraph'
-                }, {
+                }, 
+                getLocationBlock(),
+                getCIBlock(),                
+                getLatLongBlock(),
+                {
                     image: charts[12].image,
                     width: charts[12].width || 300,
                     height: charts[12].width || 300,
